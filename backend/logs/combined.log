@@ -1,0 +1,11 @@
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-21T07:19:23.818Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T07:19:53.872Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-21T07:56:12.279Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T07:56:42.305Z"}
+{"level":"error","message":"Operation `orders.deleteMany()` buffering timed out after 10000ms","timestamp":"2026-02-21T07:58:33.032Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-21T08:14:46.846Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T08:15:16.866Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-21T09:05:19.452Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T09:05:49.426Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-21T09:37:39.118Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T09:38:09.001Z"}

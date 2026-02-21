@@ -1,0 +1,6 @@
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T07:19:53.872Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T07:56:42.305Z"}
+{"level":"error","message":"Operation `orders.deleteMany()` buffering timed out after 10000ms","timestamp":"2026-02-21T07:58:33.032Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T08:15:16.866Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T09:05:49.426Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T09:38:09.001Z"}
