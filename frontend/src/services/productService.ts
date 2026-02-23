@@ -1,6 +1,6 @@
 import api from './api';
 
-export const getProducts = async (params: any = {}) => {
+export const getProducts = async (params: Record<string, string | number | string[]> = {}) => {
     const { data } = await api.get('/products', { params });
     return data;
 };

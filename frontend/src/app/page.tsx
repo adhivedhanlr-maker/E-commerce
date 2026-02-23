@@ -135,9 +135,7 @@ export default function Home() {
                 The <span className="italic text-primary-600">Equinox</span> <br />
                 Flash Event
               </h2>
-              <p className="text-slate-400 text-lg mb-12 max-w-md">
-                Our biannual curation of archival pieces and site-wide exclusives at exceptional values.
-              </p>
+              <p className="text-slate-500 text-lg max-w-2xl mx-auto mb-16 font-light">The pinnacle of technical achievement and aesthetic purity. These aren&apos;t just tools; they are the artifacts of a life well-lived.</p>
 
               <div className="grid grid-cols-4 gap-4 mb-12">
                 {[

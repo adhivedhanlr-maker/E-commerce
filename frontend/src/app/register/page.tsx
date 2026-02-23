@@ -21,7 +21,7 @@ const registerSchema = z.object({
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: "Passwords don&apos;t match",
     path: ["confirmPassword"],
 });
 
@@ -43,8 +43,9 @@ export default function RegisterPage() {
                 setUser(response.data);
                 router.push('/');
             }
-        } catch (error: any) {
-            setError('root', { message: error.response?.data?.message || 'Registration failed' });
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } };
+            setError('root', { message: err.response?.data?.message || 'Registration failed' });
         }
     };
 
@@ -169,6 +170,6 @@ export default function RegisterPage() {
 }
 
 // Utility to fix the cn issue in this file environment
-function cn(...inputs: any[]) {
+function cn(...inputs: (string | boolean | undefined)[]) {
     return inputs.filter(Boolean).join(' ');
 }

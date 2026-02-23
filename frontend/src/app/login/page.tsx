@@ -37,8 +37,9 @@ export default function LoginPage() {
                 setUser(response.data);
                 router.push('/');
             }
-        } catch (error: any) {
-            setError('root', { message: error.response?.data?.message || 'Login failed' });
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } };
+            setError('root', { message: err.response?.data?.message || 'Login failed' });
         }
     };
 
@@ -116,7 +117,7 @@ export default function LoginPage() {
                         </form>
 
                         <p className="text-center mt-8 text-sm text-slate-500">
-                            Don't have an account?{' '}
+                            Don&apos;t have an account?{' '}
                             <Link href="/register">
                                 <span className="text-primary-600 font-bold hover:underline">Create Account</span>
                             </Link>
@@ -129,6 +130,6 @@ export default function LoginPage() {
 }
 
 // Utility to fix the cn issue in this file environment
-function cn(...inputs: any[]) {
+function cn(...inputs: (string | boolean | undefined)[]) {
     return inputs.filter(Boolean).join(' ');
 }

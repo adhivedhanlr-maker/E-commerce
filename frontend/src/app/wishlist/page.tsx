@@ -8,7 +8,6 @@ import { Heart, Trash2, ShoppingCart, ArrowRight, Sparkles } from 'lucide-react'
 import { useWishlist } from '@/store/useWishlist';
 import { useCart } from '@/store/useCart';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 export default function WishlistPage() {
     const { wishlistItems, removeItem } = useWishlist();
@@ -46,7 +45,7 @@ export default function WishlistPage() {
                         Your <span className="italic font-light text-secondary-400">Atmosphere</span>
                     </h1>
                     <p className="text-slate-500 text-lg max-w-md">
-                        A sanctuary for the pieces you've chosen to define your space and lifestyle.
+                        A sanctuary for the pieces you&apos;ve chosen to define your space and lifestyle.
                     </p>
                 </motion.div>
 
@@ -95,7 +94,7 @@ export default function WishlistPage() {
                         animate="show"
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16"
                     >
-                        {wishlistItems.map((product: any) => (
+                        {wishlistItems.map((product: { _id: string; name: string; price: number; image?: string }) => (
                             <motion.div key={product._id} variants={itemAnim} className="group relative">
                                 <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-secondary-100 dark:bg-white/5">
                                     {/* Action Reveal */}

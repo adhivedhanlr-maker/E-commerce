@@ -2,8 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Clock, Tag } from 'lucide-react';
-import Link from 'next/link';
+import { BookOpen, Calendar, Clock, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 const articles = [
@@ -87,10 +86,10 @@ export default function JournalPage() {
                         </p>
                         <div className="flex items-center gap-8 mb-10 text-[11px] font-black uppercase tracking-widest text-slate-400">
                             <span className="flex items-center gap-2"><Clock className="h-3 w-3" /> 15 Min</span>
-                            <span className="flex items-center gap-2"><Tag className="h-3 w-3" /> Architecture</span>
+                            <span className="flex items-center gap-2"><Calendar className="h-3 w-3" /> Architecture</span>
                         </div>
                         <Button variant="ghost" className="p-0 text-slate-950 dark:text-white hover:text-primary-600 dark:hover:text-primary-600 group flex items-center gap-3 font-black uppercase tracking-widest text-xs h-auto">
-                            Read Article <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
+                            Read Article <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
                         </Button>
                     </div>
                 </motion.div>
@@ -123,11 +122,9 @@ export default function JournalPage() {
                                 <h3 className="text-2xl font-bold text-slate-950 dark:text-white group-hover:text-primary-600 transition-colors leading-tight">
                                     {article.title}
                                 </h3>
-                                <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">
-                                    {article.excerpt}
-                                </p>
+                                <p className="text-secondary-400 font-light mt-4 italic">&quot;A meticulously curated home is not just about furniture; it&rsquo;s about creating a landscape where your soul can rest.&quot;</p>
                                 <div className="pt-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white transform transition-all group-hover:gap-4">
-                                    Continue Reading <ArrowRight className="h-3 w-3" />
+                                    Continue Reading <ChevronRight className="h-3 w-3" />
                                 </div>
                             </div>
                         </motion.div>

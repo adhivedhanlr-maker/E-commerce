@@ -2,8 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Sparkles, ArrowRight, Zap, RefreshCw, Star, ShieldCheck, ShoppingBag } from 'lucide-react';
-import Link from 'next/link';
+import { Zap, RefreshCw, Star, ShieldCheck, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 
 const deals = [
@@ -65,7 +64,7 @@ export default function DealsPage() {
                             Featured <span className="italic font-light text-secondary-400">Opportunity</span>
                         </h1>
                         <p className="mt-8 text-xl text-slate-600 dark:text-slate-400 leading-relaxed font-light">
-                            Exceptional values on our most coveted collections. Available for a limited time only as we make room for what's next.
+                            Exceptional values on our most coveted collections. Available for a limited time only as we make room for what&apos;s next.
                         </p>
                     </motion.div>
                 </div>
