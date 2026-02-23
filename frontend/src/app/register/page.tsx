@@ -37,7 +37,7 @@ export default function RegisterPage() {
 
     const onSubmit = async (data: RegisterForm) => {
         try {
-            const { confirmPassword: _, ...rest } = data;
+            const rest = { name: data.name, email: data.email, password: data.password };
             const response = await registerUser(rest);
             if (response.success) {
                 setUser(response.data);

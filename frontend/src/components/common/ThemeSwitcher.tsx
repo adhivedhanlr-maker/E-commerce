@@ -91,7 +91,7 @@ export default function ThemeSwitcher() {
                                 name="theme-switcher"
                                 value={value}
                                 checked={checked}
-                                onChange={() => handleChange(value, cOption)}
+                                onChange={() => handleChange(value)}
                                 aria-label={label}
                             />
                             <Icon />
