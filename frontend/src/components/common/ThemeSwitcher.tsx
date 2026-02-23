@@ -45,7 +45,7 @@ export default function ThemeSwitcher() {
         }
     }, [prevOption, mounted]);
 
-    const handleChange = (newTheme: string, _cOption: string) => {
+    const handleChange = (newTheme: string) => {
         const currentOption = THEMES.find(t => t.value === theme)?.cOption ?? '1';
         setPrevOption(currentOption);
         setTheme(newTheme);
