@@ -22,13 +22,11 @@ const DimIcon = () => (
     </svg>
 );
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const THEMES = [
     { value: 'light', label: 'Light', cOption: '1', Icon: SunIcon },
     { value: 'dark', label: 'Dark', cOption: '2', Icon: MoonIcon },
     { value: 'dim', label: 'Dim', cOption: '3', Icon: DimIcon },
 ];
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export default function ThemeSwitcher() {
     const { theme, setTheme } = useTheme();
@@ -47,7 +45,7 @@ export default function ThemeSwitcher() {
         }
     }, [prevOption, mounted]);
 
-    const handleChange = (newTheme: string, cOption: string) => {
+    const handleChange = (newTheme: string, _cOption: string) => {
         const currentOption = THEMES.find(t => t.value === theme)?.cOption ?? '1';
         setPrevOption(currentOption);
         setTheme(newTheme);

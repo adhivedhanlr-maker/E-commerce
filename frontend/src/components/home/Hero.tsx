@@ -5,6 +5,7 @@ import { motion, cubicBezier } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 const Hero = () => {
     return (
@@ -77,11 +78,12 @@ const Hero = () => {
             >
                 <div className="relative">
                     {/* Main "Object" Frame */}
-                    <div className="aspect-[4/5] bg-secondary-200/30 rounded-3xl backdrop-blur-sm border border-white/20 dark:bg-white/5 overflow-hidden shadow-premium">
-                        <img
+                    <div className="aspect-[4/5] bg-secondary-200/30 rounded-3xl backdrop-blur-sm border border-white/20 dark:bg-white/5 overflow-hidden shadow-premium relative">
+                        <Image
                             src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200"
                             alt="Premium Texture"
-                            className="w-full h-full object-cover mix-blend-overlay opacity-50 dark:opacity-30"
+                            fill
+                            className="object-cover mix-blend-overlay opacity-50 dark:opacity-30"
                         />
                     </div>
 
