@@ -283,7 +283,7 @@ export default function ShopPage() {
         return filteredAndSortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
     }, [filteredAndSortedProducts, currentPage]);
 
-    const handleFilterChange = (type: string, value: string | number | number[]) => {
+    const handleFilterChange = (type: string, value: string | number | number[] | null) => {
         setCurrentPage(1); // Reset to first page on filter change
         if (type === 'category' && typeof value === 'string') {
             setSelectedCategories(prev =>
