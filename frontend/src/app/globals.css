@@ -170,3 +170,263 @@
     transform: translateY(0);
   }
 }
+
+
+/* =============================================
+   Liquid Glass Theme Switcher
+   ============================================= */
+
+/* Glass CSS variables — default (light) */
+:root {
+  --c-glass: #bbbbbc;
+  --c-light: #fff;
+  --c-dark: #000;
+  --c-action: #327642;
+  --glass-reflex-dark: 1;
+  --glass-reflex-light: 1;
+  --saturation: 150%;
+}
+
+/* Dark theme glass overrides */
+html.dark {
+  --c-glass: #bbbbbc;
+  --c-light: #fff;
+  --c-dark: #000;
+  --c-action: #4ec97a;
+  --glass-reflex-dark: 2;
+  --glass-reflex-light: 0.3;
+  --saturation: 150%;
+}
+
+/* Dim theme glass overrides */
+html.dim {
+  --c-light: #99deff;
+  --c-dark: #20001b;
+  --c-glass: hsl(335 250% 74% / 1);
+  --c-action: #4aaad4;
+  --glass-reflex-dark: 2;
+  --glass-reflex-light: 0.7;
+  --saturation: 200%;
+}
+
+/* SVG filter wrapper — hidden, zero-size */
+.switcher-filter-wrap {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+/* Skeleton while hydrating */
+.switcher-skeleton {
+  width: 134px;
+  height: 36px;
+  border-radius: 99em;
+  background: color-mix(in srgb, var(--c-glass) 12%, transparent);
+  opacity: 0.5;
+}
+
+/* Main pill container */
+.theme-switcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 134px;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 4px 6px 5px;
+  margin: 0;
+  border: none;
+  border-radius: 99em;
+  background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+  backdrop-filter: blur(8px) saturate(var(--saturation));
+  -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+  transition:
+    background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+    box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1);
+}
+
+/* Sliding glass pill — the active indicator */
+.theme-switcher::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  display: block;
+  width: 38px;
+  height: calc(100% - 10px);
+  border-radius: 99em;
+  background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+  z-index: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+}
+
+/* Pill position per active option */
+.theme-switcher--opt1::after {
+  translate: 0 0;
+  transition:
+    background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+    box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
+    translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+  animation: scaleToggle1 440ms ease;
+  transform-origin: right;
+}
+
+.theme-switcher--opt2::after {
+  translate: 42px 0;
+  transition:
+    background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+    box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
+    translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+  animation: scaleToggle2 440ms ease;
+}
+
+/* Directional stretch for pill movement through middle */
+.theme-switcher[c-previous="1"].theme-switcher--opt2::after {
+  transform-origin: left;
+}
+
+.theme-switcher[c-previous="3"].theme-switcher--opt2::after {
+  transform-origin: right;
+}
+
+.theme-switcher--opt3::after {
+  translate: 84px 0;
+  transform-origin: left;
+  transition:
+    background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+    box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
+    translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+  animation: scaleToggle3 440ms ease;
+}
+
+@keyframes scaleToggle1 {
+  0% {
+    scale: 1 1;
+  }
+
+  50% {
+    scale: 1.1 1;
+  }
+
+  100% {
+    scale: 1 1;
+  }
+}
+
+@keyframes scaleToggle2 {
+  0% {
+    scale: 1 1;
+  }
+
+  50% {
+    scale: 1.2 1;
+  }
+
+  100% {
+    scale: 1 1;
+  }
+}
+
+@keyframes scaleToggle3 {
+  0% {
+    scale: 1 1;
+  }
+
+  50% {
+    scale: 1.1 1;
+  }
+
+  100% {
+    scale: 1 1;
+  }
+}
+
+/* Each option label */
+.switcher-option {
+  --c: currentColor;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8px;
+  width: 38px;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 99em;
+  opacity: 1;
+  cursor: pointer;
+  transition: color 160ms;
+}
+
+.switcher-option svg path {
+  fill: var(--c);
+}
+
+.switcher-option:hover {
+  --c: var(--c-action);
+}
+
+.switcher-option:hover svg {
+  scale: 1.2;
+  transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
+}
+
+.switcher-option svg {
+  transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
+}
+
+.switcher-option--checked {
+  cursor: default;
+}
+
+.switcher-option--checked svg {
+  scale: 1 !important;
+}
+
+/* Visually hidden radio inputs */
+.switcher-input {
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* Visually hidden legend */
+.switcher-legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
