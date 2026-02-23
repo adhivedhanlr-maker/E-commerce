@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, cubicBezier } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,7 @@ const Hero = () => {
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 1, ease: cubicBezier(0.16, 1, 0.3, 1) }}
                     >
                         <div className="flex items-center space-x-3 mb-8">
                             <div className="h-[1px] w-12 bg-primary-600" />
@@ -72,7 +72,7 @@ const Hero = () => {
             <motion.div
                 initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                transition={{ duration: 1.5, ease: cubicBezier(0.16, 1, 0.3, 1), delay: 0.2 }}
                 className="absolute right-[-10%] bottom-[10%] hidden lg:block w-1/2"
             >
                 <div className="relative">

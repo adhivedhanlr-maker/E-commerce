@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -28,7 +28,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                         initial={{ opacity: 0, scale: 1.05 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.6, ease: cubicBezier(0.16, 1, 0.3, 1) }}
                         className="h-full w-full cursor-zoom-in relative"
                         onClick={() => setIsZoomed(!isZoomed)}
                     >

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, cubicBezier } from 'framer-motion';
 import { Heart, Trash2, ShoppingCart, ArrowRight, Sparkles } from 'lucide-react';
 import { useWishlist } from '@/store/useWishlist';
 import { useCart } from '@/store/useCart';
@@ -26,7 +26,7 @@ export default function WishlistPage() {
 
     const itemAnim = {
         hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: cubicBezier(0.16, 1, 0.3, 1) } }
     };
 
     return (

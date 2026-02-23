@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, cubicBezier } from 'framer-motion';
 import { ShoppingCart, Heart, Star, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/store/useCart';
@@ -49,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, ease: cubicBezier(0.16, 1, 0.3, 1) }}
             className="group relative h-full"
         >
             <Link href={`/product/${product._id}`} className="flex flex-col h-full">
