@@ -285,13 +285,13 @@ export default function ShopPage() {
 
     const handleFilterChange = (type: string, value: string | number | number[]) => {
         setCurrentPage(1); // Reset to first page on filter change
-        if (type === 'category') {
+        if (type === 'category' && typeof value === 'string') {
             setSelectedCategories(prev =>
                 prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
             );
-        } else if (type === 'price') {
-            setPriceRange(value);
-        } else if (type === 'rating') {
+        } else if (type === 'price' && Array.isArray(value)) {
+            setPriceRange(value as [number, number]);
+        } else if (type === 'rating' && typeof value === 'number') {
             setMinRating(prev => prev === value ? 0 : value);
         } else if (type === 'clear') {
             setSelectedCategories([]);
