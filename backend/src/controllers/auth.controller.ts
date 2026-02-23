@@ -19,8 +19,8 @@ export const register = async (req: Request, res: Response) => {
         });
 
         if (user) {
-            const accessToken = generateAccessToken(user._id as string, user.role);
-            const refreshToken = generateRefreshToken(user._id as string);
+            const accessToken = generateAccessToken(user._id.toString(), user.role);
+            const refreshToken = generateRefreshToken(user._id.toString());
 
             sendResponse(res, 201, true, 'User registered successfully', {
                 _id: user._id,
@@ -45,8 +45,8 @@ export const login = async (req: Request, res: Response) => {
         const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
-            const accessToken = generateAccessToken(user._id as string, user.role);
-            const refreshToken = generateRefreshToken(user._id as string);
+            const accessToken = generateAccessToken(user._id.toString(), user.role);
+            const refreshToken = generateRefreshToken(user._id.toString());
 
             sendResponse(res, 200, true, 'Login successful', {
                 _id: user._id,
