@@ -91,7 +91,7 @@ export default function Home() {
               </h2>
               <p className="mt-6 text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
                 Elevate your daily ritual with pieces that define modern craftsmanship.
-                Our team has curated the season's most essential technology and lifestyle goods.
+                Our team has curated the season&apos;s most essential technology and lifestyle goods.
               </p>
             </div>
             <Link href="/shop" className="group flex items-center space-x-3 text-[12px] font-black uppercase tracking-widest text-slate-950 dark:text-white pb-2 border-b-2 border-primary-600 transition-all hover:border-slate-950">

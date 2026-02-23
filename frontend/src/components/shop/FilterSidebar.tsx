@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ChevronDown, Filter, Star } from 'lucide-react';
+import { Filter, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -15,7 +15,7 @@ interface FilterSidebarProps {
     selectedCategories: string[];
     priceRange: [number, number];
     minRating: number;
-    onFilterChange: (type: string, value: any) => void;
+    onFilterChange: (type: string, value: string | number | [number, number] | null) => void;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({

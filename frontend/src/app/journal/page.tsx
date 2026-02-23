@@ -82,7 +82,7 @@ export default function JournalPage() {
                         </div>
                         <h2 className="text-4xl md:text-5xl font-bold text-slate-950 dark:text-white mb-6 leading-tight">The Art of Focus in a Digital Age</h2>
                         <p className="text-slate-600 dark:text-slate-400 text-lg mb-8 leading-relaxed italic font-light">
-                            "True craftsmanship requires the elimination of distraction. We explore how environment affects the creative output of the modern architect."
+                            &quot;True craftsmanship requires the elimination of distraction. We explore how environment affects the creative output of the modern architect.&quot;
                         </p>
                         <div className="flex items-center gap-8 mb-10 text-[11px] font-black uppercase tracking-widest text-slate-400">
                             <span className="flex items-center gap-2"><Clock className="h-3 w-3" /> 15 Min</span>

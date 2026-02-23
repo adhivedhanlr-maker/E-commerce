@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, cubicBezier } from 'framer-motion';
-import { ShoppingCart, Heart, Star, Plus } from 'lucide-react';
+import { Heart, Star, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/store/useCart';
 import { useWishlist } from '@/store/useWishlist';
