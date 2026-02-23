@@ -25,7 +25,7 @@ const featuredProducts = [
     originalPrice: 1500.00,
     discountPercentage: 16,
     rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&q=80&w=800"],
+    images: ["https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=800"],
     brand: "Heritage Home",
   },
   {
@@ -35,7 +35,7 @@ const featuredProducts = [
     originalPrice: 650.00,
     discountPercentage: 15,
     rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800"],
+    images: ["https://images.unsplash.com/photo-1551488831-00ddcb6c6ec3?auto=format&fit=crop&q=80&w=800"],
     brand: "Apex Outdoor",
   },
   {
@@ -45,7 +45,7 @@ const featuredProducts = [
     originalPrice: 1100.00,
     discountPercentage: 19,
     rating: 4.8,
-    images: ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800"],
+    images: ["https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800"],
     brand: "Temporal",
   },
 ];
@@ -73,7 +73,7 @@ export default function Home() {
 
       {/* Featured Products Section - Editorial Style */}
       <section className="py-24 lg:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-4"
+            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-x-8 sm:gap-y-16"
           >
             {featuredProducts.map((product) => (
               <motion.div key={product._id} variants={item}>

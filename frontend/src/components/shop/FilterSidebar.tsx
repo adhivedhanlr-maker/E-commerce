@@ -25,7 +25,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onFilterChange
 }) => {
     return (
-        <aside className="w-full md:w-64 space-y-6">
+        <aside className="w-full md:w-64 space-y-6 md:sticky md:top-24 self-start">
             <div className="flex items-center justify-between pb-4 border-b">
                 <h2 className="text-lg font-bold flex items-center gap-2">
                     <Filter className="h-4 w-4 text-primary-600" />
@@ -75,14 +75,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     </AccordionTrigger>
                     <AccordionContent className="pt-2 pb-4">
                         <div className="space-y-6 px-1">
-                            <Slider
-                                value={[priceRange[0], priceRange[1]]}
-                                min={0}
-                                max={3000}
-                                step={50}
-                                onValueChange={(val) => onFilterChange('price', val as [number, number])}
-                                className="py-4"
-                            />
                             <div className="flex items-center gap-3">
                                 <div className="relative flex-1">
                                     <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">$</span>
@@ -104,6 +96,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                     />
                                 </div>
                             </div>
+                            <Slider
+                                value={[priceRange[0], priceRange[1]]}
+                                min={0}
+                                max={3000}
+                                step={50}
+                                onValueChange={(val) => onFilterChange('price', val as [number, number])}
+                                className="py-4"
+                            />
                         </div>
                     </AccordionContent>
                 </AccordionItem>
@@ -139,6 +139,18 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
+
+            <div className="md:hidden pt-6 space-y-4">
+                <Button
+                    className="w-full h-12 text-sm font-bold uppercase tracking-widest bg-primary-600 hover:bg-primary-700 text-white rounded-xl shadow-premium"
+                    onClick={() => {
+                        // In a real app, this might trigger a closing action, but here we'll just let the sheet close.
+                        // The actual values are already synced via state.
+                    }}
+                >
+                    Apply Filters
+                </Button>
+            </div>
         </aside>
     );
 };

@@ -5,6 +5,8 @@ import FilterSidebar from '@/components/shop/FilterSidebar';
 import ProductCard from '@/components/product/ProductCard';
 import { Grid, List, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+
 
 const products = [
     {
@@ -80,7 +82,7 @@ const products = [
         originalPrice: 280.00,
         discountPercentage: 21,
         rating: 4.6,
-        images: ["https://images.unsplash.com/photo-1507473885765-e6ed657f9971?auto=format&fit=crop&q=80&w=800"],
+        images: ["https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=800"],
         brand: "Lumina Design",
         category: "Furniture"
     },
@@ -91,7 +93,7 @@ const products = [
         originalPrice: 650.00,
         discountPercentage: 15,
         rating: 4.9,
-        images: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800"],
+        images: ["https://images.unsplash.com/photo-1551488831-00ddcb6c6ec3?auto=format&fit=crop&q=80&w=800"],
         brand: "Apex Outdoor",
         category: "Apparel"
     },
@@ -102,7 +104,7 @@ const products = [
         originalPrice: 180.00,
         discountPercentage: 0,
         rating: 4.7,
-        images: ["https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=800"],
+        images: ["https://images.unsplash.com/photo-1614676471928-2ed0ad1061a4?auto=format&fit=crop&q=80&w=800"],
         brand: "Apex Outdoor",
         category: "Apparel"
     },
@@ -135,7 +137,7 @@ const products = [
         originalPrice: 349.99,
         discountPercentage: 15,
         rating: 4.5,
-        images: ["https://images.unsplash.com/photo-1508685096489-7as68962d382?auto=format&fit=crop&q=80&w=800"],
+        images: ["https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800"],
         brand: "Titan Tech",
         category: "Electronics"
     },
@@ -190,7 +192,7 @@ const products = [
         originalPrice: 400.00,
         discountPercentage: 20,
         rating: 4.6,
-        images: ["https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80&w=800"],
+        images: ["https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800"],
         brand: "Heritage Home",
         category: "Furniture"
     },
@@ -245,7 +247,7 @@ const products = [
         originalPrice: 195.00,
         discountPercentage: 20,
         rating: 4.7,
-        images: ["https://images.unsplash.com/photo-1511499767010-a588b5b2f191?auto=format&fit=crop&q=80&w=800"],
+        images: ["https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"],
         brand: "Visionary",
         category: "Apparel"
     }
@@ -257,8 +259,10 @@ export default function ShopPage() {
     const [minRating, setMinRating] = useState<number>(0);
     const [view, setView] = useState<'grid' | 'list'>('grid');
     const [sortBy, setSortBy] = useState<string>('featured');
+    const [currentPage, setCurrentPage] = useState(1);
+    const PRODUCTS_PER_PAGE = 6;
 
-    const filteredProducts = useMemo(() => {
+    const filteredAndSortedProducts = useMemo(() => {
         return products.filter(product => {
             const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
             const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
@@ -272,7 +276,15 @@ export default function ShopPage() {
         });
     }, [selectedCategories, priceRange, minRating, sortBy]);
 
+    const totalPages = Math.ceil(filteredAndSortedProducts.length / PRODUCTS_PER_PAGE);
+
+    const paginatedProducts = useMemo(() => {
+        const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+        return filteredAndSortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+    }, [filteredAndSortedProducts, currentPage]);
+
     const handleFilterChange = (type: string, value: any) => {
+        setCurrentPage(1); // Reset to first page on filter change
         if (type === 'category') {
             setSelectedCategories(prev =>
                 prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
@@ -291,23 +303,42 @@ export default function ShopPage() {
     return (
         <div className="bg-white dark:bg-slate-900 py-12">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                {/* Mobile Sort Bar (Top) */}
+                <div className="flex md:hidden items-center gap-4 mb-8">
+                    <div className="flex-1 h-12 relative">
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="w-full h-full appearance-none bg-white dark:bg-slate-950 border border-secondary-200 dark:border-white/10 rounded-xl px-5 text-xs font-bold uppercase tracking-widest outline-none"
+                        >
+                            <option value="featured">Sort: Featured Collection</option>
+                            <option value="price-low">Sort: Price Low to High</option>
+                            <option value="price-high">Sort: Price High to Low</option>
+                            <option value="rating">Sort: Top Rated</option>
+                        </select>
+                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                    </div>
+                </div>
+
                 <div className="flex flex-col md:flex-row gap-12">
-                    {/* Sidebar */}
-                    <FilterSidebar
-                        selectedCategories={selectedCategories}
-                        priceRange={priceRange}
-                        minRating={minRating}
-                        onFilterChange={handleFilterChange}
-                    />
+                    {/* Sidebar - Desktop Only */}
+                    <div className="hidden md:block">
+                        <FilterSidebar
+                            selectedCategories={selectedCategories}
+                            priceRange={priceRange}
+                            minRating={minRating}
+                            onFilterChange={handleFilterChange}
+                        />
+                    </div>
 
                     {/* Product Feed */}
                     <div className="flex-1">
                         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-6 border-b border-secondary-200/50 pb-8">
                             <div>
                                 <h1 className="font-accent text-4xl font-bold text-slate-950 dark:text-white mb-2">Shop All <span className="italic font-light text-secondary-400">Products</span></h1>
-                                <p className="text-sm text-slate-500 tracking-tight">Showing {filteredProducts.length} of {products.length} items</p>
+                                <p className="text-sm text-slate-500 tracking-tight">Showing {paginatedProducts.length} of {filteredAndSortedProducts.length} items</p>
                             </div>
-                            <div className="flex items-center gap-6">
+                            <div className="hidden md:flex items-center gap-6">
                                 <div className="flex items-center space-x-2 text-[11px] font-black uppercase tracking-widest text-slate-400">
                                     <span>Layout</span>
                                     <div className="flex items-center bg-secondary-100 rounded-full p-1 dark:bg-white/5">
@@ -342,17 +373,19 @@ export default function ShopPage() {
                                         <option value="price-high">Price: High to Low</option>
                                         <option value="rating">Best Rating</option>
                                     </select>
-                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-3 w-3 text-secondary-400 pointer-events-none transition-transform group-hover:rotate-180" />
+                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-hover:text-primary-600 transition-all pointer-events-none" />
                                 </div>
                             </div>
                         </div>
 
-                        {filteredProducts.length > 0 ? (
+                        {paginatedProducts.length > 0 ? (
                             <div className={cn(
-                                "grid gap-x-8 gap-y-16",
-                                view === 'grid' ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+                                "grid gap-4 sm:gap-x-8 sm:gap-y-16",
+                                view === 'grid'
+                                    ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3"
+                                    : "grid-cols-1"
                             )}>
-                                {filteredProducts.map((product) => (
+                                {paginatedProducts.map((product) => (
                                     <ProductCard key={product._id} product={product} />
                                 ))}
                             </div>
@@ -363,13 +396,83 @@ export default function ShopPage() {
                             </div>
                         )}
 
-                        {/* Pagination Mock */}
-                        <div className="mt-16 flex items-center justify-center gap-2">
-                            <button className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all">{"<"}</button>
-                            <button className="h-10 w-10 flex items-center justify-center rounded-lg border bg-primary-600 border-primary-600 text-white font-bold">1</button>
-                            <button className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-primary-500 hover:text-primary-600 transition-all">2</button>
-                            <button className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-primary-500 hover:text-primary-600 transition-all">3</button>
-                            <button className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all">{">"}</button>
+                        {/* Functional Pagination - Responsive */}
+                        {totalPages > 1 && (
+                            <div className="mt-16">
+                                {/* Desktop/Tablet Pagination */}
+                                <div className="hidden sm:flex items-center justify-center gap-2">
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                        disabled={currentPage === 1}
+                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <ChevronDown className="h-4 w-4 rotate-90" />
+                                    </button>
+
+                                    <div className="flex items-center gap-2 overflow-x-auto max-w-full px-2 py-1 no-scrollbar">
+                                        {[...Array(totalPages)].map((_, i) => (
+                                            <button
+                                                key={i + 1}
+                                                onClick={() => setCurrentPage(i + 1)}
+                                                className={cn(
+                                                    "h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border transition-all font-bold",
+                                                    currentPage === i + 1
+                                                        ? "bg-primary-600 border-primary-600 text-white"
+                                                        : "border-slate-200 text-slate-600 hover:border-primary-500 hover:text-primary-600"
+                                                )}
+                                            >
+                                                {i + 1}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                                        disabled={currentPage === totalPages}
+                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <ChevronDown className="h-4 w-4 -rotate-90" />
+                                    </button>
+                                </div>
+
+                                {/* Mobile "Load More" Style Pagination */}
+                                <div className="flex sm:hidden flex-col items-center gap-4">
+                                    {currentPage < totalPages ? (
+                                        <Button
+                                            size="lg"
+                                            className="w-full rounded-xl bg-slate-900 text-white font-bold h-14 tracking-widest uppercase text-xs"
+                                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                                        >
+                                            Next Page
+                                        </Button>
+                                    ) : (
+                                        <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">End of Collections</p>
+                                    )}
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-xs font-bold text-slate-500">Page {currentPage} of {totalPages}</span>
+                                        {currentPage > 1 && (
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="rounded-lg h-8 text-[10px] font-black uppercase tracking-widest"
+                                                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                            >
+                                                Previous
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {/* Mobile Filter Section (Bottom) */}
+                        <div className="md:hidden mt-6 pt-12 border-t border-secondary-200/50">
+                            <h2 className="font-accent text-3xl font-bold text-slate-950 dark:text-white mb-8">Filter Products</h2>
+                            <FilterSidebar
+                                selectedCategories={selectedCategories}
+                                priceRange={priceRange}
+                                minRating={minRating}
+                                onFilterChange={handleFilterChange}
+                            />
                         </div>
                     </div>
                 </div>

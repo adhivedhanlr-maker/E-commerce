@@ -14,7 +14,7 @@ const deals = [
         discount: "25% OFF",
         price: 299.99,
         originalPrice: 399.99,
-        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800",
         tag: "Bestseller"
     },
     {
@@ -108,7 +108,7 @@ export default function DealsPage() {
                                 </div>
                                 <div className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
                                     <Image
-                                        src="https://images.unsplash.com/photo-1511499767010-a588b5b2f191?auto=format&fit=crop&q=80&w=800"
+                                        src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"
                                         alt="Optics Archive"
                                         fill
                                         className="object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-500"
@@ -134,7 +134,7 @@ export default function DealsPage() {
                                 </div>
                                 <div className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
                                     <Image
-                                        src="https://images.unsplash.com/photo-1510166089176-b57564a544b1?auto=format&fit=crop&q=80&w=800"
+                                        src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&q=80&w=800"
                                         alt="Tools Archive"
                                         fill
                                         className="object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-500"

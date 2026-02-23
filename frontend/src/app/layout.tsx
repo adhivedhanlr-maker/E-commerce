@@ -3,7 +3,9 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
+import BottomNav from "@/components/common/BottomNav";
 import PageTransition from "@/components/common/PageTransition";
+import { ThemeProvider } from "@/components/common/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
@@ -19,15 +21,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased selection:bg-primary-500/30 selection:text-white`}>
-        <Navbar />
-        <main className="min-h-screen pt-16">
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </main>
-        <Footer />
+        <ThemeProvider attribute="class" defaultTheme="light" themes={["light", "dark", "dim"]}>
+          <Navbar />
+          <main className="min-h-screen pt-16 pb-20 md:pb-0">
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </main>
+          <BottomNav />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

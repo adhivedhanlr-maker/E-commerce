@@ -9,3 +9,9 @@
 {"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T09:05:49.426Z"}
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-02-21T09:37:39.118Z"}
 {"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-21T09:38:09.001Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-23T04:42:08.845Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-23T04:42:38.848Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-23T05:25:37.437Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-23T05:26:07.404Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-23T05:38:04.973Z"}
+{"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-23T05:38:34.962Z"}

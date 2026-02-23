@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, ShoppingCart, User, Menu, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag } from 'lucide-react';
+import ThemeSwitcher from '@/components/common/ThemeSwitcher';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/store/useAuth';
@@ -48,9 +49,9 @@ const Navbar = () => {
                     : "py-6 bg-transparent"
             )}
         >
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-12">
-                {/* Logo Section */}
-                <div className="flex items-center">
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-12 relative">
+                {/* Logo Section - Left on Desktop, Centered on Mobile */}
+                <div className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0">
                     <Link href="/" className="group relative">
                         <span className="font-accent text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
                             Nexus<span className="text-primary-600 transition-colors group-hover:text-primary-700">Store</span>
@@ -59,7 +60,7 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Center Navigation - Minimalist & Editorial */}
+                {/* Hidden Navigation Links for Desktop */}
                 <div className="hidden lg:flex items-center space-x-12">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href;
@@ -124,10 +125,17 @@ const Navbar = () => {
                 </div>
 
                 {/* Right Utilities */}
-                <div className="flex items-center space-x-6">
-                    {/* Search Pill - Redesigned */}
-                    <div className="hidden md:flex items-center">
-                        <div className="group relative flex items-center bg-secondary-100 rounded-full h-10 px-4 transition-all hover:bg-secondary-200 dark:bg-white/5 dark:hover:bg-white/10">
+                <div className="flex items-center space-x-2 md:space-x-4">
+                    {/* Theme Switcher - Desktop only */}
+                    <div className="hidden lg:block">
+                        <ThemeSwitcher />
+                    </div>
+                    {/* Search - Expandable on Mobile */}
+                    <div className="flex items-center">
+                        <div className={cn(
+                            "group relative flex items-center bg-secondary-100 rounded-full h-10 px-4 transition-all hover:bg-secondary-200 dark:bg-white/5 dark:hover:bg-white/10",
+                            "hidden lg:flex" // Keep desktop behavior
+                        )}>
                             <Search className="h-4 w-4 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white" />
                             <input
                                 type="text"
@@ -135,10 +143,37 @@ const Navbar = () => {
                                 className="bg-transparent border-none focus:ring-0 text-[13px] ml-2 w-40 placeholder:text-slate-400 dark:text-white"
                             />
                         </div>
+
+                        {/* Mobile Search Button */}
+                        <div className="lg:hidden flex items-center">
+                            <AnimatePresence>
+                                {isSearchOpen && (
+                                    <motion.div
+                                        initial={{ width: 0, opacity: 0 }}
+                                        animate={{ width: "calc(100vw - 120px)", opacity: 1 }}
+                                        exit={{ width: 0, opacity: 0 }}
+                                        className="absolute right-24 bg-secondary-100 rounded-full h-10 px-4 flex items-center dark:bg-white/10"
+                                    >
+                                        <input
+                                            autoFocus
+                                            type="text"
+                                            placeholder="Search..."
+                                            className="bg-transparent border-none focus:ring-0 text-sm w-full dark:text-white"
+                                        />
+                                        <X className="h-4 w-4 text-slate-500 ml-2 cursor-pointer" onClick={() => setIsSearchOpen(false)} />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                            {!isSearchOpen && (
+                                <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="rounded-full">
+                                    <Search className="h-[20px] w-[20px] stroke-[1.5px]" />
+                                </Button>
+                            )}
+                        </div>
                     </div>
 
                     <div className="flex items-center space-x-1">
-                        <Link href="/wishlist">
+                        <Link href="/wishlist" className="hidden sm:block">
                             <Button variant="ghost" size="icon" className="group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all">
                                 <Heart className="h-[20px] w-[20px] stroke-[1.5px] group-hover:fill-primary-600 group-hover:stroke-primary-600" />
                             </Button>
@@ -156,95 +191,43 @@ const Navbar = () => {
                         </Link>
 
                         {hasMounted && user ? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <button className="flex items-center outline-none ml-2">
-                                        <div className="h-8 w-8 rounded-full border-2 border-secondary-200 p-0.5 overflow-hidden transition-all hover:border-primary-600 dark:border-white/10">
-                                            <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center text-[10px] text-white font-bold dark:bg-white dark:text-black">
-                                                {user.name.charAt(0)}
+                            <div className="hidden lg:block">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <button className="flex items-center outline-none ml-2">
+                                            <div className="h-8 w-8 rounded-full border-2 border-secondary-200 p-0.5 overflow-hidden transition-all hover:border-primary-600 dark:border-white/10">
+                                                <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center text-[10px] text-white font-bold dark:bg-white dark:text-black">
+                                                    {user.name.charAt(0)}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-premium border-secondary-200/50">
-                                    <DropdownMenuLabel className="font-accent">My Account</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem className="rounded-lg">
-                                        <User className="mr-2 h-4 w-4 stroke-[1.5px]" />
-                                        <span>Profile</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="rounded-lg">
-                                        <Settings className="mr-2 h-4 w-4 stroke-[1.5px]" />
-                                        <span>Settings</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={logout} className="text-red-500 focus:text-red-500 rounded-lg">
-                                        <LogOut className="mr-2 h-4 w-4 stroke-[1.5px]" />
-                                        <span>Logout</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                                        </button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-premium border-secondary-200/50">
+                                        <DropdownMenuLabel className="font-accent">My Account</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem className="rounded-lg">
+                                            <User className="mr-2 h-4 w-4 stroke-[1.5px]" />
+                                            <span>Profile</span>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="rounded-lg">
+                                            <Settings className="mr-2 h-4 w-4 stroke-[1.5px]" />
+                                            <span>Settings</span>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem onClick={logout} className="text-red-500 focus:text-red-500 rounded-lg">
+                                            <LogOut className="mr-2 h-4 w-4 stroke-[1.5px]" />
+                                            <span>Logout</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
                         ) : hasMounted ? (
-                            <Link href="/login" className="hidden md:block">
+                            <Link href="/login" className="hidden lg:block">
                                 <Button variant="ghost" className="text-[13px] font-bold uppercase tracking-[0.15em] ml-2">
                                     Login
                                 </Button>
                             </Link>
                         ) : null}
-
-                        {hasMounted && (
-                            <div className="lg:hidden">
-                                <Sheet>
-                                    <SheetTrigger asChild>
-                                        <Button variant="ghost" size="icon" className="rounded-full">
-                                            <Menu className="h-6 w-6 stroke-[1.5px]" />
-                                        </Button>
-                                    </SheetTrigger>
-                                    <SheetContent side="right" className="w-full sm:w-[400px]">
-                                        <SheetHeader>
-                                            <SheetTitle className="text-left font-accent text-2xl font-bold">Nexus<span className="text-primary-600">Store</span></SheetTitle>
-                                        </SheetHeader>
-                                        <div className="mt-12 space-y-8">
-                                            {navLinks.map((link) => {
-                                                const isActive = pathname === link.href;
-                                                return (
-                                                    <Link
-                                                        key={link.name}
-                                                        href={link.href}
-                                                        className={cn(
-                                                            "flex items-center space-x-4 text-2xl font-bold tracking-tight transition-colors",
-                                                            isActive ? "text-primary-600" : "hover:text-primary-600"
-                                                        )}
-                                                    >
-                                                        <link.icon className="h-6 w-6 text-primary-600" />
-                                                        <span>{link.name}</span>
-                                                    </Link>
-                                                );
-                                            })}
-                                            <Link
-                                                href="/shop"
-                                                className={cn(
-                                                    "flex items-center space-x-4 text-2xl font-bold tracking-tight transition-colors",
-                                                    pathname.startsWith('/shop') ? "text-primary-600" : "hover:text-primary-600"
-                                                )}
-                                            >
-                                                <ShoppingBag className="h-6 w-6 text-primary-600" />
-                                                <span>Shop All</span>
-                                            </Link>
-                                            <div className="pt-8 border-t space-y-6">
-                                                {user ? (
-                                                    <Button variant="ghost" onClick={logout} className="w-full justify-start text-red-500 p-0 text-xl font-bold">
-                                                        Logout
-                                                    </Button>
-                                                ) : (
-                                                    <Link href="/login" className="block text-xl font-bold">Login / Register</Link>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </SheetContent>
-                                </Sheet>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>

@@ -50,11 +50,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="group relative"
+            className="group relative h-full"
         >
-            <Link href={`/product/${product._id}`} className="block">
+            <Link href={`/product/${product._id}`} className="flex flex-col h-full">
                 {/* Image Container */}
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-secondary-100 dark:bg-white/5 shadow-sm transition-all duration-700 ease-in-out group-hover:shadow-premium">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-secondary-100 dark:bg-white/5 shadow-sm transition-all duration-700 ease-in-out group-hover:shadow-premium">
                     {/* Actions - Redesigned for persistent but subtle presence */}
                     <div className="absolute top-4 right-4 z-20 flex flex-col space-y-2 translate-x-1 opacity-60 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
                         <Button
@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             variant="secondary"
                             onClick={toggleWishlist}
                             className={cn(
-                                "h-10 w-10 rounded-full shadow-premium backdrop-blur-md transition-all hover:scale-110",
+                                "h-11 w-11 rounded-full shadow-premium backdrop-blur-md transition-all hover:scale-110",
                                 isWishlisted ? "bg-primary-600 text-white hover:bg-primary-700" : "bg-white/90 text-slate-900 hover:bg-white dark:bg-black/80 dark:text-white"
                             )}
                         >
@@ -112,7 +112,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 </div>
 
                 {/* Info Section */}
-                <div className="mt-6 space-y-2 px-1">
+                <div className="mt-4 flex flex-col flex-1 space-y-2 px-3 pb-4">
                     <div className="flex items-center justify-between">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">
                             {product.brand}
@@ -123,14 +123,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         </div>
                     </div>
 
-                    <h3 className="text-lg font-bold tracking-tight text-slate-950 transition-colors group-hover:text-primary-600 dark:text-white">
+                    <h3 className="text-sm font-bold tracking-tight text-slate-950 transition-colors group-hover:text-primary-600 dark:text-white line-clamp-2">
                         {product.name}
                     </h3>
 
-                    <div className="flex items-baseline space-x-3">
-                        <p className="text-xl font-black text-slate-950 dark:text-white">${product.price.toFixed(2)}</p>
+                    <div className="flex flex-col mt-auto pt-1">
+                        <p className="text-base font-black text-slate-950 dark:text-white">${product.price.toFixed(2)}</p>
                         {product.originalPrice > product.price && (
-                            <p className="text-sm text-slate-400 line-through font-medium">${product.originalPrice.toFixed(2)}</p>
+                            <p className="text-[11px] text-slate-400 line-through font-medium leading-none">${product.originalPrice.toFixed(2)}</p>
                         )}
                     </div>
                 </div>
