@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, cubicBezier } from 'framer-motion';
-import Hero from "@/components/home/Hero";
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -224,71 +223,94 @@ const item = {
 export default function Home() {
   return (
     <div className="flex flex-col bg-background gap-16 pt-12">
-      {/* Top Featured Card - Equinox Flash Event */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-        <div className="relative overflow-hidden rounded-[48px] bg-slate-950 px-8 py-20 lg:py-24 shadow-2xl border border-white/5">
-          {/* Abstract background */}
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-primary-600/10 blur-[100px]" />
+      {/* Top Bento Grid - Hero & Featured */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[700px]">
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Main Card: Equinox Flash Event (2/3 width, spans 2 rows) */}
+          <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
+            <div className="absolute top-0 right-0 w-full h-full bg-primary-600/10 blur-[100px]" />
+            <Image
+              src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
+              alt="Equinox Archival Product"
+              fill
+              priority
+              className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10"
             >
-              <span className="text-primary-600 text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">Limited Opportunity</span>
-              <h2 className="font-accent text-5xl md:text-7xl font-bold text-white leading-[1.1] mb-8">
+              <span className="text-secondary-400 text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">Limited Opportunity</span>
+              <h2 className="font-accent text-5xl md:text-7xl font-bold text-white leading-[0.9] mb-8">
                 The <span className="italic text-primary-600">Equinox</span> <br />
                 Flash Event
               </h2>
-              <p className="text-slate-500 text-lg mb-12 font-light max-w-md">The pinnacle of technical achievement and aesthetic purity. These aren&apos;t just tools; they are the artifacts of a life well-lived.</p>
 
-              <div className="grid grid-cols-4 gap-4 mb-12 max-w-xs">
-                {[
-                  { label: 'Days', value: '01' },
-                  { label: 'Hours', value: '12' },
-                  { label: 'Mins', value: '34' },
-                  { label: 'Secs', value: '59' },
-                ].map((t) => (
-                  <div key={t.label} className="text-center">
-                    <div className="text-3xl font-bold text-white mb-1">{t.value}</div>
-                    <div className="text-[8px] font-black uppercase tracking-widest text-slate-500">{t.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <Button asChild size="lg" className="rounded-full bg-white text-slate-950 hover:bg-slate-200 px-12 h-16 font-bold text-md">
-                <Link href="/deals">Enter Event</Link>
-              </Button>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-square w-full max-w-[440px] ml-auto"
-            >
-              <div className="absolute inset-0 bg-white/5 rounded-[40px] border border-white/10 overflow-hidden shadow-2xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
-                  alt="Equinox Archival Product"
-                  fill
-                  priority
-                  className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-1000"
-                />
-                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-primary-600 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-center justify-center p-12">
-                  <div className="text-center">
-                    <p className="font-accent text-white/10 text-8xl lg:text-9xl font-black italic select-none">NXS</p>
-                    <p className="text-white font-bold tracking-widest uppercase text-xs lg:text-sm -mt-8 lg:mt-[-3rem] backdrop-blur-sm">Archival Collection</p>
-                  </div>
+              <div className="flex flex-wrap items-end gap-12">
+                <div className="grid grid-cols-4 gap-4 max-w-xs">
+                  {[
+                    { label: 'Days', value: '01' },
+                    { label: 'Hours', value: '12' },
+                    { label: 'Mins', value: '34' },
+                    { label: 'Secs', value: '59' },
+                  ].map((t) => (
+                    <div key={t.label} className="text-center">
+                      <div className="text-2xl font-bold text-white mb-1">{t.value}</div>
+                      <div className="text-[7px] font-black uppercase tracking-widest text-slate-500">{t.label}</div>
+                    </div>
+                  ))}
                 </div>
+                <Button asChild size="lg" className="rounded-full bg-white text-slate-950 hover:bg-slate-200 px-8 h-14 font-bold text-sm">
+                  <Link href="/deals">Enter Event</Link>
+                </Button>
               </div>
             </motion.div>
           </div>
+
+          {/* Secondary Card: Brand Message (1x1) */}
+          <div className="relative overflow-hidden rounded-[40px] bg-secondary-100 p-8 flex flex-col justify-center dark:bg-white/5 border border-slate-200 dark:border-white/10">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+            >
+              <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-4">Nexus Standard</p>
+              <h3 className="font-accent text-3xl font-bold text-slate-950 dark:text-white leading-tight mb-4">
+                Refined <span className="italic font-light text-secondary-400 italic">Everyday</span> <br /> Essentials
+              </h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">Discovery of artisanal craftsmanship merged with contemporary innovation.</p>
+              <Link href="/about" className="text-xs font-black uppercase tracking-widest text-primary-600 flex items-center gap-2 hover:gap-3 transition-all">
+                The Philosophy <ArrowRight className="h-4 w-4" />
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Tertiary Card: High-Impact Visual (1x1) */}
+          <div className="relative overflow-hidden rounded-[40px] bg-slate-200 shadow-xl border border-white/10 group/card">
+            <Image
+              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800"
+              alt="Seasonal Edit"
+              fill
+              className="object-cover transition-transform duration-700 group-hover/card:scale-110"
+            />
+            <div className="absolute inset-0 bg-black/20 group-hover/card:bg-black/40 transition-colors" />
+            <div className="absolute inset-x-8 bottom-8 flex items-center justify-between">
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-white/70 mb-1">Archival Edit</p>
+                <h4 className="text-lg font-bold text-white uppercase tracking-tighter italic">Winter &apos;26</h4>
+              </div>
+              <Link href="/shop" className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-all">
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
-      <Hero />
 
       {/* Categories Grid - Visual Curation */}
       <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
