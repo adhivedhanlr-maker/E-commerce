@@ -19,27 +19,18 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(helmet());
-
-const allowedOrigins = [
-    'https://nexustore-nileshwar.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:5173'
-];
-
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: [
+        'https://nexustore-nileshwar.vercel.app',
+        'http://localhost:3000',
+        'http://localhost:5173'
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
 
+app.use(helmet());
 app.use(express.json());
 
 // Routes
