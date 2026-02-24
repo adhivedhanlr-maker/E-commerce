@@ -223,7 +223,73 @@ const item = {
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-background">
+    <div className="flex flex-col bg-background gap-12 pt-12">
+      {/* Top Featured Card - Equinox Flash Event */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="relative overflow-hidden rounded-[48px] bg-slate-950 px-8 py-20 lg:py-24 shadow-2xl border border-white/5">
+          {/* Abstract background */}
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-primary-600/10 blur-[100px]" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+            >
+              <span className="text-primary-600 text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">Limited Opportunity</span>
+              <h2 className="font-accent text-5xl md:text-7xl font-bold text-white leading-[1.1] mb-8">
+                The <span className="italic text-primary-600">Equinox</span> <br />
+                Flash Event
+              </h2>
+              <p className="text-slate-500 text-lg mb-12 font-light max-w-md">The pinnacle of technical achievement and aesthetic purity. These aren&apos;t just tools; they are the artifacts of a life well-lived.</p>
+
+              <div className="grid grid-cols-4 gap-4 mb-12 max-w-xs">
+                {[
+                  { label: 'Days', value: '01' },
+                  { label: 'Hours', value: '12' },
+                  { label: 'Mins', value: '34' },
+                  { label: 'Secs', value: '59' },
+                ].map((t) => (
+                  <div key={t.label} className="text-center">
+                    <div className="text-3xl font-bold text-white mb-1">{t.value}</div>
+                    <div className="text-[8px] font-black uppercase tracking-widest text-slate-500">{t.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <Button asChild size="lg" className="rounded-full bg-white text-slate-950 hover:bg-slate-200 px-12 h-16 font-bold text-md">
+                <Link href="/deals">Enter Event</Link>
+              </Button>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2 }}
+              className="relative aspect-square max-w-md mx-auto lg:mr-0"
+            >
+              <div className="absolute inset-0 bg-white/5 rounded-[40px] border border-white/10 overflow-hidden shadow-2xl">
+                <Image
+                  src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
+                  alt="Equinox Archival Product"
+                  fill
+                  className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-1000"
+                />
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-primary-600 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-center justify-center p-12">
+                  <div className="text-center">
+                    <p className="font-accent text-white/10 text-9xl font-black italic select-none">NXS</p>
+                    <p className="text-white font-bold tracking-widest uppercase text-sm -mt-12 backdrop-blur-sm">Archival Collection</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       <Hero />
 
       {/* Categories Grid - Visual Curation */}
@@ -340,71 +406,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Editorial Flash Sale / Promotion */}
-      <section className="py-24 lg:py-32 bg-slate-950 relative overflow-hidden">
-        {/* Abstract background */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-primary-600/10 blur-[100px]" />
-
-        <div className="mx-auto max-w-7xl px-6 lg:px-12 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-            >
-              <span className="text-primary-600 text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">Limited Opportunity</span>
-              <h2 className="font-accent text-5xl md:text-7xl font-bold text-white leading-[1.1] mb-8">
-                The <span className="italic text-primary-600">Equinox</span> <br />
-                Flash Event
-              </h2>
-              <p className="text-slate-500 text-lg max-w-2xl mx-auto mb-16 font-light">The pinnacle of technical achievement and aesthetic purity. These aren&apos;t just tools; they are the artifacts of a life well-lived.</p>
-
-              <div className="grid grid-cols-4 gap-4 mb-12">
-                {[
-                  { label: 'Days', value: '01' },
-                  { label: 'Hours', value: '12' },
-                  { label: 'Mins', value: '34' },
-                  { label: 'Secs', value: '59' },
-                ].map((t) => (
-                  <div key={t.label} className="text-center">
-                    <div className="text-4xl font-bold text-white mb-1">{t.value}</div>
-                    <div className="text-[8px] font-black uppercase tracking-widest text-slate-500">{t.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <Button asChild size="lg" className="rounded-full bg-white text-slate-950 hover:bg-slate-200 px-12 h-16 font-bold text-md">
-                <Link href="/deals">Enter Event</Link>
-              </Button>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2 }}
-              className="relative aspect-square"
-            >
-              <div className="absolute inset-0 bg-white/5 rounded-[40px] border border-white/10 overflow-hidden shadow-2xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
-                  alt="Equinox Archival Product"
-                  fill
-                  className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-1000"
-                />
-                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-primary-600 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-center justify-center p-12">
-                  <div className="text-center">
-                    <p className="font-accent text-white/10 text-9xl font-black italic select-none">NXS</p>
-                    <p className="text-white font-bold tracking-widest uppercase text-sm -mt-12 backdrop-blur-sm">Archival Collection</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Journal / Blog Section */}
       <section className="py-24 lg:py-32 bg-white dark:bg-slate-950">
