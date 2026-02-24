@@ -18,8 +18,11 @@ const BottomNav = () => {
     const pathname = usePathname();
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-[1000] h-[65px] bg-white dark:bg-slate-900 border-t border-secondary-100 dark:border-white/5 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] md:hidden">
-            <div className="flex justify-around items-center h-full px-2">
+        <nav className={cn(
+            "fixed bottom-6 left-6 right-6 z-[1000] h-[65px] md:hidden",
+            "rounded-full border border-white/10 shadow-premium liquid-glass"
+        )}>
+            <div className="flex justify-around items-center h-full px-4">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;
                     const Icon = item.icon;
@@ -29,14 +32,14 @@ const BottomNav = () => {
                             key={item.label}
                             href={item.href}
                             className={cn(
-                                "flex flex-col items-center justify-center space-y-1 min-w-[64px] transition-colors",
+                                "flex flex-col items-center justify-center space-y-1 min-w-[56px] transition-all duration-300",
                                 isActive
-                                    ? "text-primary-600"
+                                    ? "text-primary-600 scale-110 drop-shadow-[0_0_8px_rgba(50,118,66,0.3)]"
                                     : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
                             )}
                         >
-                            <Icon size={20} className={cn("transition-transform", isActive && "scale-110")} />
-                            <span className="text-[10px] font-bold uppercase tracking-widest">{item.label}</span>
+                            <Icon size={20} className={cn("transition-transform", isActive ? "stroke-[2.5px]" : "stroke-[1.5px]")} />
+                            <span className="text-[9px] font-black uppercase tracking-widest">{item.label}</span>
                         </Link>
                     );
                 })}
