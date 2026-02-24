@@ -256,12 +256,13 @@ const products = [
 
 export default function ShopPage() {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const catParam = searchParams.get('cat');
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [prevCatParam, setPrevCatParam] = useState<string | null>(catParam);
 
-    useEffect(() => {
+    if (catParam !== prevCatParam) {
+        setPrevCatParam(catParam);
         if (catParam) {
             const mapping: Record<string, string> = {
                 'electronics': 'Electronics',
@@ -272,8 +273,10 @@ export default function ShopPage() {
             if (category) {
                 setSelectedCategories([category]);
             }
+        } else {
+            setSelectedCategories([]);
         }
-    }, [catParam]);
+    }
 
 
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000]);
