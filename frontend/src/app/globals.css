@@ -212,18 +212,9 @@ html.dim {
   --saturation: 200%;
 }
 
-/* SVG filter wrapper Î“Ã‡Ã¶ hidden, zero-size */
-.switcher-filter-wrap {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  z-index: -1;
-}
 
-/* Main pill container utility and theme switcher base */
-.liquid-glass,
-.theme-switcher:not(.no-glass) {
+/* Main pill container utility */
+.liquid-glass {
   background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
   backdrop-filter: blur(8px) saturate(var(--saturation));
   -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
