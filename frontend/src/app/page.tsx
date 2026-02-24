@@ -1,5 +1,6 @@
 'use client';
 
+import { motion, cubicBezier } from 'framer-motion';
 import Hero from "@/components/home/Hero";
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -287,6 +288,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Hero />
 
       {/* Categories Grid - Visual Curation */}
       <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
