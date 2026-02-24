@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import FilterSidebar from '@/components/shop/FilterSidebar';
 import ProductCard from '@/components/product/ProductCard';
 import { Grid, List, ChevronDown } from 'lucide-react';
@@ -62,7 +63,7 @@ const products = [
         rating: 4.9,
         images: ["https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=800"],
         brand: "Heritage Home",
-        category: "Furniture"
+        category: "Home & Living"
     },
     {
         _id: "6",
@@ -73,7 +74,7 @@ const products = [
         rating: 4.8,
         images: ["https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&q=80&w=800"],
         brand: "Heritage Home",
-        category: "Furniture"
+        category: "Home & Living"
     },
     {
         _id: "7",
@@ -84,7 +85,7 @@ const products = [
         rating: 4.6,
         images: ["https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=800"],
         brand: "Lumina Design",
-        category: "Furniture"
+        category: "Home & Living"
     },
     {
         _id: "8",
@@ -95,7 +96,7 @@ const products = [
         rating: 4.9,
         images: ["https://images.unsplash.com/photo-1551488831-00ddcb6c6ec3?auto=format&fit=crop&q=80&w=800"],
         brand: "Apex Outdoor",
-        category: "Apparel"
+        category: "Fashion"
     },
     {
         _id: "9",
@@ -106,7 +107,7 @@ const products = [
         rating: 4.7,
         images: ["https://images.unsplash.com/photo-1614676471928-2ed0ad1061a4?auto=format&fit=crop&q=80&w=800"],
         brand: "Apex Outdoor",
-        category: "Apparel"
+        category: "Fashion"
     },
     {
         _id: "10",
@@ -172,7 +173,7 @@ const products = [
         rating: 4.9,
         images: ["https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=800"],
         brand: "Heritage Home",
-        category: "Furniture"
+        category: "Home & Living"
     },
     {
         _id: "16",
@@ -183,7 +184,7 @@ const products = [
         rating: 4.7,
         images: ["https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=800"],
         brand: "Heritage Home",
-        category: "Furniture"
+        category: "Home & Living"
     },
     {
         _id: "17",
@@ -194,7 +195,7 @@ const products = [
         rating: 4.6,
         images: ["https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800"],
         brand: "Heritage Home",
-        category: "Furniture"
+        category: "Home & Living"
     },
     {
         _id: "18",
@@ -205,7 +206,7 @@ const products = [
         rating: 5.0,
         images: ["https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&q=80&w=800"],
         brand: "Apex Outdoor",
-        category: "Apparel"
+        category: "Fashion"
     },
     {
         _id: "19",
@@ -216,7 +217,7 @@ const products = [
         rating: 4.4,
         images: ["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&q=80&w=800"],
         brand: "Apex Outdoor",
-        category: "Apparel"
+        category: "Fashion"
     },
     {
         _id: "20",
@@ -249,12 +250,32 @@ const products = [
         rating: 4.7,
         images: ["https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"],
         brand: "Visionary",
-        category: "Apparel"
+        category: "Fashion"
     }
 ];
 
 export default function ShopPage() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const catParam = searchParams.get('cat');
+
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (catParam) {
+            const mapping: Record<string, string> = {
+                'electronics': 'Electronics',
+                'fashion': 'Fashion',
+                'home': 'Home & Living'
+            };
+            const category = mapping[catParam.toLowerCase()];
+            if (category) {
+                setSelectedCategories([category]);
+            }
+        }
+    }, [catParam]);
+
+
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000]);
     const [minRating, setMinRating] = useState<number>(0);
     const [view, setView] = useState<'grid' | 'list'>('grid');
