@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, ShoppingCart, User, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag, Menu } from 'lucide-react';
-import ThemeSwitcher from '@/components/common/ThemeSwitcher';
+
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/store/useAuth';
@@ -173,15 +173,7 @@ const Navbar = () => {
 
                 {/* Right Utilities */}
                 <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
-                    {/* Theme Switcher - Mixed layout: icon on mobile, full on desktop */}
-                    <div className="theme-toggle">
-                        <div className="lg:hidden">
-                            <ThemeSwitcher variant="icon" />
-                        </div>
-                        <div className="hidden lg:block">
-                            <ThemeSwitcher />
-                        </div>
-                    </div>
+
                     {/* Search - Expandable on Mobile */}
                     <div className="flex items-center">
                         <div className={cn(
