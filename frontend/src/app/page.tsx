@@ -302,7 +302,7 @@ export default function Home() {
             <div className="absolute inset-x-8 bottom-8 flex items-center justify-between">
               <div>
                 <p className="text-[9px] font-black uppercase tracking-widest text-white/70 mb-1">Archival Edit</p>
-                <h4 className="text-lg font-bold text-white uppercase tracking-tighter italic">Winter '26</h4>
+                <h4 className="text-lg font-bold text-white uppercase tracking-tighter italic">Winter &apos;26</h4>
               </div>
               <Link href="/shop" className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-all">
                 <ArrowRight className="h-5 w-5" />
