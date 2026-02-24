@@ -9,15 +9,24 @@ interface User {
     accessToken: string;
 }
 
+const DEMO_USER: User = {
+    _id: "demo-user-id",
+    name: "Demo Developer",
+    email: "dev@example.com",
+    role: "admin",
+    accessToken: "demo-access-token"
+};
+
 interface AuthStore {
     user: User | null;
     setUser: (user: User | null) => void;
     logout: () => void;
+    loginAsDev: () => void;
 }
 
 export const useAuth = create<AuthStore>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             user: null,
             setUser: (user) => {
                 if (user) {
@@ -31,9 +40,23 @@ export const useAuth = create<AuthStore>()(
                 localStorage.removeItem('accessToken');
                 set({ user: null });
             },
+            loginAsDev: () => {
+                set({ user: DEMO_USER });
+                localStorage.setItem('accessToken', DEMO_USER.accessToken);
+            },
         }),
         {
             name: 'auth-storage',
+            onRehydrateStorage: () => (state) => {
+                // Auto-login in development if no user is found after rehydration
+                if (
+                    process.env.NODE_ENV === 'development' &&
+                    state &&
+                    !state.user
+                ) {
+                    state.loginAsDev();
+                }
+            }
         }
     )
 );
