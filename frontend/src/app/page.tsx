@@ -326,7 +326,7 @@ export default function Home() {
               <Link
                 key={category.name}
                 href={category.link}
-                className={`group relative overflow-hidden rounded-[40px] bg-slate-200 ${idx === 0 ? 'md:col-span-2 md:row-span-1' :
+                className={`group relative overflow-hidden rounded-[40px] bg-slate-200 min-h-[400px] md:min-h-0 ${idx === 0 ? 'md:col-span-2 md:row-span-1' :
                     idx === 1 ? 'md:col-span-1 md:row-span-2' :
                       'md:col-span-1'
                   }`}
