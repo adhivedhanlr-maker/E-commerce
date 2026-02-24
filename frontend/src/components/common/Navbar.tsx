@@ -151,18 +151,30 @@ const Navbar = () => {
                                 <div className="grid grid-cols-2 gap-8">
                                     <div className="space-y-4">
                                         <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Categories</p>
-                                        <div className="space-y-2 flex flex-col">
-                                            <Link href="/shop?cat=electronics" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400">Electronics</Link>
-                                            <Link href="/shop?cat=fashion" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400">Fashion</Link>
-                                            <Link href="/shop?cat=home" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400">Home & Living</Link>
+                                        <div className="space-y-1 flex flex-col">
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/shop?cat=electronics" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Electronics</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/shop?cat=fashion" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Fashion</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/shop?cat=home" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Home & Living</Link>
+                                            </DropdownMenuItem>
                                         </div>
                                     </div>
                                     <div className="space-y-4">
                                         <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Featured</p>
-                                        <div className="space-y-2 flex flex-col">
-                                            <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400">New Arrivals</Link>
-                                            <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400">Bestsellers</Link>
-                                            <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400">Summer Sale</Link>
+                                        <div className="space-y-1 flex flex-col">
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">New Arrivals</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Bestsellers</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Summer Sale</Link>
+                                            </DropdownMenuItem>
                                         </div>
                                     </div>
                                 </div>
