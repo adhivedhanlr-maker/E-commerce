@@ -28,7 +28,7 @@ const THEMES = [
     { value: 'dim', label: 'Dim', cOption: '3', Icon: DimIcon },
 ];
 
-export default function ThemeSwitcher() {
+export default function ThemeSwitcher({ variant = 'full' }: { variant?: 'full' | 'icon' }) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [prevOption, setPrevOption] = useState<string>('1');
@@ -52,7 +52,29 @@ export default function ThemeSwitcher() {
     };
 
     if (!mounted) {
-        return <div className="switcher-skeleton" />;
+        return <div className={variant === 'icon' ? "h-10 w-10 rounded-full bg-secondary-100 animate-pulse dark:bg-white/5" : "switcher-skeleton"} />;
+    }
+
+    if (variant === 'icon') {
+        const currentThemeObj = THEMES.find(t => t.value === theme) || THEMES[0];
+        const Icon = currentThemeObj.Icon;
+
+        return (
+            <button
+                onClick={() => {
+                    const currentIndex = THEMES.findIndex(t => t.value === theme);
+                    const nextIndex = (currentIndex + 1) % THEMES.length;
+                    handleChange(THEMES[nextIndex].value);
+                }}
+                className="group flex items-center justify-center h-10 w-10 rounded-full bg-secondary-100 hover:bg-secondary-200 dark:bg-white/5 dark:hover:bg-white/10 transition-all duration-300"
+                aria-label={`Current theme: ${currentThemeObj.label}. Click to cycle.`}
+                style={{ '--c': 'currentColor' } as React.CSSProperties}
+            >
+                <div className="h-6 w-6 text-slate-600 group-hover:text-primary-600 dark:text-slate-400 dark:group-hover:text-white transition-colors">
+                    <Icon />
+                </div>
+            </button>
+        );
     }
 
     const currentOption = THEMES.find(t => t.value === theme)?.cOption ?? '1';

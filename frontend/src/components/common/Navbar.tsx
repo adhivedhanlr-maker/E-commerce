@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingCart, User, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag } from 'lucide-react';
+import { Search, ShoppingCart, User, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag, Menu } from 'lucide-react';
 import ThemeSwitcher from '@/components/common/ThemeSwitcher';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -11,6 +11,7 @@ import { useAuth } from '@/store/useAuth';
 import { useCart } from '@/store/useCart';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Badge } from '@/components/ui/badge';
 
@@ -50,10 +51,56 @@ const Navbar = () => {
             )}
         >
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-12 relative">
-                {/* Logo Section - Left on Desktop, Centered on Mobile */}
+                {/* Mobile Hamburger Menu - Left on Mobile */}
+                <div className="lg:hidden">
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon-lg" className="group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all">
+                                <Menu className="h-[24px] w-[24px]" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-[300px] p-0 border-r-0 bg-white dark:bg-slate-900 shadow-2xl">
+                            <SheetHeader className="p-6 border-b border-secondary-100 dark:border-white/5">
+                                <SheetTitle className="text-left font-accent text-xl font-bold tracking-tight text-slate-950 dark:text-white">
+                                    Nexus<span className="text-primary-600">Store</span>
+                                </SheetTitle>
+                            </SheetHeader>
+                            <div className="flex flex-col py-6">
+                                {navLinks.map((link) => {
+                                    const isActive = pathname === link.href;
+                                    return (
+                                        <Link
+                                            key={link.name}
+                                            href={link.href}
+                                            className={cn(
+                                                "flex items-center space-x-4 px-6 py-4 text-sm font-bold uppercase tracking-[0.1em] transition-all",
+                                                isActive
+                                                    ? "bg-primary-50 text-primary-600 dark:bg-primary-600/10"
+                                                    : "text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white"
+                                            )}
+                                        >
+                                            <link.icon className={cn("h-5 w-5", isActive ? "text-primary-600" : "text-slate-400")} />
+                                            <span>{link.name}</span>
+                                        </Link>
+                                    );
+                                })}
+                                <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">Categories</p>
+                                    <div className="space-y-4">
+                                        <Link href="/shop?cat=electronics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Electronics</Link>
+                                        <Link href="/shop?cat=fashion" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Fashion</Link>
+                                        <Link href="/shop?cat=home" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Home & Living</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                </div>
+
+                {/* Logo Section - Centered on Mobile, Left on Desktop */}
                 <div className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0">
                     <Link href="/" className="group relative">
-                        <span className="font-accent text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
+                        <span className="font-accent text-xl lg:text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
                             Nexus<span className="text-primary-600 transition-colors group-hover:text-primary-700">Store</span>
                         </span>
                         <div className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary-600 transition-all duration-300 group-hover:w-full" />
@@ -125,10 +172,15 @@ const Navbar = () => {
                 </div>
 
                 {/* Right Utilities */}
-                <div className="flex items-center space-x-2 md:space-x-4">
-                    {/* Theme Switcher - Desktop only */}
-                    <div className="hidden lg:block">
-                        <ThemeSwitcher />
+                <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
+                    {/* Theme Switcher - Mixed layout: icon on mobile, full on desktop */}
+                    <div className="theme-toggle">
+                        <div className="lg:hidden">
+                            <ThemeSwitcher variant="icon" />
+                        </div>
+                        <div className="hidden lg:block">
+                            <ThemeSwitcher />
+                        </div>
                     </div>
                     {/* Search - Expandable on Mobile */}
                     <div className="flex items-center">
@@ -165,7 +217,7 @@ const Navbar = () => {
                                 )}
                             </AnimatePresence>
                             {!isSearchOpen && (
-                                <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="rounded-full">
+                                <Button variant="ghost" size="icon-lg" onClick={() => setIsSearchOpen(true)} className="rounded-full">
                                     <Search className="h-[20px] w-[20px] stroke-[1.5px]" />
                                 </Button>
                             )}
@@ -180,7 +232,7 @@ const Navbar = () => {
                         </Link>
 
                         <Link href="/cart">
-                            <Button variant="ghost" size="icon" className="relative group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all">
+                            <Button variant="ghost" size="icon-lg" className="relative group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all">
                                 <ShoppingCart className="h-[20px] w-[20px] stroke-[1.5px]" />
                                 {hasMounted && cartCount > 0 && (
                                     <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary-600 text-[10px] font-bold text-white">

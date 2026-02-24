@@ -176,6 +176,14 @@
    Liquid Glass Theme Switcher
    ============================================= */
 
+.theme-toggle {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+
 /* Glass CSS variables — default (light) */
 :root {
   --c-glass: #bbbbbc;
