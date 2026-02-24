@@ -6,6 +6,7 @@ import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const featuredProducts = [
   {
@@ -102,6 +103,8 @@ const newArrivals = [
     _id: "13",
     name: "Zenith Keyboard",
     price: 159.99,
+    originalPrice: 159.99,
+    discountPercentage: 0,
     rating: 4.9,
     images: ["https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=800"],
     brand: "KeyClick",
@@ -110,6 +113,8 @@ const newArrivals = [
     _id: "15",
     name: "Velvet Cloud Sofa",
     price: 1800.00,
+    originalPrice: 2200.00,
+    discountPercentage: 18,
     rating: 4.9,
     images: ["https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=800"],
     brand: "Heritage Home",
@@ -118,6 +123,8 @@ const newArrivals = [
     _id: "22",
     name: "Aerospace Aviators",
     price: 155.00,
+    originalPrice: 195.00,
+    discountPercentage: 20,
     rating: 4.7,
     images: ["https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"],
     brand: "Visionary",
@@ -126,6 +133,8 @@ const newArrivals = [
     _id: "20",
     name: "Nomad Canvas Backpack",
     price: 185.00,
+    originalPrice: 210.00,
+    discountPercentage: 12,
     rating: 4.5,
     images: ["https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=800"],
     brand: "Metro Craft",
@@ -147,6 +156,8 @@ const trendingProducts = [
     _id: "9",
     name: "Merino Precision Knit",
     price: 180.00,
+    originalPrice: 180.00,
+    discountPercentage: 0,
     rating: 4.7,
     images: ["https://images.unsplash.com/photo-1614676471928-2ed0ad1061a4?auto=format&fit=crop&q=80&w=800"],
     brand: "Apex Outdoor",
@@ -155,6 +166,8 @@ const trendingProducts = [
     _id: "14",
     name: "SlimBook Ultra 14",
     price: 899.99,
+    originalPrice: 999.99,
+    discountPercentage: 10,
     rating: 4.6,
     images: ["https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=800"],
     brand: "SlimBook",
@@ -163,6 +176,8 @@ const trendingProducts = [
     _id: "16",
     name: "Onyx Coffee Table",
     price: 650.00,
+    originalPrice: 750.00,
+    discountPercentage: 13,
     rating: 4.7,
     images: ["https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=800"],
     brand: "Heritage Home",
@@ -223,9 +238,10 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
               <Link key={category.name} href={category.link} className="group relative aspect-[4/5] overflow-hidden rounded-[32px] bg-slate-200">
-                <img
+                <Image
                   src={category.image}
                   alt={category.name}
+                  fill
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
@@ -401,9 +417,10 @@ export default function Home() {
             {journalPosts.map((post) => (
               <article key={post.title} className="group cursor-pointer">
                 <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-slate-100 mb-6 font-primary">
-                  <img
+                  <Image
                     src={post.image}
                     alt={post.title}
+                    fill
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
