@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import React, { useState, useMemo, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import FilterSidebar from '@/components/shop/FilterSidebar';
 import ProductCard from '@/components/product/ProductCard';
 import { Grid, List, ChevronDown } from 'lucide-react';
@@ -254,7 +254,7 @@ const products = [
     }
 ];
 
-export default function ShopPage() {
+function ShopContent() {
     const searchParams = useSearchParams();
     const catParam = searchParams.get('cat');
 
@@ -502,5 +502,17 @@ export default function ShopPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ShopPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-slate-900">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+            </div>
+        }>
+            <ShopContent />
+        </Suspense>
     );
 }
