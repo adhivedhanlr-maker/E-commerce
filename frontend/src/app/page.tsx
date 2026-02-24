@@ -384,13 +384,21 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2 }}
-              className="relative"
+              className="relative aspect-square"
             >
-              <div className="aspect-square bg-white/5 rounded-[40px] border border-white/10 flex items-center justify-center p-12 overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-white/5 rounded-[40px] border border-white/10 overflow-hidden shadow-2xl">
+                <Image
+                  src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
+                  alt="Equinox Archival Product"
+                  fill
+                  className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-1000"
+                />
                 <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-primary-600 to-transparent" />
-                <div className="text-center">
-                  <p className="font-accent text-white/10 text-9xl font-black italic select-none">NXS</p>
-                  <p className="text-white font-bold tracking-widest uppercase text-sm -mt-12 backdrop-blur-sm">Archival Collection</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-center justify-center p-12">
+                  <div className="text-center">
+                    <p className="font-accent text-white/10 text-9xl font-black italic select-none">NXS</p>
+                    <p className="text-white font-bold tracking-widest uppercase text-sm -mt-12 backdrop-blur-sm">Archival Collection</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
