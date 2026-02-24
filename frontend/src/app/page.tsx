@@ -321,9 +321,9 @@ export default function Home() {
             </h2>
             <p className="text-slate-500 max-w-2xl mx-auto">Explore our range of meticulously selected items across different archetypes of modern living.</p>
           </div>
-          <div className="flex flex-nowrap lg:flex-wrap gap-6 overflow-x-auto pb-8 lg:pb-0 lg:overflow-visible no-scrollbar">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
-              <Link key={category.name} href={category.link} className="group relative min-w-[280px] lg:min-w-0 lg:flex-1 aspect-[4/5] overflow-hidden rounded-[32px] bg-slate-200 flex-shrink-0">
+              <Link key={category.name} href={category.link} className="group relative aspect-[4/5] overflow-hidden rounded-[32px] bg-slate-200">
                 <Image
                   src={category.image}
                   alt={category.name}
@@ -441,10 +441,10 @@ export default function Home() {
               View All Posts
             </Link>
           </div>
-          <div className="space-y-12 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {journalPosts.map((post) => (
-              <article key={post.title} className="group cursor-pointer flex flex-col md:flex-row gap-8 items-center bg-slate-50 dark:bg-white/5 p-8 rounded-[40px] hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
-                <div className="relative w-full md:w-1/3 aspect-[16/10] overflow-hidden rounded-3xl bg-slate-100 font-primary flex-shrink-0">
+              <article key={post.title} className="group cursor-pointer">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-slate-100 mb-6 font-primary">
                   <Image
                     src={post.image}
                     alt={post.title}
@@ -452,10 +452,10 @@ export default function Home() {
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
-                <div className="flex-1 space-y-3">
+                <div className="space-y-3">
                   <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">{post.date}</p>
-                  <h3 className="text-2xl md:text-3xl font-bold text-slate-950 dark:text-white group-hover:text-primary-600 transition-colors uppercase tracking-tight">{post.title}</h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed line-clamp-2">{post.excerpt}</p>
+                  <h3 className="text-2xl font-bold text-slate-950 dark:text-white group-hover:text-primary-600 transition-colors uppercase tracking-tight">{post.title}</h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
                 </div>
               </article>
             ))}
