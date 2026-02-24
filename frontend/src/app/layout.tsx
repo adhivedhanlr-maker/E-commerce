@@ -32,14 +32,6 @@ export default function RootLayout({
           </main>
           <BottomNav />
           <Footer />
-
-          {/* Global SVG filter for Liquid Glass Distortion */}
-          <svg style={{ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' }} aria-hidden="true">
-            <filter id="liquid-glass-filter" primitiveUnits="objectBoundingBox">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="0.02" result="blur" />
-              <feDisplacementMap in="blur" in2="SourceGraphic" scale="0.1" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-          </svg>
         </ThemeProvider>
       </body>
     </html>

@@ -81,6 +81,16 @@ export default function ThemeSwitcher({ variant = 'full' }: { variant?: 'full' |
 
     return (
         <>
+            {/* Hidden SVG filter */}
+            <div className="switcher-filter-wrap">
+                <svg>
+                    <filter id="switcher-filter" primitiveUnits="objectBoundingBox">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="0.04" result="blur" />
+                        <feDisplacementMap in="blur" in2="SourceGraphic" scale="0.5" xChannelSelector="R" yChannelSelector="G" />
+                    </filter>
+                </svg>
+            </div>
+
             <fieldset
                 ref={switcherRef}
                 className={`theme-switcher theme-switcher--opt${currentOption}`}
