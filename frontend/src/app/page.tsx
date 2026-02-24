@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 const featuredProducts = [
   {
@@ -327,8 +328,8 @@ export default function Home() {
                 key={category.name}
                 href={category.link}
                 className={`group relative overflow-hidden rounded-[40px] bg-slate-200 min-h-[400px] md:min-h-0 ${idx === 0 ? 'md:col-span-2 md:row-span-1' :
-                    idx === 1 ? 'md:col-span-1 md:row-span-2' :
-                      'md:col-span-1'
+                  idx === 1 ? 'md:col-span-1 md:row-span-2' :
+                    'md:col-span-1'
                   }`}
               >
                 <Image
@@ -394,11 +395,26 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-x-8 sm:gap-y-16"
+            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-y-12"
           >
-            {featuredProducts.map((product) => (
-              <motion.div key={product._id} variants={item}>
-                <ProductCard product={product} />
+            {featuredProducts.map((product, idx) => (
+              <motion.div
+                key={product._id}
+                variants={item}
+                className={cn(
+                  idx === 0 ? "md:col-span-2 md:row-span-2" :
+                    idx === 1 ? "md:col-span-2" :
+                      "md:col-span-1"
+                )}
+              >
+                <ProductCard
+                  product={product}
+                  aspectRatio={
+                    idx === 0 ? "aspect-square md:aspect-auto md:h-[calc(100%-80px)]" :
+                      idx === 1 ? "aspect-video md:aspect-auto md:h-[240px]" :
+                        "aspect-[4/5]"
+                  }
+                />
               </motion.div>
             ))}
           </motion.div>

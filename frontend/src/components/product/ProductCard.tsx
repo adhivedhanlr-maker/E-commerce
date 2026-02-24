@@ -21,9 +21,10 @@ interface ProductCardProps {
         images: string[];
         brand: string;
     };
+    aspectRatio?: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspect-[4/5]" }) => {
     const { addItem: addToCart } = useCart();
     const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
 
@@ -54,7 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
             <Link href={`/product/${product._id}`} className="flex flex-col h-full">
                 {/* Image Container */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-secondary-100 dark:bg-white/5 shadow-sm transition-all duration-700 ease-in-out group-hover:shadow-premium">
+                <div className={cn("relative overflow-hidden rounded-2xl bg-secondary-100 dark:bg-white/5 shadow-sm transition-all duration-700 ease-in-out group-hover:shadow-premium", aspectRatio)}>
                     {/* Actions - Redesigned for persistent but subtle presence */}
                     <div className="absolute top-4 right-4 z-20 flex flex-col space-y-2 translate-x-1 opacity-60 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
                         <Button
