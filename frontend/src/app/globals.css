@@ -450,7 +450,7 @@ html.dim {
    Universal Glass Button Effect
    ============================================= */
 
-@utility glass-button {
+@utility .glass-button {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow:
