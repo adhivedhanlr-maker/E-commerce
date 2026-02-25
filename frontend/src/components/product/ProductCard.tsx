@@ -113,7 +113,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspec
                 </div>
 
                 {/* Info Section */}
-                <div className="mt-4 flex flex-col flex-1 space-y-2 px-3 pb-4">
+                <div className="mt-3 flex flex-col flex-1 space-y-1 px-2 pb-3">
                     <div className="flex items-center justify-between">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">
                             {product.brand}

@@ -418,7 +418,7 @@ function ShopContent() {
 
                         {paginatedProducts.length > 0 ? (
                             <div className={cn(
-                                "grid gap-4 sm:gap-x-8 sm:gap-y-16",
+                                "grid gap-4 sm:gap-x-8 sm:gap-y-8",
                                 view === 'grid'
                                     ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3"
                                     : "grid-cols-1"

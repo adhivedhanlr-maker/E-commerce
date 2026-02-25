@@ -224,7 +224,7 @@ const item = {
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-background gap-16">
+    <div className="flex flex-col bg-background gap-12">
       {/* Top Bento Grid - Hero & Featured */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
         <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[700px]">
@@ -363,14 +363,14 @@ export default function Home() {
       </section>
 
       {/* Featured Products Section - Editorial Style */}
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8"
+            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8"
           >
             <div className="max-w-xl">
               <div className="flex items-center space-x-2 text-primary-600 mb-4">
@@ -396,7 +396,7 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-y-12"
+            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-y-8"
           >
             {featuredProducts.map((product, idx) => (
               <motion.div
@@ -423,7 +423,7 @@ export default function Home() {
       </section>
 
       {/* New Arrivals Section - Minimalist Grid */}
-      <section className="py-24 lg:py-32 bg-white dark:bg-slate-950">
+      <section className="py-16 lg:py-20 bg-white dark:bg-slate-950">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-16 gap-8">
             <div>
@@ -443,7 +443,7 @@ export default function Home() {
       </section>
 
       {/* Trending Now Section */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
+      <section className="py-16 bg-slate-50 dark:bg-slate-900/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-16 gap-8">
             <div>
