@@ -15,8 +15,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { getProducts } from '@/services/productService';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Badge } from '@/components/ui/badge';
+
+interface SuggestionProduct {
+    _id: string;
+    name: string;
+    price: number;
+    images: string[];
+}
 
 const Navbar = () => {
     const [hasMounted, setHasMounted] = useState(false);
@@ -29,13 +34,12 @@ const Navbar = () => {
 
     const [isScrolled, setIsScrolled] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [suggestions, setSuggestions] = useState<any[]>([]);
+    const [suggestions, setSuggestions] = useState<SuggestionProduct[]>([]);
     const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
     const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
     const searchRef = React.useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setHasMounted(true);
         return scrollY.on('change', (latest) => {
             setIsScrolled(latest > 20);

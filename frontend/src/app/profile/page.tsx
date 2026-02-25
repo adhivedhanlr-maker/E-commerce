@@ -7,7 +7,6 @@ import { User, Mail, Shield, LogOut, Settings, Bell, CreditCard, Package } from 
 import { useAuth } from '@/store/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -106,7 +105,7 @@ export default function ProfilePage() {
                         className="lg:col-span-2 space-y-8"
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {menuItems.map((item, idx) => (
+                            {menuItems.map((item) => (
                                 <Card key={item.label} className="group rounded-[32px] border-none shadow-premium hover:shadow-2xl transition-all bg-white dark:bg-slate-900 cursor-pointer overflow-hidden border border-transparent hover:border-primary-600/20">
                                     <CardContent className="p-8 flex items-start space-x-6">
                                         <div className="h-14 w-14 rounded-2xl bg-secondary-100 dark:bg-white/5 flex items-center justify-center text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-all duration-500">

@@ -7,7 +7,6 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import CategoryBar from "@/components/home/CategoryBar";
 
 const featuredProducts = [
   {
