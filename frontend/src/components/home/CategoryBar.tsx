@@ -55,18 +55,18 @@ const CategoryBarContent = () => {
     const activeCat = searchParams.get('cat') || 'for-you';
 
     return (
-        <div className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/5 sticky top-[60px] lg:top-[70px] z-40 pb-0 shadow-sm">
+        <div className="w-full bg-background border-b border-slate-200 dark:border-white/5 sticky top-[60px] lg:top-[70px] z-40 pb-0 shadow-sm transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Top Search Bar area (As per user image) */}
                 <div className="py-5">
                     <div className="relative group max-w-3xl mx-auto">
                         <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                            <Search className="h-5 w-5 text-blue-500" />
+                            <Search className="h-5 w-5 text-primary-600 dark:text-primary-400 group-focus-within:text-primary-500 transition-colors" />
                         </div>
                         <input
                             type="text"
                             placeholder="Search for Products"
-                            className="block w-full pl-12 pr-4 py-4 border border-slate-200 focus:border-blue-400 rounded-2xl bg-slate-50 dark:bg-slate-950 text-base placeholder:text-slate-400 focus:outline-none transition-all dark:text-white"
+                            className="block w-full pl-12 pr-4 py-4 border border-slate-200 dark:border-white/10 rounded-2xl bg-secondary-50 dark:bg-white/5 text-base placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all dark:text-white shadow-sm"
                         />
                     </div>
                 </div>
@@ -85,18 +85,18 @@ const CategoryBarContent = () => {
                                             className={cn(
                                                 "w-12 h-12 flex items-center justify-center rounded-2xl transition-all relative overflow-hidden",
                                                 isActive
-                                                    ? "bg-blue-50 dark:bg-blue-500/10 shadow-sm"
-                                                    : "bg-transparent group-hover:bg-slate-100 dark:group-hover:bg-white/5"
+                                                    ? "bg-primary-50 dark:bg-primary-600/10 shadow-inner"
+                                                    : "bg-transparent group-hover:bg-primary-50/50 dark:group-hover:bg-white/5"
                                             )}
                                         >
                                             <category.icon className={cn(
                                                 "w-6 h-6 transition-colors stroke-[1.8px]",
-                                                isActive ? "text-blue-600 fill-yellow-400/30" : "text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
+                                                isActive ? "text-primary-600 dark:text-primary-400 fill-primary-400/20" : "text-slate-500 dark:text-slate-400 group-hover:text-primary-600 dark:group-hover:text-primary-400"
                                             )} />
                                         </motion.div>
                                         <span className={cn(
                                             "text-[12px] font-bold tracking-tight transition-colors whitespace-nowrap",
-                                            isActive ? "text-slate-950 dark:text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
+                                            isActive ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-primary-600 dark:group-hover:text-primary-400"
                                         )}>
                                             {category.name}
                                         </span>
@@ -105,7 +105,7 @@ const CategoryBarContent = () => {
                                         {isActive && (
                                             <motion.div
                                                 layoutId="activeCategory"
-                                                className="absolute bottom-0 left-0 right-0 h-[3px] bg-blue-600 rounded-t-full"
+                                                className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary-600 dark:bg-primary-500 rounded-t-full"
                                                 transition={{ type: "spring", stiffness: 350, damping: 30 }}
                                             />
                                         )}
