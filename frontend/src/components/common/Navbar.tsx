@@ -57,8 +57,9 @@ const Navbar = () => {
 
             setIsLoadingSuggestions(true);
             try {
-                const data = await getProducts({ keyword: searchQuery, pageSize: 5 });
-                setSuggestions(data.products || []);
+                const response = await getProducts({ keyword: searchQuery, pageSize: 5 });
+                // Fix the data path: response is the Axios data, which contains { success, message, data: { products, ... } }
+                setSuggestions(response.data?.products || []);
                 setIsSuggestionsOpen(true);
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
@@ -88,6 +89,17 @@ const Navbar = () => {
         setIsSuggestionsOpen(false);
         setSearchQuery('');
         setIsSearchOpen(false);
+    };
+
+    const handleSearchSubmit = (e?: React.FormEvent | React.MouseEvent) => {
+        if (e && 'preventDefault' in e) e.preventDefault();
+        if (searchQuery.trim()) {
+            router.push(`/shop?keyword=${encodeURIComponent(searchQuery.trim())}`);
+            setIsSuggestionsOpen(false);
+            setIsSearchOpen(false);
+            // Optionally clear search after submission if desired, 
+            // but usually keeping it helps the user know what they searched for.
+        }
     };
 
     const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
@@ -249,13 +261,19 @@ const Navbar = () => {
                             "group relative flex items-center bg-secondary-100 rounded-full h-10 px-4 transition-all hover:bg-secondary-200 dark:bg-white/5 dark:hover:bg-white/10",
                             "hidden lg:flex" // Keep desktop behavior
                         )}>
-                            <Search className="h-4 w-4 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white" />
+                            <button
+                                onClick={() => handleSearchSubmit()}
+                                className="focus:outline-none transition-transform hover:scale-110 active:scale-95"
+                            >
+                                <Search className="h-4 w-4 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white" />
+                            </button>
                             <input
                                 type="text"
                                 placeholder="Search our catalog..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
                                 className="bg-transparent border-none focus:ring-0 text-[13px] ml-2 w-40 placeholder:text-slate-400 dark:text-white"
                             />
 
@@ -324,6 +342,7 @@ const Navbar = () => {
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                             onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
                                             className="bg-transparent border-none focus:ring-0 text-sm w-full dark:text-white"
                                         />
                                         <X className="h-4 w-4 text-slate-500 ml-2 cursor-pointer" onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }} />
