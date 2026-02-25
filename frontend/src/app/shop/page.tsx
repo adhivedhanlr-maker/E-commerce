@@ -267,7 +267,21 @@ function ShopContent() {
             const mapping: Record<string, string> = {
                 'electronics': 'Electronics',
                 'fashion': 'Fashion',
-                'home': 'Home & Living'
+                'home': 'Home & Living',
+                'lifestyle': 'Lifestyle',
+                'appliances': 'Electronics', // Fallback
+                'mobiles': 'Electronics', // Fallback
+                'gadgets': 'Electronics', // Fallback
+                'beauty': 'Fashion', // Fallback
+                'toys': 'Lifestyle', // Fallback
+                'food': 'Lifestyle', // Fallback
+                'sports': 'Lifestyle', // Fallback
+                'auto': 'Lifestyle', // Fallback
+                'furniture': 'Home & Living', // Fallback
+                'bikes': 'Lifestyle', // Fallback
+                'travel': 'Lifestyle', // Fallback
+                'books': 'Lifestyle', // Fallback
+                'gifts': 'Lifestyle', // Fallback
             };
             const category = mapping[catParam.toLowerCase()];
             if (category) {
@@ -500,8 +514,8 @@ function ShopContent() {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
 
