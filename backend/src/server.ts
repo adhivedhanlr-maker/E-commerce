@@ -23,12 +23,19 @@ app.use(cors({
     origin: [
         'https://nexustore-nileshwar.vercel.app',
         'http://localhost:3000',
+        'http://localhost:3001',
         'http://localhost:5173'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
+
+// Request logger
+app.use((req, res, next) => {
+    logger.info(`${req.method} ${req.url}`);
+    next();
+});
 
 app.use(helmet());
 app.use(express.json());

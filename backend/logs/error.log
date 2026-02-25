@@ -9,3 +9,8 @@
 {"level":"error","message":"Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2026-02-23T05:38:34.962Z"}
 {"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-23T10:23:41.875Z"}
 {"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-23T10:48:54.009Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T07:44:35.418Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T07:56:48.463Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T08:06:27.778Z"}
+{"level":"error","message":"Error: Server selection timed out after 30000 ms","timestamp":"2026-02-25T08:35:42.811Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:02:44.853Z"}

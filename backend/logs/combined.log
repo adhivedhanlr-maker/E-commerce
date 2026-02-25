@@ -18,3 +18,43 @@
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-02-23T10:23:41.785Z"}
 {"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-23T10:23:41.875Z"}
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-02-23T10:48:53.529Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T07:44:35.373Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T07:44:35.418Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T07:56:48.422Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T07:56:48.463Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T08:06:27.741Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T08:06:27.778Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T08:35:12.828Z"}
+{"level":"error","message":"Error: Server selection timed out after 30000 ms","timestamp":"2026-02-25T08:35:42.811Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:02:44.811Z"}
+{"level":"error","message":"Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:02:44.853Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:06:13.683Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:06:13.915Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:06:13.918Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:06:14.030Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:06:16.633Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:06:16.731Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:06:16.968Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:06:17.123Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:06:17.177Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:06:18.031Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:06:53.739Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:06:54.432Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:18:10.446Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-02-25T10:18:12.141Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:27:15.167Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:27:15.252Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:27:15.293Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:27:15.457Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:27:15.404Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:27:16.009Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:27:16.841Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:27:16.886Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:27:16.879Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:27:17.064Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:27:17.158Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:27:17.301Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-25T10:27:41.638Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-02-25T10:27:42.331Z"}
+{"level":"info","message":"GET /api/products?keyword=titan","timestamp":"2026-02-25T10:28:31.874Z"}
+{"level":"info","message":"GET /api/products?keyword=titan","timestamp":"2026-02-25T10:30:01.071Z"}

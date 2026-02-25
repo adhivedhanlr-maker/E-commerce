@@ -49,6 +49,7 @@ const Navbar = () => {
     // Debounced search for suggestions
     useEffect(() => {
         const fetchSuggestions = async () => {
+            console.log('Search query:', searchQuery);
             if (searchQuery.length < 2) {
                 setSuggestions([]);
                 setIsSuggestionsOpen(false);
@@ -58,9 +59,12 @@ const Navbar = () => {
             setIsLoadingSuggestions(true);
             setIsSuggestionsOpen(true);
             try {
+                console.log('Fetching products for:', searchQuery);
                 const response = await getProducts({ keyword: searchQuery, pageSize: 5 });
+                console.log('API Response:', response);
                 // response shape: { success, message, data: { products, page, pages } }
                 const products = response?.data?.products ?? response?.products ?? [];
+                console.log('Found products:', products.length);
                 setSuggestions(products);
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
@@ -333,21 +337,31 @@ const Navbar = () => {
                                 {isSearchOpen && (
                                     <motion.div
                                         initial={{ width: 0, opacity: 0 }}
-                                        animate={{ width: "calc(100vw - 120px)", opacity: 1 }}
+                                        animate={{ width: "calc(100vw - 32px)", opacity: 1 }}
                                         exit={{ width: 0, opacity: 0 }}
-                                        className="absolute right-24 bg-secondary-100 rounded-full h-10 px-4 flex items-center dark:bg-white/10"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full h-12 shadow-premium flex items-center dark:bg-slate-900 border border-secondary-200/50 dark:border-white/10 z-[60]"
                                     >
+                                        <div className="pl-4 pr-2">
+                                            <Search className="h-4 w-4 text-slate-400" />
+                                        </div>
                                         <input
                                             autoFocus
                                             type="text"
-                                            placeholder="Search..."
+                                            placeholder="Search products..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                             onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
                                             onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
                                             className="bg-transparent border-none focus:ring-0 text-sm w-full dark:text-white"
                                         />
-                                        <X className="h-4 w-4 text-slate-500 ml-2 cursor-pointer" onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }} />
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => { setIsSearchOpen(false); setSearchQuery(''); setIsSuggestionsOpen(false); }}
+                                            className="mr-2 rounded-full hover:bg-secondary-100 dark:hover:bg-white/5"
+                                        >
+                                            <X className="h-4 w-4 text-slate-500" />
+                                        </Button>
 
                                         {/* Suggestions Dropdown (Mobile) */}
                                         <AnimatePresence>
@@ -356,7 +370,7 @@ const Navbar = () => {
                                                     initial={{ opacity: 0, y: 10 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     exit={{ opacity: 0, y: 10 }}
-                                                    className="absolute top-12 right-0 w-[calc(100vw-40px)] bg-white dark:bg-slate-900 rounded-2xl shadow-premium border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
+                                                    className="absolute top-14 left-0 w-full bg-white dark:bg-slate-900 rounded-2xl shadow-premium border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
                                                 >
                                                     {isLoadingSuggestions ? (
                                                         <div className="p-4 text-center">
