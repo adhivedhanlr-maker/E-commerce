@@ -24,7 +24,7 @@ interface ProductCardProps {
     aspectRatio?: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspect-[4/5]" }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspect-[3.6/4]" }) => {
     const { addItem: addToCart } = useCart();
     const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
 

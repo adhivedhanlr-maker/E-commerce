@@ -339,7 +339,7 @@ function ShopContent() {
     };
 
     return (
-        <div className="bg-white dark:bg-slate-900 py-12">
+        <div className="bg-white dark:bg-slate-900 py-8">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Mobile Sort Bar (Top) */}
                 <div className="flex md:hidden items-center gap-4 mb-8">
@@ -418,7 +418,7 @@ function ShopContent() {
 
                         {paginatedProducts.length > 0 ? (
                             <div className={cn(
-                                "grid gap-4 sm:gap-x-8 sm:gap-y-8",
+                                "grid gap-4 sm:gap-x-6 sm:gap-y-6",
                                 view === 'grid'
                                     ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3"
                                     : "grid-cols-1"

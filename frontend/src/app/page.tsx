@@ -224,10 +224,10 @@ const item = {
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-background gap-12">
+    <div className="flex flex-col bg-background gap-8">
       {/* Top Bento Grid - Hero & Featured */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[700px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 h-auto md:h-[700px]">
 
           {/* Main Card: Equinox Flash Event (2/3 width, spans 2 rows) */}
           <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
@@ -317,7 +317,7 @@ export default function Home() {
       {/* Categories Grid - Visual Curation */}
       <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <h2 className="font-accent text-3xl md:text-4xl font-bold tracking-tight text-slate-950 dark:text-white mb-4">
               Curated <span className="italic font-light text-secondary-400">Collections</span>
             </h2>
@@ -370,7 +370,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8"
+            className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-8"
           >
             <div className="max-w-xl">
               <div className="flex items-center space-x-2 text-primary-600 mb-4">
@@ -396,7 +396,7 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-y-8"
+            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-y-6"
           >
             {featuredProducts.map((product, idx) => (
               <motion.div
@@ -425,7 +425,7 @@ export default function Home() {
       {/* New Arrivals Section - Minimalist Grid */}
       <section className="py-16 lg:py-20 bg-white dark:bg-slate-950">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-16 gap-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-8">
             <div>
               <span className="text-secondary-400 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Just In</span>
               <h2 className="font-accent text-5xl font-bold tracking-tight text-slate-950 dark:text-white">
@@ -434,7 +434,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6">
             {newArrivals.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -443,9 +443,9 @@ export default function Home() {
       </section>
 
       {/* Trending Now Section */}
-      <section className="py-16 bg-slate-50 dark:bg-slate-900/50">
+      <section className="py-12 bg-slate-50 dark:bg-slate-900/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-16 gap-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-8">
             <div>
               <span className="text-primary-600 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Crowd Favorites</span>
               <h2 className="font-accent text-5xl font-bold tracking-tight text-slate-950 dark:text-white">
@@ -454,7 +454,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6">
             {trendingProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -464,9 +464,9 @@ export default function Home() {
 
 
       {/* Journal / Blog Section */}
-      <section className="py-24 lg:py-32 bg-white dark:bg-slate-950">
+      <section className="py-16 lg:py-20 bg-white dark:bg-slate-950">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 text-center md:text-left">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-8 text-center md:text-left">
             <div>
               <span className="text-secondary-400 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">The Journal</span>
               <h2 className="font-accent text-5xl font-bold tracking-tight text-slate-950 dark:text-white">
@@ -477,7 +477,7 @@ export default function Home() {
               View All Posts
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {journalPosts.map((post) => (
               <article key={post.title} className="group cursor-pointer">
                 <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-slate-100 mb-6 font-primary">
@@ -500,7 +500,7 @@ export default function Home() {
       </section>
 
       {/* Editorial Footer Space (Newsletter Refined) */}
-      <section className="py-24 lg:py-40 bg-background border-t border-slate-200 dark:border-white/5">
+      <section className="py-16 lg:py-24 bg-background border-t border-slate-200 dark:border-white/5">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
