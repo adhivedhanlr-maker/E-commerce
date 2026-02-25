@@ -192,7 +192,7 @@ export default function DealsPage() {
                 </div>
 
                 {/* Value Propositions */}
-                <div className="border-t border-slate-200 dark:border-white/5 pt-24 grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div className="border-t border-slate-200 dark:border-white/5 pt-16 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
                     {[
                         { icon: Star, title: "Curated Only", desc: "Every deal is manually approved for quality." },
                         { icon: RefreshCw, title: "Final Sale", desc: "Limited quantities, no restocks planned." },
