@@ -12,6 +12,9 @@ import { useCart } from '@/store/useCart';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { getProducts } from '@/services/productService';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Badge } from '@/components/ui/badge';
 
@@ -21,9 +24,15 @@ const Navbar = () => {
     const { user, logout } = useAuth();
     const { cartItems } = useCart();
     const pathname = usePathname();
+    const router = useRouter();
     const { scrollY } = useScroll();
 
     const [isScrolled, setIsScrolled] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState<any[]>([]);
+    const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+    const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+    const searchRef = React.useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -32,6 +41,50 @@ const Navbar = () => {
             setIsScrolled(latest > 20);
         });
     }, [scrollY]);
+
+    // Debounced search for suggestions
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            if (searchQuery.length < 2) {
+                setSuggestions([]);
+                setIsSuggestionsOpen(false);
+                return;
+            }
+
+            setIsLoadingSuggestions(true);
+            try {
+                const data = await getProducts({ keyword: searchQuery, pageSize: 5 });
+                setSuggestions(data.products || []);
+                setIsSuggestionsOpen(true);
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+            } finally {
+                setIsLoadingSuggestions(false);
+            }
+        };
+
+        const debounceTimer = setTimeout(fetchSuggestions, 300);
+        return () => clearTimeout(debounceTimer);
+    }, [searchQuery]);
+
+    // Handle clicking outside of search suggestions
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+                setIsSuggestionsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleSuggestionClick = (productId: string) => {
+        router.push(`/product/${productId}`);
+        setIsSuggestionsOpen(false);
+        setSearchQuery('');
+        setIsSearchOpen(false);
+    };
 
     const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
@@ -187,7 +240,7 @@ const Navbar = () => {
                 <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
 
                     {/* Search - Expandable on Mobile */}
-                    <div className="flex items-center">
+                    <div className="flex items-center" ref={searchRef}>
                         <div className={cn(
                             "group relative flex items-center bg-secondary-100 rounded-full h-10 px-4 transition-all hover:bg-secondary-200 dark:bg-white/5 dark:hover:bg-white/10",
                             "hidden lg:flex" // Keep desktop behavior
@@ -196,8 +249,58 @@ const Navbar = () => {
                             <input
                                 type="text"
                                 placeholder="Search our catalog..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
                                 className="bg-transparent border-none focus:ring-0 text-[13px] ml-2 w-40 placeholder:text-slate-400 dark:text-white"
                             />
+
+                            {/* Suggestions Dropdown (Desktop) */}
+                            <AnimatePresence>
+                                {isSuggestionsOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 10 }}
+                                        className="absolute top-12 left-0 w-[300px] bg-white dark:bg-slate-900 rounded-2xl shadow-premium border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
+                                    >
+                                        {isLoadingSuggestions ? (
+                                            <div className="p-4 text-center">
+                                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent mx-auto"></div>
+                                            </div>
+                                        ) : suggestions.length > 0 ? (
+                                            <div className="space-y-1">
+                                                {suggestions.map((product) => (
+                                                    <button
+                                                        key={product._id}
+                                                        onClick={() => handleSuggestionClick(product._id)}
+                                                        className="w-full flex items-center p-2 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
+                                                    >
+                                                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
+                                                            <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" />
+                                                        </div>
+                                                        <div className="ml-3 overflow-hidden">
+                                                            <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
+                                                            <p className="text-[10px] text-primary-600 font-medium">${product.price}</p>
+                                                        </div>
+                                                    </button>
+                                                ))}
+                                                <Link
+                                                    href={`/shop?keyword=${searchQuery}`}
+                                                    onClick={() => setIsSuggestionsOpen(false)}
+                                                    className="block w-full text-center py-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors border-t border-secondary-100 dark:border-white/5 mt-1"
+                                                >
+                                                    View All Results
+                                                </Link>
+                                            </div>
+                                        ) : (
+                                            <div className="p-4 text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                                No products found
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
 
                         {/* Mobile Search Button */}
@@ -214,9 +317,59 @@ const Navbar = () => {
                                             autoFocus
                                             type="text"
                                             placeholder="Search..."
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
                                             className="bg-transparent border-none focus:ring-0 text-sm w-full dark:text-white"
                                         />
-                                        <X className="h-4 w-4 text-slate-500 ml-2 cursor-pointer" onClick={() => setIsSearchOpen(false)} />
+                                        <X className="h-4 w-4 text-slate-500 ml-2 cursor-pointer" onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }} />
+
+                                        {/* Suggestions Dropdown (Mobile) */}
+                                        <AnimatePresence>
+                                            {isSuggestionsOpen && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: 10 }}
+                                                    className="absolute top-12 right-0 w-[calc(100vw-40px)] bg-white dark:bg-slate-900 rounded-2xl shadow-premium border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
+                                                >
+                                                    {isLoadingSuggestions ? (
+                                                        <div className="p-4 text-center">
+                                                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent mx-auto"></div>
+                                                        </div>
+                                                    ) : suggestions.length > 0 ? (
+                                                        <div className="space-y-1">
+                                                            {suggestions.map((product) => (
+                                                                <button
+                                                                    key={product._id}
+                                                                    onClick={() => handleSuggestionClick(product._id)}
+                                                                    className="w-full flex items-center p-2 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
+                                                                >
+                                                                    <div className="h-10 w-10 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
+                                                                        <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" />
+                                                                    </div>
+                                                                    <div className="ml-3 overflow-hidden">
+                                                                        <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
+                                                                        <p className="text-[10px] text-primary-600 font-medium">${product.price}</p>
+                                                                    </div>
+                                                                </button>
+                                                            ))}
+                                                            <Link
+                                                                href={`/shop?keyword=${searchQuery}`}
+                                                                onClick={() => { setIsSuggestionsOpen(false); setIsSearchOpen(false); }}
+                                                                className="block w-full text-center py-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors border-t border-secondary-100 dark:border-white/5 mt-1"
+                                                            >
+                                                                View All Results
+                                                            </Link>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="p-4 text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                                            No products found
+                                                        </div>
+                                                    )}
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
