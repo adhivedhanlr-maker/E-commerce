@@ -52,14 +52,14 @@ function ShopContent() {
                 setSelectedCategories([category]);
             }
         }
-    }, [catParam]);
+    }, [catParam, selectedCategories]);
 
     // Fetch products from backend
     useEffect(() => {
         const fetchAllProducts = async () => {
             setIsLoading(true);
             try {
-                const params: any = {};
+                const params: Record<string, string> = {};
                 if (keywordParam) params.keyword = keywordParam;
 
                 // Fetch all and filter client-side for now to maintain existing filter UI behavior
@@ -199,7 +199,7 @@ function ShopContent() {
                                 view === 'grid' ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
                             )}>
                                 {paginatedProducts.map((product) => (
-                                    <ProductCard key={product._id} product={product as any} />
+                                    <ProductCard key={product._id} product={product} />
                                 ))}
                             </div>
                         ) : (
