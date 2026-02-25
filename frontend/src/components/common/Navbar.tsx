@@ -56,13 +56,15 @@ const Navbar = () => {
             }
 
             setIsLoadingSuggestions(true);
+            setIsSuggestionsOpen(true);
             try {
                 const response = await getProducts({ keyword: searchQuery, pageSize: 5 });
-                // Fix the data path: response is the Axios data, which contains { success, message, data: { products, ... } }
-                setSuggestions(response.data?.products || []);
-                setIsSuggestionsOpen(true);
+                // response shape: { success, message, data: { products, page, pages } }
+                const products = response?.data?.products ?? response?.products ?? [];
+                setSuggestions(products);
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
+                setSuggestions([]);
             } finally {
                 setIsLoadingSuggestions(false);
             }
@@ -299,7 +301,7 @@ const Navbar = () => {
                                                         className="w-full flex items-center p-2 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
                                                     >
                                                         <div className="h-10 w-10 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
-                                                            <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" />
+                                                            {product.images?.[0] ? <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" /> : <div className="h-full w-full bg-secondary-200 dark:bg-white/10" />}
                                                         </div>
                                                         <div className="ml-3 overflow-hidden">
                                                             <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
@@ -369,7 +371,7 @@ const Navbar = () => {
                                                                     className="w-full flex items-center p-2 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
                                                                 >
                                                                     <div className="h-10 w-10 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
-                                                                        <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" />
+                                                                        {product.images?.[0] ? <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" /> : <div className="h-full w-full bg-secondary-200 dark:bg-white/10" />}
                                                                     </div>
                                                                     <div className="ml-3 overflow-hidden">
                                                                         <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
