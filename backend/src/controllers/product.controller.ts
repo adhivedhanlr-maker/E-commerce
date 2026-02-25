@@ -12,10 +12,26 @@ export const getProducts = asyncHandler(async (req: Request, res: Response) => {
 
     const keyword = req.query.keyword
         ? {
-            name: {
-                $regex: String(req.query.keyword),
-                $options: 'i',
-            },
+            $or: [
+                {
+                    name: {
+                        $regex: String(req.query.keyword),
+                        $options: 'i',
+                    },
+                },
+                {
+                    category: {
+                        $regex: String(req.query.keyword),
+                        $options: 'i',
+                    },
+                },
+                {
+                    description: {
+                        $regex: String(req.query.keyword),
+                        $options: 'i',
+                    },
+                },
+            ],
         }
         : {};
 
