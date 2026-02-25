@@ -57,22 +57,8 @@ const CategoryBarContent = () => {
     return (
         <div className="w-full bg-background border-b border-slate-200 dark:border-white/5 sticky top-[60px] lg:top-[70px] z-40 pb-0 shadow-sm transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                {/* Top Search Bar area (As per user image) */}
-                <div className="py-5">
-                    <div className="relative group max-w-3xl mx-auto">
-                        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                            <Search className="h-5 w-5 text-primary-600 dark:text-primary-400 group-focus-within:text-primary-500 transition-colors" />
-                        </div>
-                        <input
-                            type="text"
-                            placeholder="Search for Products"
-                            className="block w-full pl-12 pr-4 py-4 border border-slate-200 dark:border-white/10 rounded-2xl bg-secondary-50 dark:bg-white/5 text-base placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all dark:text-white shadow-sm"
-                        />
-                    </div>
-                </div>
-
                 {/* Categories Row */}
-                <div className="relative">
+                <div className="relative pt-4">
                     <div className="flex items-center gap-6 overflow-x-auto no-scrollbar scroll-smooth">
                         {categories.map((category) => {
                             const isActive = activeCat === category.id;

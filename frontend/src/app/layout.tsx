@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased selection:bg-primary-500/30 selection:text-white`}>
         <ThemeProvider attribute="class" defaultTheme="light" themes={["light", "dark", "dim"]}>
           <Navbar />
-          <main className="min-h-screen pt-[140px] md:pb-0">
+          <main className="min-h-screen pt-[110px] md:pb-0">
             <PageTransition>
               {children}
             </PageTransition>
