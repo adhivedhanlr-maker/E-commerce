@@ -55,7 +55,7 @@ const CategoryBarContent = () => {
     const activeCat = searchParams.get('cat') || 'for-you';
 
     return (
-        <div className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/5 sticky top-[56px] z-40 pb-0 shadow-sm">
+        <div className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/5 sticky top-[60px] lg:top-[70px] z-40 pb-0 shadow-sm">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Top Search Bar area (As per user image) */}
                 <div className="py-5">
