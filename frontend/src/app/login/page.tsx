@@ -132,7 +132,7 @@ export default function LoginPage() {
                                 onClick={async () => {
                                     try {
                                         // Simulate Google Auth for demonstration
-                                        const response = await loginUser({
+                                        await loginUser({
                                             email: 'google@example.com',
                                             password: 'google_oauth_placeholder' // The backend doesn't check password for Google Auth if we use the googleLogin endpoint
                                         });
@@ -149,7 +149,7 @@ export default function LoginPage() {
                                             setUser(googleResponse.data);
                                             router.push('/');
                                         }
-                                    } catch (error) {
+                                    } catch (_error) {
                                         setError('root', { message: 'Google Sign-In failed' });
                                     }
                                 }}

@@ -4,11 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Users, 
-    Clock, 
-    CheckCircle, 
-    XCircle, 
-    Search, 
-    Filter, 
     Eye,
     Check,
     X,
@@ -16,37 +11,39 @@ import {
     Building2,
     Mail,
     Phone,
-    Download
+    Download,
+    ChevronRight
 } from 'lucide-react';
 import { getAllSellers, updateSellerStatus } from '@/services/adminService';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { ISellerUser } from '@/types/seller';
 
 export default function AdminSellersPage() {
-    const [sellers, setSellers] = useState<any[]>([]);
+    const [sellers, setSellers] = useState<ISellerUser[]>([]);
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState<string>('pending');
-    const [selectedSeller, setSelectedSeller] = useState<any>(null);
+    const [selectedSeller, setSelectedSeller] = useState<ISellerUser | null>(null);
 
-    const fetchSellers = async () => {
+    const fetchSellers = useCallback(async () => {
         setLoading(true);
         try {
             const res = await getAllSellers(filterStatus);
             if (res.success) {
                 setSellers(res.data);
             }
-        } catch (err) {
+        } catch (_err) {
             console.error('Failed to fetch sellers');
         } finally {
             setLoading(false);
         }
-    };
+    }, [filterStatus]);
 
     useEffect(() => {
         fetchSellers();
-    }, [filterStatus]);
+    }, [fetchSellers]);
 
     const handleUpdateStatus = async (id: string, status: string) => {
         try {
@@ -262,6 +259,6 @@ function DocPreview({ label }: { label: string }) {
     );
 }
 
-function ChevronRight(props: any) {
+function ChevronRight(props: React.SVGProps<SVGSVGElement>) {
     return <motion.svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m9 18 6-6-6-6"/></motion.svg>;
 }

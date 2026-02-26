@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion } from 'framer-motion';
-import { UserPlus, Mail, Lock, User, AlertCircle, Building2 } from 'lucide-react';
+import { UserPlus, Mail, Lock, User, AlertCircle } from 'lucide-react';
 import { registerUser } from '@/services/authService';
 import { useAuth } from '@/store/useAuth';
 

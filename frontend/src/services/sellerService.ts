@@ -1,3 +1,4 @@
+import { IBusinessProfile } from '@/types/seller';
 import api from './api';
 
 export const getOnboardingStatus = async () => {
@@ -5,12 +6,12 @@ export const getOnboardingStatus = async () => {
     return data;
 };
 
-export const saveOnboardingDraft = async (businessProfile: any) => {
+export const saveOnboardingDraft = async (businessProfile: Partial<IBusinessProfile>) => {
     const { data } = await api.post('/seller/onboarding/draft', { businessProfile });
     return data;
 };
 
-export const submitOnboarding = async (businessProfile: any) => {
+export const submitOnboarding = async (businessProfile: IBusinessProfile) => {
     const { data } = await api.post('/seller/onboarding/submit', { businessProfile });
     return data;
 };

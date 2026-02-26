@@ -20,13 +20,14 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { saveOnboardingDraft, submitOnboarding, getOnboardingStatus } from '@/services/sellerService';
 import { useAuth } from '@/store/useAuth';
 import { DocumentUpload } from '@/components/seller/DocumentUpload';
 import { cn } from '@/lib/utils';
+import { IBusinessProfile } from '@/types/seller';
 
 // --- SCHEMAS ---
 const stepSchemas = [
@@ -81,13 +82,12 @@ const STEPS = [
 
 export default function AdvancedSellerRegister() {
     const router = useRouter();
-    const { user } = useAuth();
     const [currentStep, setCurrentStep] = useState(1);
-    const [formData, setFormData] = useState<any>({});
+    const [formData, setFormData] = useState<Partial<IBusinessProfile>>({});
     const [isLoading, setIsLoading] = useState(true);
     const [status, setStatus] = useState<string>('none');
 
-    const { register, handleSubmit, formState: { errors }, reset, trigger, setValue, watch } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
         resolver: zodResolver(stepSchemas[currentStep - 1]),
         mode: 'onChange'
     });
@@ -103,7 +103,7 @@ export default function AdvancedSellerRegister() {
                         reset(res.data.profile);
                     }
                 }
-            } catch (err) {
+            } catch (_err) {
                 console.error('Failed to fetch draft');
             } finally {
                 setIsLoading(false);
@@ -122,7 +122,7 @@ export default function AdvancedSellerRegister() {
             setCurrentStep(prev => prev + 1);
         } else {
             // Final Submit
-            const res = await submitOnboarding(stepData);
+            const res = await submitOnboarding(stepData as IBusinessProfile);
             if (res.success) {
                 setStatus('pending');
             }
@@ -148,7 +148,7 @@ export default function AdvancedSellerRegister() {
                         <Info className="w-10 h-10" />
                     </div>
                     <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Application Under Review</h2>
-                    <p className="text-slate-500 mb-8">Our team is verifying your documents. We'll notify you once your store is activated.</p>
+                    <p className="text-slate-500 mb-8">Our team is verifying your documents. We&apos;ll notify you once your store is activated.</p>
                     <Button onClick={() => router.push('/')} className="w-full h-14 rounded-2xl bg-slate-900 text-white font-bold">
                         Back to Shopping
                     </Button>
@@ -292,7 +292,14 @@ export default function AdvancedSellerRegister() {
 }
 
 // --- RENDERING HELPERS ---
-function renderStepContent(step: number, register: any, errors: any, setValue: any, watch: any, handleDocUpload: (key: string, file: File) => void) {
+function renderStepContent(
+    step: number, 
+    register: UseFormRegister<any>, 
+    errors: FieldErrors<any>, 
+    setValue: UseFormSetValue<any>, 
+    watch: UseFormWatch<any>, 
+    handleDocUpload: (key: string, file: File) => void
+) {
     switch (step) {
         case 1:
             return (
@@ -353,43 +360,44 @@ function renderStepContent(step: number, register: any, errors: any, setValue: a
             );
         case 5:
             return (
-                <>
-                    <FormField label="Warehouse Address" name="warehouseAddress" register={register} errors={errors} placeholder="Full warehouse location" />
-                    <FormField label="Pickup Address" name="pickupAddress" register={register} errors={errors} placeholder="Same as warehouse?" />
-                    <FormField label="Return Address" name="returnAddress" register={register} errors={errors} placeholder="RTO location" />
-                    <div className="space-y-3">
-                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Estimated Monthly Turnover</label>
-                        <select {...register('estimatedTurnover')} className="w-full h-14 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 px-5 text-sm outline-none focus:border-primary-500 transition-all">
-                            <option value="0-1L">Below 1 Lakh</option>
-                            <option value="1L-5L">1 - 5 Lakhs</option>
-                            <option value="5L-20L">5 - 20 Lakhs</option>
-                            <option value="20L+">Above 20 Lakhs</option>
-                        </select>
+                <div className="col-span-1 md:col-span-2 space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <FormField label="Warehouse Address" name="warehouseAddress" register={register} errors={errors} placeholder="Full Warehouse Address" />
+                        <FormField label="Pickup Address" name="pickupAddress" register={register} errors={errors} placeholder="Full Pickup Address" />
                     </div>
-                    <div className="col-span-2 pt-6">
-                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-2xl bg-primary-50/50 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-900/20">
-                            <input {...register('commissionAccepted')} type="checkbox" className="mt-1 h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
-                            <div className="flex-1">
-                                <p className="text-sm font-bold text-slate-900 dark:text-white">I accept the Seller Commission Agreement</p>
-                                <p className="text-xs text-slate-500 mt-1">By checking this, you agree to the platform commission fees as per the category guidelines.</p>
-                                {errors.commissionAccepted && <p className="text-[10px] text-red-500 font-bold mt-1 uppercase tracking-wider">{errors.commissionAccepted.message}</p>}
+                    <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-white/5 space-y-4">
+                        <div className="flex items-start gap-4">
+                            <input {...register('commissionAccepted')} type="checkbox" className="mt-1 w-5 h-5 rounded-lg accent-primary-600" />
+                            <div>
+                                <p className="text-sm font-bold text-slate-900 dark:text-white">Accept Commission Agreement</p>
+                                <p className="text-xs text-slate-500 mt-1">I agree to the 5% flat commission on all sales made through this platform.</p>
+                                {errors.commissionAccepted && <p className="text-[10px] text-red-500 font-bold mt-1 uppercase tracking-widest">{errors.commissionAccepted.message as string}</p>}
                             </div>
-                        </label>
+                        </div>
                     </div>
-                </>
+                </div>
             );
         default:
             return null;
     }
 }
 
-function FormField({ label, name, register, errors, placeholder, type = "text" }: any) {
+interface FormFieldProps {
+    label: string;
+    name: string;
+    register: UseFormRegister<any>;
+    errors: FieldErrors<any>;
+    placeholder: string;
+    type?: string;
+}
+
+function FormField({ label, name, register, errors, placeholder, type = "text" }: FormFieldProps) {
     return (
         <div className="space-y-3">
             <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex justify-between">
                 {label}
                 {errors[name] && <span className="text-red-500 normal-case font-medium tracking-normal flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3" /> {errors[name].message}
+                    <AlertCircle className="w-3 h-3" /> {errors[name].message as string}
                 </span>}
             </label>
             <div className="relative group">
@@ -410,17 +418,5 @@ function FormField({ label, name, register, errors, placeholder, type = "text" }
     );
 }
 
-function DocUpload({ label }: { label: string }) {
-    return (
-        <div className="space-y-3">
-            <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">{label}</label>
-            <div className="h-32 border-2 border-dashed border-slate-200 dark:border-white/10 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-white/5 transition-all cursor-pointer group">
-                <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-primary-600 group-hover:bg-primary-50 transition-all">
-                    <UploadCloud className="w-4 h-4" />
-                </div>
-                <p className="text-[11px] font-bold text-slate-500">Click or Drag to Upload</p>
-            </div>
-        </div>
-    );
-}
+
 

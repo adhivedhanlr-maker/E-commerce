@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import NextImage from 'next/image';
 import { UploadCloud, FileText, X, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -56,7 +57,7 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({ label, onUpload,
                 ) : (
                     <div className="h-full w-full flex items-center p-4">
                         {preview ? (
-                            <img src={preview} alt="Preview" className="h-full w-24 object-cover rounded-xl shadow-lg" />
+                            <NextImage src={preview} alt="Preview" width={96} height={160} unoptimized className="h-full w-24 object-cover rounded-xl shadow-lg" />
                         ) : (
                             <div className="h-full w-24 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400">
                                 <FileText className="w-8 h-8" />
