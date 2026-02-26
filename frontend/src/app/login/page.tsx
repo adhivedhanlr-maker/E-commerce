@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
+import { FcGoogle } from 'react-icons/fc';
 import { loginUser } from '@/services/authService';
 import { useAuth } from '@/store/useAuth';
 
@@ -113,6 +114,48 @@ export default function LoginPage() {
                                 className="w-full bg-slate-900 text-white h-14 rounded-xl font-bold hover:bg-primary-600 transition-all shadow-lg hover:shadow-primary-500/20 disabled:opacity-50"
                             >
                                 {isSubmitting ? 'Signing in...' : 'Sign In'}
+                            </Button>
+
+                            <div className="relative">
+                                <div className="absolute inset-0 flex items-center">
+                                    <span className="w-full border-t border-slate-200 dark:border-slate-800" />
+                                </div>
+                                <div className="relative flex justify-center text-xs uppercase">
+                                    <span className="bg-white dark:bg-slate-900 px-2 text-slate-500 font-bold tracking-widest">Or continue with</span>
+                                </div>
+                            </div>
+
+                            <Button
+                                type="button"
+                                variant="outline"
+                                className="w-full h-14 rounded-xl font-bold bg-white hover:bg-slate-50 border-slate-200 text-slate-900 dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-white transition-all shadow-sm"
+                                onClick={async () => {
+                                    try {
+                                        // Simulate Google Auth for demonstration
+                                        const response = await loginUser({
+                                            email: 'google@example.com',
+                                            password: 'google_oauth_placeholder' // The backend doesn't check password for Google Auth if we use the googleLogin endpoint
+                                        });
+                                        
+                                        // Actually call the google endpoint
+                                        const { googleLoginUser } = await import('@/services/authService');
+                                        const googleResponse = await googleLoginUser({
+                                            token: 'mock_google_token',
+                                            email: 'john.google@example.com',
+                                            name: 'John Google'
+                                        });
+
+                                        if (googleResponse.success) {
+                                            setUser(googleResponse.data);
+                                            router.push('/');
+                                        }
+                                    } catch (error) {
+                                        setError('root', { message: 'Google Sign-In failed' });
+                                    }
+                                }}
+                            >
+                                <FcGoogle className="mr-2 h-6 w-6" />
+                                Google
                             </Button>
                         </form>
 

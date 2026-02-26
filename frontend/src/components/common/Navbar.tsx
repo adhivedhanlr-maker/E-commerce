@@ -49,7 +49,7 @@ const Navbar = () => {
     // Debounced search for suggestions
     useEffect(() => {
         const fetchSuggestions = async () => {
-            if (searchQuery.length < 2) {
+            if (searchQuery.length < 1) {
                 setSuggestions([]);
                 setIsSuggestionsOpen(false);
                 return;
@@ -272,9 +272,9 @@ const Navbar = () => {
                                 placeholder="Search catalogue..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
+                                onFocus={() => searchQuery.length >= 1 && setIsSuggestionsOpen(true)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
-                                className="bg-transparent border-0 outline-none ring-0 shadow-none focus:ring-0 focus:outline-none text-[13px] ml-2 w-36 placeholder:text-slate-400 dark:text-white transition-all focus:w-48 appearance-none"
+                                className="bg-transparent border-0 outline-none ring-0 shadow-none focus:ring-0 focus:outline-none text-[13px] ml-2 w-48 placeholder:text-slate-400 dark:text-white transition-all appearance-none"
                             />
 
                             {/* Suggestions Dropdown (Desktop) */}
@@ -375,7 +375,7 @@ const Navbar = () => {
                                             placeholder="Search products..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
-                                            onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
+                                            onFocus={() => searchQuery.length >= 1 && setIsSuggestionsOpen(true)}
                                             onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
                                             className="bg-transparent border-none focus:ring-0 text-sm w-full dark:text-white"
                                         />
