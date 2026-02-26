@@ -4,10 +4,12 @@ import React, { useState, useMemo, Suspense, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import FilterSidebar from '@/components/shop/FilterSidebar';
 import ProductCard from '@/components/product/ProductCard';
-import { Grid, List, ChevronDown, Loader2 } from 'lucide-react';
+import { Grid, List, ChevronDown, Loader2, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { getProducts } from '@/services/productService';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
 
 interface Product {
     _id: string;
@@ -123,13 +125,13 @@ function ShopContent() {
     return (
         <div className="bg-white dark:bg-slate-900 py-8">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                {/* Mobile Sort Bar */}
-                <div className="flex md:hidden items-center gap-4 mb-8">
+                {/* Mobile Sort & Filter Bar */}
+                <div className="flex md:hidden items-center gap-3 mb-8">
                     <div className="flex-1 h-12 relative">
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            className="w-full h-full appearance-none bg-white dark:bg-slate-950 border border-secondary-200 dark:border-white/10 rounded-xl px-5 text-xs font-bold uppercase tracking-widest outline-none"
+                            className="w-full h-full appearance-none bg-white dark:bg-slate-950 border border-secondary-200 dark:border-white/10 rounded-xl px-5 text-[11px] font-black uppercase tracking-widest outline-none"
                         >
                             <option value="featured">Sort: Featured</option>
                             <option value="price-low">Sort: Price Low to High</option>
@@ -138,6 +140,35 @@ function ShopContent() {
                         </select>
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                     </div>
+
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="outline" className="h-12 w-12 rounded-xl border-secondary-200 dark:border-white/10 bg-white dark:bg-slate-950 flex items-center justify-center p-0 relative">
+                                <Filter className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                                {selectedCategories.length > 0 && (
+                                    <span className="absolute -top-1 -right-1 h-5 w-5 bg-primary-600 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white dark:border-slate-900">
+                                        {selectedCategories.length}
+                                    </span>
+                                )}
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="right" className="w-[320px] p-0 border-l-0 bg-white dark:bg-slate-900 overflow-y-auto">
+                            <SheetHeader className="p-6 border-b border-secondary-100 dark:border-white/5">
+                                <SheetTitle className="text-left font-accent text-xl font-bold tracking-tight text-slate-950 dark:text-white flex items-center gap-3">
+                                    <Filter className="h-5 w-5 text-primary-600" />
+                                    Filter Products
+                                </SheetTitle>
+                            </SheetHeader>
+                            <div className="p-6">
+                                <FilterSidebar
+                                    selectedCategories={selectedCategories}
+                                    priceRange={priceRange}
+                                    minRating={minRating}
+                                    onFilterChange={handleFilterChange}
+                                />
+                            </div>
+                        </SheetContent>
+                    </Sheet>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-12">
@@ -240,16 +271,6 @@ function ShopContent() {
                             </div>
                         )}
 
-                        {/* Mobile Filter Section */}
-                        <div className="md:hidden mt-6 pt-12 border-t border-secondary-200/50">
-                            <h2 className="font-accent text-3xl font-bold text-slate-950 dark:text-white mb-8">Filter Products</h2>
-                            <FilterSidebar
-                                selectedCategories={selectedCategories}
-                                priceRange={priceRange}
-                                minRating={minRating}
-                                onFilterChange={handleFilterChange}
-                            />
-                        </div>
                     </div>
                 </div>
             </div>

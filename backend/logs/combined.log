@@ -88,3 +88,22 @@
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-26T05:38:17.909Z"}
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-02-26T05:55:11.051Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-26T05:55:11.832Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-02-26T06:22:53.273Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-02-26T06:22:54.647Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-26T06:36:11.050Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-02-26T06:36:13.737Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-02-26T06:50:14.048Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-26T06:50:14.167Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-26T06:50:14.956Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-02-26T06:57:23.807Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-26T06:57:23.953Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-02-26T06:57:24.766Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-02-26T07:02:35.173Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-26T07:02:35.331Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-02-26T07:02:36.181Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-02-26T07:15:12.189Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-02-26T07:15:13.085Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-02-26T07:15:14.756Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-02-26T07:34:20.555Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-02-26T07:34:20.720Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-02-26T07:34:21.493Z"}

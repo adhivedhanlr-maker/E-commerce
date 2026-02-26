@@ -258,7 +258,7 @@ const Navbar = () => {
                     {/* Search - Expandable on Mobile */}
                     <div className="flex items-center" ref={searchRef}>
                         <div className={cn(
-                            "group relative flex items-center bg-secondary-100 rounded-full h-10 px-4 transition-all hover:bg-secondary-200 dark:bg-white/5 dark:hover:bg-white/10",
+                            "group relative flex items-center h-10 px-3 transition-all",
                             "hidden lg:flex" // Keep desktop behavior
                         )}>
                             <button
@@ -269,12 +269,12 @@ const Navbar = () => {
                             </button>
                             <input
                                 type="text"
-                                placeholder="Search our catalog..."
+                                placeholder="Search catalogue..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
-                                className="bg-transparent border-none focus:ring-0 text-[13px] ml-2 w-40 placeholder:text-slate-400 dark:text-white"
+                                className="bg-transparent border-none focus:ring-0 text-[13px] ml-2 w-36 placeholder:text-slate-400 dark:text-white transition-all focus:w-48"
                             />
 
                             {/* Suggestions Dropdown (Desktop) */}
@@ -285,7 +285,7 @@ const Navbar = () => {
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 10, scale: 0.98 }}
                                         transition={{ duration: 0.2, ease: "easeOut" }}
-                                        className="absolute top-12 left-0 w-[420px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 dark:border-white/10 overflow-hidden z-50 p-3 ring-1 ring-black/5"
+                                        className="absolute top-12 left-1/2 -translate-x-1/2 w-[450px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl shadow-premium border border-slate-100 dark:border-white/5 overflow-hidden z-50 p-4"
                                     >
                                         {isLoadingSuggestions ? (
                                             <div className="py-12 flex flex-col items-center justify-center space-y-4">
@@ -364,7 +364,7 @@ const Navbar = () => {
                                         initial={{ width: 0, opacity: 0 }}
                                         animate={{ width: "calc(100vw - 32px)", opacity: 1 }}
                                         exit={{ width: 0, opacity: 0 }}
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full h-12 shadow-premium flex items-center dark:bg-slate-900 border border-secondary-200/50 dark:border-white/10 z-[60]"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-lg rounded-full h-12 flex items-center dark:bg-slate-900/80 border border-slate-100 dark:border-white/5 z-[60]"
                                     >
                                         <div className="pl-4 pr-2">
                                             <Search className="h-4 w-4 text-slate-400" />
