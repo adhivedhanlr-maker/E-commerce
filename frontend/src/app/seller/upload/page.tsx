@@ -16,16 +16,17 @@ import api from '@/services/api';
 const productSchema = z.object({
     name: z.string().min(3, 'Name must be at least 3 characters'),
     description: z.string().min(10, 'Description must be at least 10 characters'),
-    price: z.preprocess((val) => Number(val), z.number().positive('Price must be positive')),
+    price: z.coerce.number().positive('Price must be positive'),
     category: z.string().min(1, 'Category is required'),
     brand: z.string().min(1, 'Brand is required'),
-    countInStock: z.preprocess((val) => Number(val), z.number().int().min(0, 'Stock cannot be negative')),
+    countInStock: z.coerce.number().int().min(0, 'Stock cannot be negative'),
     images: z.array(z.string()).min(1, 'At least one image is required'),
     variants: z.array(z.object({
         size: z.string().optional(),
         color: z.string().optional(),
-        stock: z.preprocess((val) => Number(val), z.number().int().min(0)),
+        stock: z.coerce.number().int().min(0),
     })).optional(),
+
 });
 
 type ProductForm = z.infer<typeof productSchema>;
