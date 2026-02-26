@@ -65,7 +65,8 @@ function ShopContent() {
                 // Fetch all and filter client-side for now to maintain existing filter UI behavior
                 // or fetch with all params. For this implementation, we'll fetch based on search/category.
                 const response = await getProducts(params);
-                const products = response?.data?.products ?? response?.products ?? [];
+                // Corrected data extraction for the specific API response structure
+                const products = response?.data?.data?.products ?? response?.data?.products ?? response?.products ?? [];
                 setFetchedProducts(products);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -75,7 +76,7 @@ function ShopContent() {
         };
 
         fetchAllProducts();
-    }, [keywordParam]);
+    }, [keywordParam, catParam]);
 
     const filteredAndSortedProducts = useMemo(() => {
         return fetchedProducts.filter(product => {
