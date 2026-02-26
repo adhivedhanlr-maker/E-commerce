@@ -67,6 +67,7 @@ function ShopContent() {
                 const response = await getProducts(params);
                 // Corrected data extraction for the specific API response structure
                 const products = response?.data?.data?.products ?? response?.data?.products ?? response?.products ?? [];
+                console.log('DEBUG: Fetched products:', products);
                 setFetchedProducts(products);
             } catch (error) {
                 console.error('Error fetching products:', error);
