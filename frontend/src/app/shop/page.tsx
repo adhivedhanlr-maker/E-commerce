@@ -43,8 +43,8 @@ function ShopContent() {
         if (catParam) {
             const mapping: Record<string, string> = {
                 'electronics': 'Electronics',
-                'fashion': 'Fashion',
-                'home': 'Home & Living',
+                'fashion': 'Apparel',
+                'home': 'Furniture',
                 'lifestyle': 'Lifestyle',
             };
             const category = mapping[catParam.toLowerCase()];
@@ -52,7 +52,7 @@ function ShopContent() {
                 setSelectedCategories([category]);
             }
         }
-    }, [catParam, selectedCategories]);
+    }, [catParam]);
 
     // Fetch products from backend
     useEffect(() => {

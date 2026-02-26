@@ -58,8 +58,8 @@ const Navbar = () => {
             setIsLoadingSuggestions(true);
             try {
                 const response = await getProducts({ keyword: searchQuery, pageSize: 6 });
-                // Robust response handling for different API shapes
-                const products = response?.data?.products || response?.products || response || [];
+                // Robust response handling for the deeper nested API shape
+                const products = response?.data?.data?.products || response?.data?.products || response?.products || response || [];
                 setSuggestions(Array.isArray(products) ? products : []);
                 setIsSuggestionsOpen(true);
             } catch (error) {
@@ -157,8 +157,8 @@ const Navbar = () => {
                                     <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">Categories</p>
                                     <div className="space-y-4">
                                         <Link href="/shop?cat=electronics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Electronics</Link>
-                                        <Link href="/shop?cat=fashion" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Fashion</Link>
-                                        <Link href="/shop?cat=home" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Home & Living</Link>
+                                        <Link href="/shop?cat=fashion" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Apparel</Link>
+                                        <Link href="/shop?cat=home" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Furniture</Link>
                                     </div>
                                 </div>
                             </div>
@@ -225,10 +225,10 @@ const Navbar = () => {
                                                 <Link href="/shop?cat=electronics" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Electronics</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=fashion" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Fashion</Link>
+                                                <Link href="/shop?cat=fashion" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Apparel</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=home" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Home & Living</Link>
+                                                <Link href="/shop?cat=home" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Furniture</Link>
                                             </DropdownMenuItem>
                                         </div>
                                     </div>
