@@ -55,11 +55,6 @@ const Footer = () => {
                                     </Link>
                                 </li>
                             ))}
-                            <li>
-                                <Link href="/seller/register" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">
-                                    Register as Business
-                                </Link>
-                            </li>
                         </ul>
                     </div>
 
