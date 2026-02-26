@@ -5,7 +5,7 @@ export const loginUser = async (credentials: Record<string, string>) => {
     return data;
 };
 
-export const registerUser = async (userData: Record<string, string>) => {
+export const registerUser = async (userData: Record<string, string | undefined>) => {
     const { data } = await api.post('/auth/register', userData);
     return data;
 };

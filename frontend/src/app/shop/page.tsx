@@ -53,7 +53,9 @@ function ShopContent() {
                 setSelectedCategories([category]);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [catParam]);
+
 
     // Fetch products from backend
     useEffect(() => {
