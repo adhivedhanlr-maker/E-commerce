@@ -7,7 +7,13 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecommerce');
+        const uri = process.env.MONGO_URI;
+        if (!uri) {
+            logger.error('CRITICAL: MONGO_URI is not defined in environment variables!');
+        } else {
+            logger.info('Attempting to connect to MongoDB Atlas...');
+        }
+        const conn = await mongoose.connect(uri || 'mongodb://localhost:27017/ecommerce');
         logger.info(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error: any) {
         logger.error(`Error: ${error.message}`);
