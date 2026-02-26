@@ -4,7 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Upload, Package, BarChart3, Settings, Plus, LayoutGrid, Zap } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 export default function SellerDashboardPage() {
@@ -91,6 +92,3 @@ export default function SellerDashboardPage() {
     );
 }
 
-function cn(...inputs: any[]) {
-    return inputs.filter(Boolean).join(' ');
-}

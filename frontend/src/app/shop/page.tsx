@@ -9,7 +9,6 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { getProducts } from '@/services/productService';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Badge } from '@/components/ui/badge';
 
 interface Product {
     _id: string;
@@ -79,7 +78,7 @@ function ShopContent() {
         };
 
         fetchAllProducts();
-    }, [keywordParam, catParam]);
+    }, [keywordParam, catParam, selectedCategories]);
 
     const filteredAndSortedProducts = useMemo(() => {
         return fetchedProducts.filter(product => {
