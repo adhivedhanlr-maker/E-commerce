@@ -274,7 +274,7 @@ const Navbar = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onFocus={() => searchQuery.length >= 2 && setIsSuggestionsOpen(true)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
-                                className="bg-transparent border-none focus:ring-0 text-[13px] ml-2 w-36 placeholder:text-slate-400 dark:text-white transition-all focus:w-48"
+                                className="bg-transparent border-0 outline-none ring-0 shadow-none focus:ring-0 focus:outline-none text-[13px] ml-2 w-36 placeholder:text-slate-400 dark:text-white transition-all focus:w-48 appearance-none"
                             />
 
                             {/* Suggestions Dropdown (Desktop) */}
