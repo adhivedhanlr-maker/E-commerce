@@ -36,13 +36,20 @@ export default function SellerUploadPage() {
     const router = useRouter();
     const [imageUrl, setImageUrl] = useState('');
 
-    const { register, handleSubmit, control, setValue, watch, formState: { errors, isSubmitting } } = useForm<ProductForm>({
+    const { register, handleSubmit, control, setValue, watch, formState: { errors, isSubmitting } } = useForm({
         resolver: zodResolver(productSchema),
         defaultValues: {
+            name: '',
+            description: '',
+            price: 0,
+            category: '',
+            brand: '',
+            countInStock: 0,
             images: [],
             variants: [{ size: '', color: '', stock: 0 }]
         }
     });
+
 
     const { fields, append, remove } = useFieldArray({
         control,
