@@ -36,7 +36,7 @@ export default function SellerUploadPage() {
     const router = useRouter();
     const [imageUrl, setImageUrl] = useState('');
 
-    const { register, handleSubmit, control, setValue, watch, formState: { errors, isSubmitting } } = useForm({
+    const { register, handleSubmit, control, setValue, formState: { errors, isSubmitting } } = useForm<ProductForm>({
         resolver: zodResolver(productSchema),
         defaultValues: {
             name: '',
@@ -56,7 +56,7 @@ export default function SellerUploadPage() {
         name: "variants"
     });
 
-    const images = watch('images');
+    const images = useWatch({ control, name: 'images' }) || [];
 
     const addImage = () => {
         if (imageUrl.trim()) {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Users, 
@@ -34,7 +34,7 @@ export default function AdminSellersPage() {
             if (res.success) {
                 setSellers(res.data);
             }
-        } catch (_err) {
+        } catch {
             console.error('Failed to fetch sellers');
         } finally {
             setLoading(false);
@@ -52,7 +52,7 @@ export default function AdminSellersPage() {
                 setSelectedSeller(null);
                 fetchSellers();
             }
-        } catch (err) {
+        } catch {
             alert('Failed to update status');
         }
     };

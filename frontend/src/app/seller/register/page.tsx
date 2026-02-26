@@ -13,8 +13,7 @@ import {
     ChevronLeft,
     Save,
     AlertCircle,
-    Info,
-    UploadCloud
+    Info
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -24,7 +23,6 @@ import { useForm, UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { saveOnboardingDraft, submitOnboarding, getOnboardingStatus } from '@/services/sellerService';
-import { useAuth } from '@/store/useAuth';
 import { DocumentUpload } from '@/components/seller/DocumentUpload';
 import { cn } from '@/lib/utils';
 import { IBusinessProfile } from '@/types/seller';
@@ -80,6 +78,33 @@ const STEPS = [
     { id: 5, title: 'Operations', icon: Package }
 ];
 
+interface FlatOnboardingForm {
+    businessName: string;
+    tradeName: string;
+    businessType: 'Proprietorship' | 'Partnership' | 'LLP' | 'Pvt Ltd' | 'OPC';
+    dateOfIncorporation: string;
+    natureOfBusiness: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider';
+    category: string;
+    panNumber: string;
+    gstin?: string;
+    cin?: string;
+    msmeNumber?: string;
+    ownerName: string;
+    aadhaarNumber: string;
+    mobileNumber: string;
+    address: string;
+    accountHolderName: string;
+    bankName: string;
+    accountNumber: string;
+    ifscCode: string;
+    upiId?: string;
+    warehouseAddress: string;
+    pickupAddress: string;
+    returnAddress: string;
+    estimatedTurnover: string;
+    commissionAccepted: boolean;
+}
+
 export default function AdvancedSellerRegister() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(1);
@@ -87,7 +112,7 @@ export default function AdvancedSellerRegister() {
     const [isLoading, setIsLoading] = useState(true);
     const [status, setStatus] = useState<string>('none');
 
-    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
         resolver: zodResolver(stepSchemas[currentStep - 1]),
         mode: 'onChange'
     });
@@ -100,10 +125,16 @@ export default function AdvancedSellerRegister() {
                     setStatus(res.data.status);
                     if (res.data.profile) {
                         setFormData(res.data.profile);
-                        reset(res.data.profile);
+                        // Flatten data for the form reset
+                        const flatData = {
+                            ...res.data.profile,
+                            ...res.data.profile.bankDetails,
+                            ...res.data.profile.operationalDetails
+                        } as unknown as FlatOnboardingForm;
+                        reset(flatData);
                     }
                 }
-            } catch (_err) {
+            } catch {
                 console.error('Failed to fetch draft');
             } finally {
                 setIsLoading(false);
@@ -112,17 +143,47 @@ export default function AdvancedSellerRegister() {
         fetchStatus();
     }, [reset]);
 
-    const handleNext = async (data: any) => {
-        const stepData = { ...formData, ...data };
-        setFormData(stepData);
+    const handleNext = async (data: FlatOnboardingForm) => {
+        // Map flat data to IBusinessProfile
+        const mappedData: Partial<IBusinessProfile> = {
+            ...formData,
+            businessName: data.businessName,
+            tradeName: data.tradeName,
+            businessType: data.businessType,
+            dateOfIncorporation: data.dateOfIncorporation,
+            natureOfBusiness: data.natureOfBusiness,
+            category: data.category,
+            panNumber: data.panNumber,
+            gstin: data.gstin,
+            cin: data.cin,
+            msmeNumber: data.msmeNumber,
+            ownerName: data.ownerName,
+            aadhaarNumber: data.aadhaarNumber,
+            mobileNumber: data.mobileNumber,
+            address: data.address,
+            bankDetails: {
+                accountHolderName: data.accountHolderName,
+                bankName: data.bankName,
+                accountNumber: data.accountNumber,
+                ifscCode: data.ifscCode,
+                upiId: data.upiId
+            },
+            operationalDetails: {
+                warehouseAddress: data.warehouseAddress,
+                pickupAddress: data.pickupAddress,
+                returnAddress: data.returnAddress,
+                estimatedTurnover: data.estimatedTurnover,
+                commissionAccepted: data.commissionAccepted
+            }
+        };
+
+        setFormData(mappedData);
         
         if (currentStep < 5) {
-            // Save draft automatically on next
-            await saveOnboardingDraft(stepData);
+            await saveOnboardingDraft(mappedData);
             setCurrentStep(prev => prev + 1);
         } else {
-            // Final Submit
-            const res = await submitOnboarding(stepData as IBusinessProfile);
+            const res = await submitOnboarding(mappedData as IBusinessProfile);
             if (res.success) {
                 setStatus('pending');
             }
@@ -239,7 +300,7 @@ export default function AdvancedSellerRegister() {
                                     {/* STEP CONTENT RENDERING */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {renderStepContent(currentStep, register, errors, setValue, watch, (docKey: string, file: File) => {
-                                            setFormData((prev: any) => ({
+                                            setFormData((prev: Partial<IBusinessProfile>) => ({
                                                 ...prev,
                                                 documents: {
                                                     ...(prev.documents || {}),
@@ -294,10 +355,10 @@ export default function AdvancedSellerRegister() {
 // --- RENDERING HELPERS ---
 function renderStepContent(
     step: number, 
-    register: UseFormRegister<any>, 
-    errors: FieldErrors<any>, 
-    setValue: UseFormSetValue<any>, 
-    watch: UseFormWatch<any>, 
+    register: UseFormRegister<FlatOnboardingForm>, 
+    errors: FieldErrors<FlatOnboardingForm>, 
+    setValue: UseFormSetValue<FlatOnboardingForm>, 
+    watch: UseFormWatch<FlatOnboardingForm>, 
     handleDocUpload: (key: string, file: File) => void
 ) {
     switch (step) {
@@ -384,9 +445,9 @@ function renderStepContent(
 
 interface FormFieldProps {
     label: string;
-    name: string;
-    register: UseFormRegister<any>;
-    errors: FieldErrors<any>;
+    name: keyof FlatOnboardingForm;
+    register: UseFormRegister<FlatOnboardingForm>;
+    errors: FieldErrors<FlatOnboardingForm>;
     placeholder: string;
     type?: string;
 }
