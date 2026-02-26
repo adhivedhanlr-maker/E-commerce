@@ -9,6 +9,8 @@ import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes';
 import categoryRoutes from './routes/category.routes';
 import orderRoutes from './routes/order.routes';
+import sellerRoutes from './routes/seller.routes';
+import adminRoutes from './routes/admin.routes';
 import errorHandler from './middleware/error.middleware';
 
 dotenv.config();
@@ -40,6 +42,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/seller', sellerRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is running...');
