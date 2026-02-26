@@ -49,7 +49,6 @@ const Navbar = () => {
     // Debounced search for suggestions
     useEffect(() => {
         const fetchSuggestions = async () => {
-            console.log('Search query:', searchQuery);
             if (searchQuery.length < 2) {
                 setSuggestions([]);
                 setIsSuggestionsOpen(false);
@@ -57,15 +56,12 @@ const Navbar = () => {
             }
 
             setIsLoadingSuggestions(true);
-            setIsSuggestionsOpen(true);
             try {
-                console.log('Fetching products for:', searchQuery);
-                const response = await getProducts({ keyword: searchQuery, pageSize: 5 });
-                console.log('API Response:', response);
-                // response shape: { success, message, data: { products, page, pages } }
-                const products = response?.data?.products ?? response?.products ?? [];
-                console.log('Found products:', products.length);
-                setSuggestions(products);
+                const response = await getProducts({ keyword: searchQuery, pageSize: 6 });
+                // Robust response handling for different API shapes
+                const products = response?.data?.products || response?.products || response || [];
+                setSuggestions(Array.isArray(products) ? products : []);
+                setIsSuggestionsOpen(true);
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
                 setSuggestions([]);
@@ -103,8 +99,6 @@ const Navbar = () => {
             router.push(`/shop?keyword=${encodeURIComponent(searchQuery.trim())}`);
             setIsSuggestionsOpen(false);
             setIsSearchOpen(false);
-            // Optionally clear search after submission if desired, 
-            // but usually keeping it helps the user know what they searched for.
         }
     };
 
@@ -287,43 +281,74 @@ const Navbar = () => {
                             <AnimatePresence>
                                 {isSuggestionsOpen && (
                                     <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: 10 }}
-                                        className="absolute top-12 left-0 w-[300px] bg-white dark:bg-slate-900 rounded-2xl shadow-premium border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
+                                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                                        transition={{ duration: 0.2, ease: "easeOut" }}
+                                        className="absolute top-12 left-0 w-[420px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 dark:border-white/10 overflow-hidden z-50 p-3 ring-1 ring-black/5"
                                     >
                                         {isLoadingSuggestions ? (
-                                            <div className="p-4 text-center">
-                                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent mx-auto"></div>
+                                            <div className="py-12 flex flex-col items-center justify-center space-y-4">
+                                                <div className="relative">
+                                                    <div className="h-10 w-10 rounded-full border-2 border-primary-100 dark:border-primary-900/30"></div>
+                                                    <div className="absolute top-0 h-10 w-10 rounded-full border-2 border-primary-600 border-t-transparent animate-spin"></div>
+                                                </div>
+                                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 animate-pulse">Searching Catalogue</p>
                                             </div>
                                         ) : suggestions.length > 0 ? (
                                             <div className="space-y-1">
-                                                {suggestions.map((product) => (
-                                                    <button
-                                                        key={product._id}
-                                                        onClick={() => handleSuggestionClick(product._id)}
-                                                        className="w-full flex items-center p-2 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
-                                                    >
-                                                        <div className="h-10 w-10 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
-                                                            {product.images?.[0] ? <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" /> : <div className="h-full w-full bg-secondary-200 dark:bg-white/10" />}
-                                                        </div>
-                                                        <div className="ml-3 overflow-hidden">
-                                                            <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
-                                                            <p className="text-[10px] text-primary-600 font-medium">${product.price}</p>
-                                                        </div>
-                                                    </button>
-                                                ))}
-                                                <Link
-                                                    href={`/shop?keyword=${searchQuery}`}
-                                                    onClick={() => setIsSuggestionsOpen(false)}
-                                                    className="block w-full text-center py-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors border-t border-secondary-100 dark:border-white/5 mt-1"
+                                                <div className="px-3 py-2 mb-2">
+                                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600/70">Top Matches</p>
+                                                </div>
+                                                <div className="grid gap-1">
+                                                    {suggestions.map((product) => (
+                                                        <button
+                                                            key={product._id}
+                                                            onClick={() => handleSuggestionClick(product._id)}
+                                                            className="group w-full flex items-center p-3 hover:bg-primary-50 dark:hover:bg-primary-600/10 rounded-2xl transition-all duration-300 text-left"
+                                                        >
+                                                            <div className="h-14 w-14 rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 flex-shrink-0 relative">
+                                                                {product.images?.[0] ? (
+                                                                    <Image
+                                                                        src={product.images[0]}
+                                                                        alt={product.name}
+                                                                        width={56}
+                                                                        height={56}
+                                                                        className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-110"
+                                                                    />
+                                                                ) : (
+                                                                    <div className="h-full w-full bg-slate-200 dark:bg-white/10" />
+                                                                )}
+                                                            </div>
+                                                            <div className="ml-4 flex-1 overflow-hidden">
+                                                                <p className="text-sm font-bold text-slate-950 dark:text-white truncate group-hover:text-primary-600 transition-colors">
+                                                                    {product.name}
+                                                                </p>
+                                                                <div className="flex items-center mt-1 space-x-3">
+                                                                    <p className="text-sm font-medium text-slate-900 dark:text-slate-300">${product.price}</p>
+                                                                    <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                                                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">In Stock</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0">
+                                                                <Zap className="h-4 w-4 text-primary-600" />
+                                                            </div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                <button
+                                                    onClick={() => handleSearchSubmit()}
+                                                    className="w-full mt-2 py-4 text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 hover:text-white hover:bg-primary-600 transition-all duration-300 rounded-2xl border-t border-slate-100 dark:border-white/5"
                                                 >
-                                                    View All Results
-                                                </Link>
+                                                    View All Results for "{searchQuery}"
+                                                </button>
                                             </div>
                                         ) : (
-                                            <div className="p-4 text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
-                                                No products found
+                                            <div className="py-12 flex flex-col items-center justify-center space-y-3">
+                                                <div className="h-12 w-12 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center">
+                                                    <Search className="h-5 w-5 text-slate-300" />
+                                                </div>
+                                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">No results found</p>
                                             </div>
                                         )}
                                     </motion.div>
@@ -370,11 +395,11 @@ const Navbar = () => {
                                                     initial={{ opacity: 0, y: 10 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     exit={{ opacity: 0, y: 10 }}
-                                                    className="absolute top-14 left-0 w-full bg-white dark:bg-slate-900 rounded-2xl shadow-premium border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
+                                                    className="absolute top-14 left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
                                                 >
                                                     {isLoadingSuggestions ? (
-                                                        <div className="p-4 text-center">
-                                                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent mx-auto"></div>
+                                                        <div className="py-8 text-center text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                                            Searching...
                                                         </div>
                                                     ) : suggestions.length > 0 ? (
                                                         <div className="space-y-1">
@@ -382,10 +407,10 @@ const Navbar = () => {
                                                                 <button
                                                                     key={product._id}
                                                                     onClick={() => handleSuggestionClick(product._id)}
-                                                                    className="w-full flex items-center p-2 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
+                                                                    className="w-full flex items-center p-3 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
                                                                 >
-                                                                    <div className="h-10 w-10 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
-                                                                        {product.images?.[0] ? <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-cover h-full w-full" /> : <div className="h-full w-full bg-secondary-200 dark:bg-white/10" />}
+                                                                    <div className="h-12 w-12 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
+                                                                        {product.images?.[0] ? <Image src={product.images[0]} alt={product.name} width={48} height={48} className="object-cover h-full w-full" /> : <div className="h-full w-full bg-secondary-200 dark:bg-white/10" />}
                                                                     </div>
                                                                     <div className="ml-3 overflow-hidden">
                                                                         <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
@@ -393,16 +418,15 @@ const Navbar = () => {
                                                                     </div>
                                                                 </button>
                                                             ))}
-                                                            <Link
-                                                                href={`/shop?keyword=${searchQuery}`}
-                                                                onClick={() => { setIsSuggestionsOpen(false); setIsSearchOpen(false); }}
-                                                                className="block w-full text-center py-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors border-t border-secondary-100 dark:border-white/5 mt-1"
+                                                            <button
+                                                                onClick={() => handleSearchSubmit()}
+                                                                className="block w-full text-center py-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors border-t border-secondary-100 dark:border-white/5 mt-1"
                                                             >
                                                                 View All Results
-                                                            </Link>
+                                                            </button>
                                                         </div>
                                                     ) : (
-                                                        <div className="p-4 text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                                        <div className="py-8 text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
                                                             No products found
                                                         </div>
                                                     )}
