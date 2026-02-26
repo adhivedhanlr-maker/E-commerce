@@ -340,7 +340,7 @@ const Navbar = () => {
                                                     onClick={() => handleSearchSubmit()}
                                                     className="w-full mt-2 py-4 text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 hover:text-white hover:bg-primary-600 transition-all duration-300 rounded-2xl border-t border-slate-100 dark:border-white/5"
                                                 >
-                                                    View All Results for "{searchQuery}"
+                                                    View All Results for &quot;{searchQuery}&quot;
                                                 </button>
                                             </div>
                                         ) : (
