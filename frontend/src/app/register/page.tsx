@@ -20,14 +20,9 @@ const registerSchema = z.object({
     email: z.string().email('Invalid email address'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirmPassword: z.string(),
-    isSeller: z.boolean(),
-    shopName: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
-}).refine((data) => !data.isSeller || (data.isSeller && data.shopName && data.shopName.length > 2), {
-    message: "Shop name is required for business accounts",
-    path: ["shopName"],
 });
 
 type RegisterForm = z.infer<typeof registerSchema>;
@@ -36,26 +31,22 @@ export default function RegisterPage() {
     const router = useRouter();
     const setUser = useAuth((state) => state.setUser);
 
-    const { register, handleSubmit, watch, formState: { errors, isSubmitting }, setError } = useForm<RegisterForm>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterForm>({
         resolver: zodResolver(registerSchema),
-        defaultValues: { isSeller: false }
     });
-
-    const isSeller = watch('isSeller');
 
     const onSubmit = async (data: RegisterForm) => {
         try {
-            const rest = {
+            const userData = {
                 name: data.name,
                 email: data.email,
                 password: data.password,
-                role: data.isSeller ? 'seller' : 'user',
-                shopName: data.isSeller ? data.shopName : undefined
+                role: 'user'
             };
-            const response = await registerUser(rest);
+            const response = await registerUser(userData);
             if (response.success) {
                 setUser(response.data);
-                router.push(data.isSeller ? '/seller/dashboard' : '/');
+                router.push('/');
             }
         } catch (error) {
             const err = error as { response?: { data?: { message?: string } } };
@@ -160,44 +151,6 @@ export default function RegisterPage() {
                                     <p className="text-[10px] text-red-500 font-bold ml-1 uppercase tracking-wider">
                                         {errors.password?.message || errors.confirmPassword?.message}
                                     </p>
-                                )}
-
-                                <div className="pt-4 border-t border-slate-100 dark:border-white/5">
-                                    <label className="flex items-center space-x-3 cursor-pointer group p-3 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-white/5 dark:border-white/10 hover:border-primary-600 transition-all">
-                                        <input
-                                            type="checkbox"
-                                            {...register('isSeller')}
-                                            className="h-5 w-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500 cursor-pointer"
-                                        />
-                                        <div className="flex-1">
-                                            <p className="text-sm font-bold text-slate-900 dark:text-white">Register as Business / Seller</p>
-                                            <p className="text-[10px] text-slate-500 font-medium tracking-tight">Access seller dashboard and list your products</p>
-                                        </div>
-                                        <Building2 className="h-5 w-5 text-slate-400 group-hover:text-primary-600" />
-                                    </label>
-                                </div>
-
-                                {isSeller && (
-                                    <motion.div
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        className="space-y-2 pt-2"
-                                    >
-                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1 leading-none">Shop Name</label>
-                                        <div className="relative">
-                                            <Input
-                                                {...register('shopName')}
-                                                type="text"
-                                                placeholder="Your Business Name"
-                                                className={cn(
-                                                    "rounded-xl border-slate-200 bg-slate-50/50 pl-11 h-12 text-sm focus-visible:ring-primary-500 transition-all",
-                                                    errors.shopName && "border-red-500 bg-red-50/50"
-                                                )}
-                                            />
-                                            <Building2 className="absolute left-4 top-4 h-4 w-4 text-slate-400" />
-                                        </div>
-                                        {errors.shopName && <p className="text-[10px] text-red-500 font-bold ml-1 uppercase tracking-wider">{errors.shopName.message}</p>}
-                                    </motion.div>
                                 )}
                             </div>
 
