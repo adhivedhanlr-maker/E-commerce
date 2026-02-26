@@ -16,8 +16,8 @@ const connectDB = async () => {
         const conn = await mongoose.connect(uri || 'mongodb://localhost:27017/ecommerce');
         logger.info(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error: any) {
-        logger.error(`Error: ${error.message}`);
-        process.exit(1);
+        logger.error(`MongoDB connection error: ${error.message}`);
+        // Removed process.exit(1) to allow the server to start for health checks
     }
 };
 
