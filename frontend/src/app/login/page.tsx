@@ -149,7 +149,7 @@ export default function LoginPage() {
                                             setUser(googleResponse.data);
                                             router.push('/');
                                         }
-                                    } catch (_error) {
+                                    } catch {
                                         setError('root', { message: 'Google Sign-In failed' });
                                     }
                                 }}
