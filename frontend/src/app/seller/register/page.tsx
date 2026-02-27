@@ -109,6 +109,13 @@ interface FlatOnboardingForm extends Record<string, string | boolean | number | 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
+interface jsPDFWithAutoTable extends jsPDF {
+    lastAutoTable?: {
+        finalY: number;
+    };
+}
+
+
 export default function AdvancedSellerRegister() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(1);
@@ -131,7 +138,7 @@ export default function AdvancedSellerRegister() {
 
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resolver: zodResolver(stepSchemas[currentStep - 1]) as any,
+        resolver: zodResolver(stepSchemas[currentStep - 1]),
         mode: 'onChange',
         defaultValues: {
             natureOfBusiness: 'Retailer',
@@ -228,7 +235,7 @@ export default function AdvancedSellerRegister() {
             });
 
             // Address Info
-            let finalY = (doc as any).lastAutoTable?.finalY || 100;
+            let finalY = (doc as jsPDFWithAutoTable).lastAutoTable?.finalY || 100;
             const addressY = finalY + 15;
             doc.setFontSize(16);
             doc.text('Shop Address', 20, addressY);
@@ -249,7 +256,7 @@ export default function AdvancedSellerRegister() {
             });
 
             // Banking Info
-            finalY = (doc as any).lastAutoTable?.finalY || 180;
+            finalY = (doc as jsPDFWithAutoTable).lastAutoTable?.finalY || 180;
             const bankY = finalY + 15;
             doc.setFontSize(16);
             doc.text('Banking Details', 20, bankY);
