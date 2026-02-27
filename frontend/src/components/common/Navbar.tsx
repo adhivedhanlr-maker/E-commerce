@@ -325,7 +325,7 @@ const Navbar = () => {
                                                                     {product.name}
                                                                 </p>
                                                                 <div className="flex items-center mt-1 space-x-3">
-                                                                    <p className="text-sm font-medium text-slate-900 dark:text-slate-300">${product.price}</p>
+                                                                    <p className="text-sm font-medium text-slate-900 dark:text-slate-300">₹{product.price}</p>
                                                                     <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
                                                                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">In Stock</p>
                                                                 </div>
@@ -414,7 +414,7 @@ const Navbar = () => {
                                                                     </div>
                                                                     <div className="ml-3 overflow-hidden">
                                                                         <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
-                                                                        <p className="text-[10px] text-primary-600 font-medium">${product.price}</p>
+                                                                        <p className="text-[10px] text-primary-600 font-medium">₹{product.price}</p>
                                                                     </div>
                                                                 </button>
                                                             ))}

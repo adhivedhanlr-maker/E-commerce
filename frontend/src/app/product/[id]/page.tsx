@@ -243,7 +243,7 @@ export default function ProductPage({ params }: PageProps) {
                         {/* Features Info */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t md:border-none">
                             {[
-                                { icon: Truck, label: 'Free Shipping', sub: 'Orders over $50' },
+                                { icon: Truck, label: 'Free Shipping', sub: 'Orders over ₹50' },
                                 { icon: ShieldCheck, label: '1 Year Warranty', sub: 'Nexus Assured' },
                                 { icon: RefreshCw, label: 'Easy Returns', sub: '30 Days window' },
                             ].map((item, i) => (

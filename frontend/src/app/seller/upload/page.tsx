@@ -151,7 +151,7 @@ export default function SellerUploadPage() {
 
                                     <div className="grid grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-white/5">
                                         <div className="space-y-2">
-                                            <label className="text-xs font-black uppercase tracking-[0.15em] text-slate-400 text-primary-600">Price ($)</label>
+                                            <label className="text-xs font-black uppercase tracking-[0.15em] text-slate-400 text-primary-600">Price (₹)</label>
                                             <Input
                                                 {...register('price')}
                                                 type="number"

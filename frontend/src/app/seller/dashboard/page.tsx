@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 export default function SellerDashboardPage() {
     const stats = [
         { label: 'Total Products', value: '0', icon: Package, color: 'bg-blue-50 text-blue-600' },
-        { label: 'Total Sales', value: '$0.00', icon: BarChart3, color: 'bg-emerald-50 text-emerald-600' },
+        { label: 'Total Sales', value: '₹0.00', icon: BarChart3, color: 'bg-emerald-50 text-emerald-600' },
         { label: 'Pending Orders', value: '0', icon: Zap, color: 'bg-amber-50 text-amber-600' },
     ];
 
