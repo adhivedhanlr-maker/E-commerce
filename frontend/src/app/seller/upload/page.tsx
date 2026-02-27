@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion } from 'framer-motion';
@@ -27,7 +27,6 @@ const productSchema = z.object({
         stock: z.preprocess((val) => Number(val) || 0, z.number().int().min(0)),
     })).optional(),
 
-
 });
 
 type ProductForm = z.infer<typeof productSchema>;
@@ -37,7 +36,8 @@ export default function SellerUploadPage() {
     const [imageUrl, setImageUrl] = useState('');
 
     const { register, handleSubmit, control, setValue, formState: { errors, isSubmitting } } = useForm<ProductForm>({
-        resolver: zodResolver(productSchema),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(productSchema) as any,
         defaultValues: {
             name: '',
             description: '',
