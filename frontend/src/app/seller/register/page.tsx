@@ -119,6 +119,12 @@ export default function AdvancedSellerRegister() {
     const [isOtpVerified, setIsOtpVerified] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [globalError, setGlobalError] = useState<string | null>(null);
+    const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
+
+    const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 3000);
+    };
 
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -299,6 +305,11 @@ export default function AdvancedSellerRegister() {
 
             setFormData(mappedData);
 
+            if (currentStep === 1 && otpSent && !isOtpVerified) {
+                setGlobalError('Please verify your mobile number with the OTP before proceeding.');
+                return;
+            }
+
             if (currentStep < 6) {
                 const res = await saveOnboardingDraft(mappedData);
                 if (res.success) {
@@ -331,8 +342,44 @@ export default function AdvancedSellerRegister() {
     };
 
     const onSaveDraft = async () => {
-        await saveOnboardingDraft(formData);
-        alert('Draft saved successfully!');
+        const data = watch(); // Get latest data from form
+        const mappedData: Partial<IBusinessProfile> = {
+            ...formData,
+            businessName: data.businessName || formData.businessName,
+            ownerName: data.ownerName || formData.ownerName,
+            mobileNumber: data.mobileNumber || formData.mobileNumber,
+            natureOfBusiness: data.natureOfBusiness || formData.natureOfBusiness,
+            category: data.category || formData.category,
+            panNumber: data.panNumber || formData.panNumber,
+            gstin: data.gstin || formData.gstin,
+            licenseNumber: data.licenseNumber || formData.licenseNumber,
+            udyamNumber: data.udyamNumber || formData.udyamNumber,
+        };
+
+        if (data.shopAddress_street) {
+            mappedData.shopAddress = {
+                street: data.shopAddress_street,
+                city: data.shopAddress_city,
+                district: data.shopAddress_district,
+                state: data.shopAddress_state,
+                pincode: data.shopAddress_pincode
+            };
+        }
+
+        setSubmitting(true);
+        try {
+            const res = await saveOnboardingDraft(mappedData);
+            if (res.success) {
+                setFormData(mappedData);
+                showToast('Draft saved successfully!');
+            } else {
+                setGlobalError(res.message || 'Failed to save draft');
+            }
+        } catch (err: any) {
+            setGlobalError(err.message || 'Error saving draft');
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -457,6 +504,15 @@ export default function AdvancedSellerRegister() {
                                             <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3">
                                                 <AlertCircle className="w-5 h-5 text-red-500" />
                                                 <p className="text-sm font-bold text-red-600 dark:text-red-400">{globalError}</p>
+                                            </div>
+                                        )}
+                                        {toast && (
+                                            <div className={cn(
+                                                "mt-4 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2",
+                                                toast.type === 'success' ? "bg-green-500/10 border border-green-500/20" : "bg-red-500/10 border border-red-500/20"
+                                            )}>
+                                                {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-green-500" /> : <AlertCircle className="w-5 h-5 text-red-500" />}
+                                                <p className={cn("text-sm font-bold", toast.type === 'success' ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400")}>{toast.message}</p>
                                             </div>
                                         )}
                                     </div>
