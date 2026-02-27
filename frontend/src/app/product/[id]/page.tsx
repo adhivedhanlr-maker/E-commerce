@@ -18,6 +18,7 @@ interface PageProps {
 
 export default function ProductPage({ params }: PageProps) {
     const { id } = use(params);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [productData, setProductData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -39,6 +40,7 @@ export default function ProductPage({ params }: PageProps) {
                     setError(res.message || 'Product not found');
                 }
             } catch (err: any) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 console.error('Error fetching product:', err);
                 setError(err.response?.data?.message || err.message || 'Failed to load product');
             } finally {
