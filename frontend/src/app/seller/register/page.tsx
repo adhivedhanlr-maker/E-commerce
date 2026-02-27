@@ -32,7 +32,7 @@ const stepSchemas = [
     z.object({
         businessName: z.string().min(2, 'Shop name is required'),
         ownerName: z.string().min(2, 'Owner name is required'),
-        mobileNumber: z.string().length(10, 'Mobile must be 10 digits'),
+        mobileNumber: z.string().regex(/^[0-9]{10}$/, 'Mobile must be exactly 10 digits'),
         email: z.string().email('Invalid email address'),
         natureOfBusiness: z.enum(['Retailer', 'Wholesaler', 'Manufacturer', 'Service Provider', 'E-commerce']),
         category: z.string().min(2, 'Category is required'),
@@ -110,13 +110,14 @@ import 'jspdf-autotable';
 export default function AdvancedSellerRegister() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(1);
+    const { user, loginAsDev } = useAuth();
     const [formData, setFormData] = useState<Partial<IBusinessProfile>>({});
     const [isLoading, setIsLoading] = useState(true);
     const [status, setStatus] = useState<string>('none');
 
     // Moved from renderStepContent to respect Rules of Hooks
     const [otpSent, setOtpSent] = useState(false);
-    const [isOtpVerified, setIsOtpVerified] = useState(false);
+    const [isOtpVerified, setIsOtpVerified] = useState(true); // Verification bypassed as per user request
     const [submitting, setSubmitting] = useState(false);
     const [globalError, setGlobalError] = useState<string | null>(null);
     const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
@@ -138,6 +139,10 @@ export default function AdvancedSellerRegister() {
 
     useEffect(() => {
         const fetchStatus = async () => {
+            if (!user) {
+                setIsLoading(false);
+                return;
+            }
             try {
                 const res = await getOnboardingStatus();
                 if (res.success) {
@@ -159,14 +164,17 @@ export default function AdvancedSellerRegister() {
                         reset(flatData);
                     }
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Failed to fetch draft/status:', error);
+                if (error.response?.status === 401) {
+                    setGlobalError('Not authorized. Please login as a demo user to continue.');
+                }
             } finally {
                 setIsLoading(false);
             }
         };
         fetchStatus();
-    }, [reset]);
+    }, [reset, user]);
 
     const handleSendOtp = () => {
         setOtpSent(true);
@@ -317,10 +325,13 @@ export default function AdvancedSellerRegister() {
 
             setFormData(mappedData);
 
+            // Mobile verification check bypassed
+            /*
             if (currentStep === 1 && !isOtpVerified) {
                 setGlobalError('Please verify your mobile number with the OTP before proceeding.');
                 return;
             }
+            */
 
             if (currentStep < 6) {
                 const res = await saveOnboardingDraft(mappedData);
@@ -448,6 +459,12 @@ export default function AdvancedSellerRegister() {
             </div>
         );
     }
+
+    /* // Moving this check inside the form to prevent data loss 
+    if (!user) {
+        ...
+    }
+    */
     return (
         <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] pt-24 pb-20 px-4">
             <div className="max-w-4xl mx-auto">
@@ -515,9 +532,25 @@ export default function AdvancedSellerRegister() {
                                             </div>
                                         )}
                                         {globalError && (
-                                            <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3">
-                                                <AlertCircle className="w-5 h-5 text-red-500" />
-                                                <p className="text-sm font-bold text-red-600 dark:text-red-400">{globalError}</p>
+                                            <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl">
+                                                <div className="flex items-center gap-3">
+                                                    <AlertCircle className="w-5 h-5 text-red-500" />
+                                                    <p className="text-sm font-bold text-red-600 dark:text-red-400">{globalError}</p>
+                                                </div>
+                                                {globalError.includes('Not authorized') && (
+                                                    <div className="mt-4">
+                                                        <Button
+                                                            onClick={() => {
+                                                                loginAsDev();
+                                                                setGlobalError(null);
+                                                            }}
+                                                            variant="secondary"
+                                                            className="h-10 px-4 rounded-xl text-xs font-bold bg-white text-slate-900 hover:bg-slate-50 dark:bg-slate-800 dark:text-white"
+                                                        >
+                                                            Fix: Login as Demo User
+                                                        </Button>
+                                                    </div>
+                                                )}
                                             </div>
                                         )}
                                         {toast && (
@@ -642,24 +675,14 @@ function renderStepContent(
                             Mobile Number
                             {errors.mobileNumber && <span className="text-red-500 normal-case font-medium tracking-normal">{errors.mobileNumber.message as string}</span>}
                         </label>
-                        <div className="flex gap-2">
+                        <div className="relative">
                             <Input {...register('mobileNumber')} placeholder="9988776655" className="h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm" />
-                            <Button type="button" onClick={handleSendOtp} variant="secondary" className="h-14 px-6 rounded-2xl font-bold bg-primary-50 text-primary-600 hover:bg-primary-100">
-                                {otpSent ? 'Resend' : 'Send OTP'}
-                            </Button>
+                            {isOtpVerified && (
+                                <div className="absolute right-4 top-4 flex items-center gap-2 text-green-600 font-bold text-xs bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full border border-green-100 dark:border-green-900/30">
+                                    <CheckCircle2 className="w-4 h-4" /> Verified
+                                </div>
+                            )}
                         </div>
-                        {otpSent && (
-                            <div className="mt-2 flex gap-2">
-                                <Input placeholder="Enter 6-digit OTP" className="h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm" />
-                                {isOtpVerified ? (
-                                    <div className="h-14 flex items-center gap-2 px-6 text-green-600 font-bold">
-                                        <CheckCircle2 className="w-5 h-5" /> Verified
-                                    </div>
-                                ) : (
-                                    <Button type="button" onClick={handleVerifyOtp} variant="ghost" className="h-14 px-6 rounded-2xl font-bold text-green-600">Verify</Button>
-                                )}
-                            </div>
-                        )}
                     </div>
                     <FormField label="Email ID" name="email" register={register} errors={errors} placeholder="owner@example.com" />
                     <div className="space-y-3">

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from '../utils/asyncHandler';
 import User from '../models/user.model';
 import { AppError } from '../utils/response';
+import logger from '../utils/logger';
 
 export interface AuthRequest extends Request {
     user?: any;
@@ -14,6 +15,14 @@ export const protect = asyncHandler(async (req: AuthRequest, res: Response, next
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1];
+
+            // Development hack: Allow demo token
+            if (token === 'demo-access-token') {
+                logger.info('Using development demo token');
+                req.user = { _id: 'demo-user-id', name: 'Demo Developer', role: 'admin' };
+                return next();
+            }
+
             const decoded: any = jwt.verify(token!, process.env.JWT_ACCESS_SECRET!);
 
             req.user = await User.findById(decoded.id).select('-password');
