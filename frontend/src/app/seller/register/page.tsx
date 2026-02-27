@@ -144,6 +144,7 @@ export default function AdvancedSellerRegister() {
                     setStatus(res.data.status);
                     if (res.data.profile) {
                         setFormData(res.data.profile);
+                        setIsOtpVerified(res.data.profile.isMobileVerified || false);
                         // Flatten data for the form reset
                         const flatData = {
                             ...res.data.profile,
@@ -158,14 +159,24 @@ export default function AdvancedSellerRegister() {
                         reset(flatData);
                     }
                 }
-            } catch {
-                console.error('Failed to fetch draft');
+            } catch (error) {
+                console.error('Failed to fetch draft/status:', error);
             } finally {
                 setIsLoading(false);
             }
         };
         fetchStatus();
     }, [reset]);
+
+    const handleSendOtp = () => {
+        setOtpSent(true);
+        showToast('OTP sent to your mobile number! (Mocked)');
+    };
+
+    const handleVerifyOtp = () => {
+        setIsOtpVerified(true);
+        showToast('Mobile number verified successfully!');
+    };
 
     const generatePDF = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -267,6 +278,7 @@ export default function AdvancedSellerRegister() {
                 businessName: data.businessName || formData.businessName,
                 ownerName: data.ownerName || formData.ownerName,
                 mobileNumber: data.mobileNumber || formData.mobileNumber,
+                isMobileVerified: isOtpVerified,
                 natureOfBusiness: data.natureOfBusiness || formData.natureOfBusiness,
                 category: data.category || formData.category,
                 panNumber: data.panNumber || formData.panNumber,
@@ -305,7 +317,7 @@ export default function AdvancedSellerRegister() {
 
             setFormData(mappedData);
 
-            if (currentStep === 1 && otpSent && !isOtpVerified) {
+            if (currentStep === 1 && !isOtpVerified) {
                 setGlobalError('Please verify your mobile number with the OTP before proceeding.');
                 return;
             }
@@ -348,6 +360,7 @@ export default function AdvancedSellerRegister() {
             businessName: data.businessName || formData.businessName,
             ownerName: data.ownerName || formData.ownerName,
             mobileNumber: data.mobileNumber || formData.mobileNumber,
+            isMobileVerified: isOtpVerified,
             natureOfBusiness: data.natureOfBusiness || formData.natureOfBusiness,
             category: data.category || formData.category,
             panNumber: data.panNumber || formData.panNumber,
@@ -527,9 +540,9 @@ export default function AdvancedSellerRegister() {
                                             setValue,
                                             watch,
                                             otpSent,
-                                            setOtpSent,
+                                            handleSendOtp,
                                             isOtpVerified,
-                                            setIsOtpVerified,
+                                            handleVerifyOtp,
                                             (docKey: string, file: File) => {
                                                 setFormData((prev: Partial<IBusinessProfile>) => ({
                                                     ...prev,
@@ -550,6 +563,7 @@ export default function AdvancedSellerRegister() {
                                                     type="button"
                                                     variant="outline"
                                                     onClick={handleBack}
+                                                    disabled={submitting}
                                                     className="h-14 px-8 rounded-2xl font-bold border-slate-200"
                                                 >
                                                     <ChevronLeft className="w-5 h-5 mr-2" />
@@ -560,7 +574,8 @@ export default function AdvancedSellerRegister() {
                                                 type="button"
                                                 variant="ghost"
                                                 onClick={onSaveDraft}
-                                                className="h-14 px-8 rounded-2xl font-bold text-slate-500 hover:text-primary-600"
+                                                disabled={submitting}
+                                                className="h-14 px-8 rounded-2xl font-bold text-slate-500 hover:text-primary-600 disabled:opacity-50"
                                             >
                                                 <Save className="w-5 h-5 mr-2" />
                                                 Save Draft
@@ -593,21 +608,11 @@ function renderStepContent(
     setValue: UseFormSetValue<FlatOnboardingForm>,
     watch: UseFormWatch<FlatOnboardingForm>,
     otpSent: boolean,
-    setOtpSent: (val: boolean) => void,
+    handleSendOtp: () => void,
     isOtpVerified: boolean,
-    setIsOtpVerified: (val: boolean) => void,
+    handleVerifyOtp: () => void,
     handleDocUpload: (key: string, file: File) => void
 ) {
-    const handleSendOtp = () => {
-        setOtpSent(true);
-        setTimeout(() => alert('OTP sent to mobile number! (Mocked)'), 500);
-    };
-
-    const handleVerifyOtp = () => {
-        setIsOtpVerified(true);
-        alert('Mobile number verified successfully!');
-    };
-
     const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const pincode = e.target.value;
         if (pincode.length === 6) {
