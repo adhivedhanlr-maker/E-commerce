@@ -116,6 +116,7 @@ export default function AdvancedSellerRegister() {
 
     // Moved from renderStepContent to respect Rules of Hooks
     const [otpSent, setOtpSent] = useState(false);
+    const [isOtpVerified, setIsOtpVerified] = useState(false);
 
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -247,6 +248,7 @@ export default function AdvancedSellerRegister() {
     };
 
     const handleNext = async (data: FlatOnboardingForm) => {
+        console.log('Submitting step:', currentStep, 'with data:', data);
         // Map flat data to IBusinessProfile
         const mappedData: Partial<IBusinessProfile> = {
             ...formData,
@@ -417,6 +419,11 @@ export default function AdvancedSellerRegister() {
                                             </span>
                                         </h2>
                                         <p className="text-slate-500 mt-2">Please provide your {STEPS[currentStep - 1].title.toLowerCase()} for verification.</p>
+                                        {Object.keys(errors).length > 0 && (
+                                            <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-2xl">
+                                                <p className="text-xs font-bold text-red-500 uppercase tracking-widest">Please fix the highlighted errors to proceed</p>
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* STEP CONTENT RENDERING */}
@@ -429,6 +436,8 @@ export default function AdvancedSellerRegister() {
                                             watch,
                                             otpSent,
                                             setOtpSent,
+                                            isOtpVerified,
+                                            setIsOtpVerified,
                                             (docKey: string, file: File) => {
                                                 setFormData((prev: Partial<IBusinessProfile>) => ({
                                                     ...prev,
@@ -492,11 +501,18 @@ function renderStepContent(
     watch: UseFormWatch<FlatOnboardingForm>,
     otpSent: boolean,
     setOtpSent: (val: boolean) => void,
+    isOtpVerified: boolean,
+    setIsOtpVerified: (val: boolean) => void,
     handleDocUpload: (key: string, file: File) => void
 ) {
     const handleSendOtp = () => {
         setOtpSent(true);
         setTimeout(() => alert('OTP sent to mobile number! (Mocked)'), 500);
+    };
+
+    const handleVerifyOtp = () => {
+        setIsOtpVerified(true);
+        alert('Mobile number verified successfully!');
     };
 
     const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -524,7 +540,10 @@ function renderStepContent(
                     <FormField label="Shop Name" name="businessName" register={register} errors={errors} placeholder="Acme Store" />
                     <FormField label="Owner Name" name="ownerName" register={register} errors={errors} placeholder="John Doe" />
                     <div className="space-y-3">
-                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Mobile Number</label>
+                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex justify-between">
+                            Mobile Number
+                            {errors.mobileNumber && <span className="text-red-500 normal-case font-medium tracking-normal">{errors.mobileNumber.message as string}</span>}
+                        </label>
                         <div className="flex gap-2">
                             <Input {...register('mobileNumber')} placeholder="9988776655" className="h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm" />
                             <Button type="button" onClick={handleSendOtp} variant="secondary" className="h-14 px-6 rounded-2xl font-bold bg-primary-50 text-primary-600 hover:bg-primary-100">
@@ -534,13 +553,22 @@ function renderStepContent(
                         {otpSent && (
                             <div className="mt-2 flex gap-2">
                                 <Input placeholder="Enter 6-digit OTP" className="h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm" />
-                                <Button type="button" variant="ghost" className="h-14 px-6 rounded-2xl font-bold text-green-600">Verify</Button>
+                                {isOtpVerified ? (
+                                    <div className="h-14 flex items-center gap-2 px-6 text-green-600 font-bold">
+                                        <CheckCircle2 className="w-5 h-5" /> Verified
+                                    </div>
+                                ) : (
+                                    <Button type="button" onClick={handleVerifyOtp} variant="ghost" className="h-14 px-6 rounded-2xl font-bold text-green-600">Verify</Button>
+                                )}
                             </div>
                         )}
                     </div>
                     <FormField label="Email ID" name="email" register={register} errors={errors} placeholder="owner@example.com" />
                     <div className="space-y-3">
-                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Business Category</label>
+                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex justify-between">
+                            Business Category
+                            {errors.natureOfBusiness && <span className="text-red-500 normal-case font-medium tracking-normal">{errors.natureOfBusiness.message as string}</span>}
+                        </label>
                         <select {...register('natureOfBusiness')} className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm outline-none focus:border-primary-500 transition-all">
                             <option value="Retailer">Retail</option>
                             <option value="Wholesaler">Wholesale</option>
