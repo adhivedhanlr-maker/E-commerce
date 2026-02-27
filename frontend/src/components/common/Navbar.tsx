@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingCart, User, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag, Menu } from 'lucide-react';
+import { Search, ShoppingCart, User, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag, Menu, LayoutDashboard, ShieldCheck } from 'lucide-react';
 
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -485,6 +485,23 @@ const Navbar = () => {
                                             <Settings className="mr-2 h-4 w-4 stroke-[1.5px]" />
                                             <span>Settings</span>
                                         </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        {hasMounted && user?.role === 'admin' && (
+                                            <DropdownMenuItem asChild className="rounded-lg">
+                                                <Link href="/admin/sellers" className="flex items-center w-full">
+                                                    <ShieldCheck className="mr-2 h-4 w-4 stroke-[1.5px] text-primary-600" />
+                                                    <span>Admin Portal</span>
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        )}
+                                        {hasMounted && user?.role === 'seller' && (
+                                            <DropdownMenuItem asChild className="rounded-lg">
+                                                <Link href="/seller/dashboard" className="flex items-center w-full">
+                                                    <LayoutDashboard className="mr-2 h-4 w-4 stroke-[1.5px] text-primary-600" />
+                                                    <span>Seller Dashboard</span>
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        )}
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem onClick={logout} className="text-red-500 focus:text-red-500 rounded-lg">
                                             <LogOut className="mr-2 h-4 w-4 stroke-[1.5px]" />
