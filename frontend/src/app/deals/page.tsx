@@ -183,8 +183,8 @@ export default function DealsPage() {
                                 <h3 className="text-xl font-bold text-slate-950 dark:text-white mb-2">{deal.title}</h3>
                                 <p className="text-slate-500 text-sm mb-4">{deal.description}</p>
                                 <div className="flex items-center gap-3">
-                                    <span className="text-xl font-black text-primary-600">${deal.price}</span>
-                                    <span className="text-sm text-slate-400 line-through font-bold">${deal.originalPrice}</span>
+                                    <span className="text-xl font-black text-primary-600">₹{deal.price}</span>
+                                    <span className="text-sm text-slate-400 line-through font-bold">₹{deal.originalPrice}</span>
                                 </div>
                             </div>
                         </motion.div>
