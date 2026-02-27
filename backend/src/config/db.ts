@@ -3,7 +3,7 @@ import dns from 'dns';
 import logger from '../utils/logger';
 
 // Force use of Google DNS to bypass local router issues with SRV records
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+// dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const connectDB = async () => {
     try {

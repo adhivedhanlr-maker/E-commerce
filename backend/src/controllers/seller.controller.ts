@@ -5,64 +5,111 @@ import { sendResponse } from '../utils/response';
 export const saveOnboardingDraft = async (req: Request, res: Response) => {
     try {
         const { businessProfile } = req.body;
-        const userId = (req as any).user._id;
+        const user = (req as any).user;
 
-        const user = await User.findById(userId);
         if (!user) {
-            return sendResponse(res, 404, false, 'User not found');
+            return sendResponse(res, 404, false, 'User not found in request');
         }
 
-        user.businessProfile = { ...user.businessProfile, ...businessProfile };
+        console.log('Saving draft for user:', user._id);
+        console.log('Draft data reaching backend:', JSON.stringify(businessProfile, null, 2));
+
+        // Use Mongoose's built-in merging for subdocuments
+        if (!user.businessProfile) {
+            user.businessProfile = {};
+        }
+
+        // Manually merge nested objects to avoid overwriting them
+        if (businessProfile.shopAddress) {
+            user.businessProfile.shopAddress = { ...(user.businessProfile.shopAddress || {}), ...businessProfile.shopAddress };
+            delete businessProfile.shopAddress;
+        }
+        if (businessProfile.bankDetails) {
+            user.businessProfile.bankDetails = { ...(user.businessProfile.bankDetails || {}), ...businessProfile.bankDetails };
+            delete businessProfile.bankDetails;
+        }
+        if (businessProfile.operationalDetails) {
+            user.businessProfile.operationalDetails = { ...(user.businessProfile.operationalDetails || {}), ...businessProfile.operationalDetails };
+            delete businessProfile.operationalDetails;
+        }
+        if (businessProfile.documents) {
+            user.businessProfile.documents = { ...(user.businessProfile.documents || {}), ...businessProfile.documents };
+            delete businessProfile.documents;
+        }
+
+        // Assign remaining flat fields
+        Object.assign(user.businessProfile, businessProfile);
+
         user.onboardingStatus = 'draft';
         await user.save();
 
+        console.log('Draft saved successfully');
         sendResponse(res, 200, true, 'Draft saved successfully', user.businessProfile);
     } catch (error: any) {
-        sendResponse(res, 500, false, error.message);
+        console.error('Error in saveOnboardingDraft:', error);
+        sendResponse(res, 500, false, `Draft save failed: ${error.message}`);
     }
 };
 
 export const submitOnboarding = async (req: Request, res: Response) => {
     try {
         const { businessProfile } = req.body;
-        const userId = (req as any).user._id;
+        const user = (req as any).user;
 
-        const user = await User.findById(userId);
         if (!user) {
-            return sendResponse(res, 404, false, 'User not found');
+            return sendResponse(res, 404, false, 'User not found in request');
         }
 
-        const updatedProfile = { ...user.businessProfile, ...businessProfile };
+        console.log('Submitting onboarding for user:', user._id);
+
+        if (!user.businessProfile) user.businessProfile = {};
+
+        // Merge logic
+        if (businessProfile.shopAddress) {
+            user.businessProfile.shopAddress = { ...(user.businessProfile.shopAddress || {}), ...businessProfile.shopAddress };
+            delete businessProfile.shopAddress;
+        }
+        if (businessProfile.bankDetails) {
+            user.businessProfile.bankDetails = { ...(user.businessProfile.bankDetails || {}), ...businessProfile.bankDetails };
+            delete businessProfile.bankDetails;
+        }
+        if (businessProfile.operationalDetails) {
+            user.businessProfile.operationalDetails = { ...(user.businessProfile.operationalDetails || {}), ...businessProfile.operationalDetails };
+            delete businessProfile.operationalDetails;
+        }
+        if (businessProfile.documents) {
+            user.businessProfile.documents = { ...(user.businessProfile.documents || {}), ...businessProfile.documents };
+            delete businessProfile.documents;
+        }
+
+        Object.assign(user.businessProfile, businessProfile);
 
         // Generate Registration ID if not present
-        if (!updatedProfile.operationalDetails) {
-            updatedProfile.operationalDetails = {} as any;
+        if (!user.businessProfile.operationalDetails) {
+            user.businessProfile.operationalDetails = {};
         }
 
-        if (!updatedProfile.operationalDetails.registrationId) {
+        if (!user.businessProfile.operationalDetails.registrationId) {
             const prefix = 'REG';
             const timestamp = Date.now().toString().slice(-6);
             const random = Math.floor(1000 + Math.random() * 9000);
-            updatedProfile.operationalDetails.registrationId = `${prefix}${timestamp}${random}`;
+            user.businessProfile.operationalDetails.registrationId = `${prefix}${timestamp}${random}`;
         }
 
-        user.businessProfile = updatedProfile;
         user.onboardingStatus = 'pending';
-        // When submitting, we also ensure the role is set to seller (or wait for approval)
-        // For now, let's keep it as is and wait for admin approval to change role if needed
         await user.save();
 
+        console.log('Onboarding submitted successfully');
         sendResponse(res, 200, true, 'Onboarding submitted for review', user.businessProfile);
     } catch (error: any) {
-        sendResponse(res, 500, false, error.message);
+        console.error('Error in submitOnboarding:', error);
+        sendResponse(res, 500, false, `Submission failed: ${error.message}`);
     }
 };
 
 export const getOnboardingStatus = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).user._id;
-        const user = await User.findById(userId).select('onboardingStatus businessProfile');
-
+        const user = (req as any).user;
         if (!user) {
             return sendResponse(res, 404, false, 'User not found');
         }
@@ -72,6 +119,7 @@ export const getOnboardingStatus = async (req: Request, res: Response) => {
             profile: user.businessProfile
         });
     } catch (error: any) {
-        sendResponse(res, 500, false, error.message);
+        console.error('Error in getOnboardingStatus:', error);
+        sendResponse(res, 500, false, `Status fetch failed: ${error.message}`);
     }
 };
