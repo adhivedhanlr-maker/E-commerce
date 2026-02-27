@@ -16,10 +16,25 @@ interface PageProps {
     params: Promise<{ id: string }>;
 }
 
+interface Product {
+    _id: string;
+    name: string;
+    description: string;
+    price: number;
+    originalPrice: number;
+    discountPercentage: number;
+    rating: number;
+    numReviews: number;
+    images: string[];
+    category: string;
+    brand: string;
+    countInStock: number;
+    specifications: Record<string, string>;
+}
+
 export default function ProductPage({ params }: PageProps) {
     const { id } = use(params);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [productData, setProductData] = useState<any>(null);
+    const [productData, setProductData] = useState<Product | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [qty, setQty] = useState(1);
@@ -39,10 +54,16 @@ export default function ProductPage({ params }: PageProps) {
                 } else {
                     setError(res.message || 'Product not found');
                 }
-            } catch (err: any) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (err: unknown) {
                 console.error('Error fetching product:', err);
-                setError(err.response?.data?.message || err.message || 'Failed to load product');
+                if (err && typeof err === 'object' && 'response' in err) {
+                    const axiosError = err as { response: { data: { message: string } } };
+                    setError(axiosError.response?.data?.message || 'Failed to load product');
+                } else if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError('Failed to load product');
+                }
             } finally {
                 setIsLoading(false);
             }
