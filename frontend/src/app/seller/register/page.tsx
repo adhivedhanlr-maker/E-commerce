@@ -138,7 +138,7 @@ export default function AdvancedSellerRegister() {
 
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resolver: zodResolver(stepSchemas[currentStep - 1]),
+        resolver: zodResolver(stepSchemas[currentStep - 1]) as any,
         mode: 'onChange',
         defaultValues: {
             natureOfBusiness: 'Retailer',
