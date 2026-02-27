@@ -274,9 +274,9 @@ export default function AdvancedSellerRegister() {
                 upiId: data.upiId
             },
             operationalDetails: {
-                ...formData.operationalDetails,
+                ...(formData.operationalDetails || {}),
                 commissionAccepted: data.commissionAccepted,
-            }
+            } as any
         };
 
         setFormData(mappedData);
