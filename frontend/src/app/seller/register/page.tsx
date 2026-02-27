@@ -736,6 +736,7 @@ function renderStepContent(
         case 4:
             return (
                 <>
+                    <FormField label="Account Holder Name" name="accountHolderName" register={register} errors={errors} placeholder="John Doe" />
                     <FormField label="Bank Name" name="bankName" register={register} errors={errors} placeholder="State Bank of India" />
                     <FormField label="Account Number" name="accountNumber" register={register} errors={errors} placeholder="1234567890" />
                     <FormField label="IFSC Code" name="ifscCode" register={register} errors={errors} placeholder="SBIN0001234" />
