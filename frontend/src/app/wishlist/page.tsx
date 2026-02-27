@@ -129,7 +129,7 @@ export default function WishlistPage() {
 
                                 <div className="mt-6 space-y-3 px-1">
                                     <h3 className="text-lg font-bold tracking-tight text-slate-950 dark:text-white">{product.name}</h3>
-                                    <p className="text-xl font-black text-primary-600">${product.price}</p>
+                                    <p className="text-xl font-black text-primary-600">₹{product.price}</p>
 
                                     <div className="pt-2">
                                         <Button

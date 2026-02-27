@@ -163,10 +163,10 @@ export default function ProductPage({ params }: PageProps) {
                         </div>
 
                         <div className="flex items-baseline gap-4 border-y py-6">
-                            <span className="text-4xl font-black text-primary-600">${productData.price}</span>
+                            <span className="text-4xl font-black text-primary-600">₹{productData.price}</span>
                             {productData.originalPrice > productData.price && (
                                 <>
-                                    <span className="text-xl text-slate-400 line-through">${productData.originalPrice}</span>
+                                    <span className="text-xl text-slate-400 line-through">₹{productData.originalPrice}</span>
                                     <Badge className="bg-red-500 hover:bg-red-500 text-white font-bold h-6 border-none px-2 rounded-full">
                                         {productData.discountPercentage}% OFF
                                     </Badge>
