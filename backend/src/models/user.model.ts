@@ -7,7 +7,7 @@ export interface IBusinessProfile {
     tradeName?: string;
     businessType?: 'Proprietorship' | 'Partnership' | 'LLP' | 'Pvt Ltd' | 'OPC';
     dateOfIncorporation?: Date;
-    natureOfBusiness?: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider';
+    natureOfBusiness?: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider' | 'E-commerce';
     category?: string;
 
     // Step 2: Tax & Legal
@@ -15,6 +15,8 @@ export interface IBusinessProfile {
     gstin?: string;
     cin?: string;
     msmeNumber?: string;
+    licenseNumber?: string;
+    udyamNumber?: string;
     documents?: {
         panCard?: string;
         gstCertificate?: string;
@@ -22,15 +24,25 @@ export interface IBusinessProfile {
         aadhaarCard?: string;
         photo?: string;
         cancelledCheque?: string;
+        shopLogo?: string;
+        idProof?: string;
+        digitalSignature?: string;
     };
 
-    // Step 3: Owner Details
+    // Step 3: Address & Contact Details
     ownerName?: string;
     aadhaarNumber?: string;
     mobileNumber?: string;
     isMobileVerified?: boolean;
     isEmailVerified?: boolean;
-    address?: string;
+    address?: string; // Residential
+    shopAddress?: {
+        street: string;
+        city: string;
+        district: string;
+        state: string;
+        pincode: string;
+    };
 
     // Step 4: Bank Details
     bankDetails?: {
@@ -49,6 +61,7 @@ export interface IBusinessProfile {
         shippingPartner?: string;
         estimatedTurnover?: string;
         commissionAccepted?: boolean;
+        registrationId?: string;
     };
 }
 
@@ -84,12 +97,14 @@ const userSchema: Schema = new Schema(
             tradeName: String,
             businessType: { type: String, enum: ['Proprietorship', 'Partnership', 'LLP', 'Pvt Ltd', 'OPC'] },
             dateOfIncorporation: Date,
-            natureOfBusiness: { type: String, enum: ['Retailer', 'Wholesaler', 'Manufacturer', 'Service Provider'] },
+            natureOfBusiness: { type: String, enum: ['Retailer', 'Wholesaler', 'Manufacturer', 'Service Provider', 'E-commerce'] },
             category: String,
             panNumber: String,
             gstin: String,
             cin: String,
             msmeNumber: String,
+            licenseNumber: String,
+            udyamNumber: String,
             documents: {
                 panCard: String,
                 gstCertificate: String,
@@ -97,6 +112,9 @@ const userSchema: Schema = new Schema(
                 aadhaarCard: String,
                 photo: String,
                 cancelledCheque: String,
+                shopLogo: String,
+                idProof: String,
+                digitalSignature: String,
             },
             ownerName: String,
             aadhaarNumber: String,
@@ -104,6 +122,13 @@ const userSchema: Schema = new Schema(
             isMobileVerified: { type: Boolean, default: false },
             isEmailVerified: { type: Boolean, default: false },
             address: String,
+            shopAddress: {
+                street: String,
+                city: String,
+                district: String,
+                state: String,
+                pincode: String,
+            },
             bankDetails: {
                 accountHolderName: String,
                 bankName: String,
@@ -118,6 +143,7 @@ const userSchema: Schema = new Schema(
                 shippingPartner: String,
                 estimatedTurnover: String,
                 commissionAccepted: { type: Boolean, default: false },
+                registrationId: String,
             }
         }
     },

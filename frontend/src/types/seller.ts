@@ -3,16 +3,25 @@ export interface IBusinessProfile {
     tradeName: string;
     businessType: 'Proprietorship' | 'Partnership' | 'LLP' | 'Pvt Ltd' | 'OPC';
     dateOfIncorporation: string;
-    natureOfBusiness: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider';
+    natureOfBusiness: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider' | 'E-commerce';
     category: string;
     panNumber: string;
     gstin?: string;
     cin?: string;
     msmeNumber?: string;
+    licenseNumber?: string;
+    udyamNumber?: string;
     ownerName: string;
     aadhaarNumber: string;
     mobileNumber: string;
     address: string;
+    shopAddress?: {
+        street: string;
+        city: string;
+        district: string;
+        state: string;
+        pincode: string;
+    };
     bankDetails: {
         accountHolderName: string;
         bankName: string;
@@ -26,6 +35,7 @@ export interface IBusinessProfile {
         returnAddress: string;
         estimatedTurnover: string;
         commissionAccepted: boolean;
+        registrationId?: string;
     };
     documents?: {
         panCard?: string;
@@ -34,6 +44,9 @@ export interface IBusinessProfile {
         aadhaarCard?: string;
         photo?: string;
         cancelledCheque?: string;
+        shopLogo?: string;
+        idProof?: string;
+        digitalSignature?: string;
     };
 }
 

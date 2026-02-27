@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-    Building2, 
-    FileText, 
-    User, 
-    CreditCard, 
-    Package, 
-    CheckCircle2, 
-    ChevronRight, 
+import {
+    Building2,
+    FileText,
+    User,
+    CreditCard,
+    Package,
+    CheckCircle2,
+    ChevronRight,
     ChevronLeft,
     Save,
     AlertCircle,
@@ -28,29 +28,31 @@ import { cn } from '@/lib/utils';
 import { IBusinessProfile } from '@/types/seller';
 
 // --- SCHEMAS ---
+// --- SCHEMAS ---
 const stepSchemas = [
     // Step 1: Basic Details
     z.object({
-        businessName: z.string().min(2, 'Business name is required'),
-        tradeName: z.string().min(2, 'Trade name is required'),
-        businessType: z.enum(['Proprietorship', 'Partnership', 'LLP', 'Pvt Ltd', 'OPC']),
-        dateOfIncorporation: z.string(),
-        natureOfBusiness: z.enum(['Retailer', 'Wholesaler', 'Manufacturer', 'Service Provider']),
+        businessName: z.string().min(2, 'Shop name is required'),
+        ownerName: z.string().min(2, 'Owner name is required'),
+        mobileNumber: z.string().length(10, 'Mobile must be 10 digits'),
+        email: z.string().email('Invalid email address'),
+        natureOfBusiness: z.enum(['Retailer', 'Wholesaler', 'Manufacturer', 'Service Provider', 'E-commerce']),
         category: z.string().min(2, 'Category is required'),
     }),
     // Step 2: Legal Details
     z.object({
+        gstin: z.string().regex(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/, 'Invalid GST format'),
         panNumber: z.string().regex(/[A-Z]{5}[0-9]{4}[A-Z]{1}/, 'Invalid PAN format'),
-        gstin: z.string().optional(),
-        cin: z.string().optional(),
-        msmeNumber: z.string().optional(),
+        licenseNumber: z.string().optional(),
+        udyamNumber: z.string().optional(),
     }),
-    // Step 3: Owner Details
+    // Step 3: Address Details
     z.object({
-        ownerName: z.string().min(2, 'Full name is required'),
-        aadhaarNumber: z.string().length(12, 'Aadhaar must be 12 digits'),
-        mobileNumber: z.string().length(10, 'Mobile must be 10 digits'),
-        address: z.string().min(10, 'Full address is required'),
+        shopAddress_street: z.string().min(5, 'Street address is required'),
+        shopAddress_city: z.string().min(2, 'City is required'),
+        shopAddress_district: z.string().min(2, 'District is required'),
+        shopAddress_state: z.string().min(2, 'State is required'),
+        shopAddress_pincode: z.string().length(6, 'Pincode must be 6 digits'),
     }),
     // Step 4: Bank Details
     z.object({
@@ -60,50 +62,52 @@ const stepSchemas = [
         ifscCode: z.string().regex(/^[A-Z]{4}0[A-Z0-9]{6}$/, 'Invalid IFSC format'),
         upiId: z.string().optional(),
     }),
-    // Step 5: Operations
+    // Step 5: Uploads
     z.object({
-        warehouseAddress: z.string().min(10, 'Warehouse address is required'),
-        pickupAddress: z.string().min(10, 'Pickup address is required'),
-        returnAddress: z.string().min(10, 'Return address is required'),
-        estimatedTurnover: z.string(),
-        commissionAccepted: z.boolean().refine(v => v === true, 'You must accept the agreement'),
+        // Even if empty, Zod needs something if used with react-hook-form
+        _uploads: z.string().optional()
+    }),
+    // Step 6: Review & Terms
+    z.object({
+        commissionAccepted: z.boolean().refine(v => v === true, 'You must accept the terms and conditions'),
     })
 ];
 
 const STEPS = [
-    { id: 1, title: 'Basic Info', icon: Building2 },
+    { id: 1, title: 'Basic Details', icon: Building2 },
     { id: 2, title: 'Legal & Tax', icon: FileText },
-    { id: 3, title: 'Identity', icon: User },
+    { id: 3, title: 'Address', icon: Package },
     { id: 4, title: 'Banking', icon: CreditCard },
-    { id: 5, title: 'Operations', icon: Package }
+    { id: 5, title: 'Uploads', icon: Package },
+    { id: 6, title: 'Review', icon: CheckCircle2 }
 ];
 
-interface FlatOnboardingForm {
+interface FlatOnboardingForm extends Record<string, any> {
     businessName: string;
-    tradeName: string;
-    businessType: 'Proprietorship' | 'Partnership' | 'LLP' | 'Pvt Ltd' | 'OPC';
-    dateOfIncorporation: string;
-    natureOfBusiness: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider';
-    category: string;
-    panNumber: string;
-    gstin?: string;
-    cin?: string;
-    msmeNumber?: string;
     ownerName: string;
-    aadhaarNumber: string;
     mobileNumber: string;
-    address: string;
+    email: string;
+    natureOfBusiness: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider' | 'E-commerce';
+    category: string;
+    gstin: string;
+    panNumber: string;
+    licenseNumber?: string;
+    udyamNumber?: string;
+    shopAddress_street: string;
+    shopAddress_city: string;
+    shopAddress_district: string;
+    shopAddress_state: string;
+    shopAddress_pincode: string;
     accountHolderName: string;
     bankName: string;
     accountNumber: string;
     ifscCode: string;
     upiId?: string;
-    warehouseAddress: string;
-    pickupAddress: string;
-    returnAddress: string;
-    estimatedTurnover: string;
     commissionAccepted: boolean;
 }
+
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 export default function AdvancedSellerRegister() {
     const router = useRouter();
@@ -113,8 +117,12 @@ export default function AdvancedSellerRegister() {
     const [status, setStatus] = useState<string>('none');
 
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
-        resolver: zodResolver(stepSchemas[currentStep - 1]),
-        mode: 'onChange'
+        resolver: zodResolver(stepSchemas[currentStep - 1]) as any,
+        mode: 'onChange',
+        defaultValues: {
+            natureOfBusiness: 'Retailer',
+            commissionAccepted: false
+        }
     });
 
     useEffect(() => {
@@ -129,7 +137,12 @@ export default function AdvancedSellerRegister() {
                         const flatData = {
                             ...res.data.profile,
                             ...res.data.profile.bankDetails,
-                            ...res.data.profile.operationalDetails
+                            ...res.data.profile.operationalDetails,
+                            shopAddress_street: res.data.profile.shopAddress?.street || '',
+                            shopAddress_city: res.data.profile.shopAddress?.city || '',
+                            shopAddress_district: res.data.profile.shopAddress?.district || '',
+                            shopAddress_state: res.data.profile.shopAddress?.state || '',
+                            shopAddress_pincode: res.data.profile.shopAddress?.pincode || '',
                         } as unknown as FlatOnboardingForm;
                         reset(flatData);
                     }
@@ -143,24 +156,112 @@ export default function AdvancedSellerRegister() {
         fetchStatus();
     }, [reset]);
 
+    const generatePDF = () => {
+        const doc = new jsPDF() as any;
+
+        // Header
+        doc.setFontSize(22);
+        doc.text('Shop Registration Summary', 105, 20, { align: 'center' });
+
+        doc.setFontSize(12);
+        doc.setTextColor(100);
+        doc.text(`Registration ID: ${formData.operationalDetails?.registrationId || 'N/A'}`, 105, 30, { align: 'center' });
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 37, { align: 'center' });
+
+        // Basic Info
+        doc.setDrawColor(200);
+        doc.line(20, 45, 190, 45);
+
+        doc.setFontSize(16);
+        doc.setTextColor(0);
+        doc.text('Business Details', 20, 55);
+
+        const businessTable = [
+            ['Shop Name', formData.businessName || 'N/A'],
+            ['Owner Name', formData.ownerName || 'N/A'],
+            ['Mobile Number', formData.mobileNumber || 'N/A'],
+            ['Category', formData.natureOfBusiness || 'N/A'],
+            ['GST Number', formData.gstin || 'N/A'],
+            ['PAN Number', formData.panNumber || 'N/A'],
+        ];
+
+        doc.autoTable({
+            startY: 60,
+            head: [['Field', 'Value']],
+            body: businessTable,
+            theme: 'striped',
+            headStyles: { fillColor: [15, 23, 42] }
+        });
+
+        // Address Info
+        const addressY = (doc as any).lastAutoTable.finalY + 15;
+        doc.setFontSize(16);
+        doc.text('Shop Address', 20, addressY);
+
+        const addressTable = [
+            ['Street', formData.shopAddress?.street || 'N/A'],
+            ['City/District', `${formData.shopAddress?.city || ''}, ${formData.shopAddress?.district || ''}`],
+            ['State', formData.shopAddress?.state || 'N/A'],
+            ['Pincode', formData.shopAddress?.pincode || 'N/A'],
+        ];
+
+        doc.autoTable({
+            startY: addressY + 5,
+            head: [['Field', 'Value']],
+            body: addressTable,
+            theme: 'striped',
+            headStyles: { fillColor: [15, 23, 42] }
+        });
+
+        // Banking Info
+        const bankY = (doc as any).lastAutoTable.finalY + 15;
+        doc.setFontSize(16);
+        doc.text('Banking Details', 20, bankY);
+
+        const bankTable = [
+            ['Bank Name', formData.bankDetails?.bankName || 'N/A'],
+            ['Account Number', formData.bankDetails?.accountNumber || 'N/A'],
+            ['IFSC Code', formData.bankDetails?.ifscCode || 'N/A'],
+            ['UPI ID', formData.bankDetails?.upiId || 'N/A'],
+        ];
+
+        doc.autoTable({
+            startY: bankY + 5,
+            head: [['Field', 'Value']],
+            body: bankTable,
+            theme: 'striped',
+            headStyles: { fillColor: [15, 23, 42] }
+        });
+
+        // Footer
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text('This is an auto-generated registration summary for reference.', 105, 280, { align: 'center' });
+
+        doc.save(`${formData.businessName || 'shop'}_registration_summary.pdf`);
+    };
+
     const handleNext = async (data: FlatOnboardingForm) => {
         // Map flat data to IBusinessProfile
         const mappedData: Partial<IBusinessProfile> = {
             ...formData,
             businessName: data.businessName,
-            tradeName: data.tradeName,
-            businessType: data.businessType,
-            dateOfIncorporation: data.dateOfIncorporation,
+            ownerName: data.ownerName,
+            mobileNumber: data.mobileNumber,
+            // email is not in IBusinessProfile directly usually, but we can store it or skip if it's user email
             natureOfBusiness: data.natureOfBusiness,
             category: data.category,
             panNumber: data.panNumber,
             gstin: data.gstin,
-            cin: data.cin,
-            msmeNumber: data.msmeNumber,
-            ownerName: data.ownerName,
-            aadhaarNumber: data.aadhaarNumber,
-            mobileNumber: data.mobileNumber,
-            address: data.address,
+            licenseNumber: data.licenseNumber,
+            udyamNumber: data.udyamNumber,
+            shopAddress: {
+                street: data.shopAddress_street,
+                city: data.shopAddress_city,
+                district: data.shopAddress_district,
+                state: data.shopAddress_state,
+                pincode: data.shopAddress_pincode
+            },
             bankDetails: {
                 accountHolderName: data.accountHolderName,
                 bankName: data.bankName,
@@ -169,22 +270,21 @@ export default function AdvancedSellerRegister() {
                 upiId: data.upiId
             },
             operationalDetails: {
-                warehouseAddress: data.warehouseAddress,
-                pickupAddress: data.pickupAddress,
-                returnAddress: data.returnAddress,
-                estimatedTurnover: data.estimatedTurnover,
-                commissionAccepted: data.commissionAccepted
+                ...formData.operationalDetails,
+                commissionAccepted: data.commissionAccepted,
             }
         };
 
         setFormData(mappedData);
-        
-        if (currentStep < 5) {
+
+        if (currentStep < 6) {
             await saveOnboardingDraft(mappedData);
             setCurrentStep(prev => prev + 1);
         } else {
             const res = await submitOnboarding(mappedData as IBusinessProfile);
             if (res.success) {
+                // Store the full profile including registration ID
+                setFormData(res.data);
                 setStatus('pending');
             }
         }
@@ -206,13 +306,30 @@ export default function AdvancedSellerRegister() {
             <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] flex items-center justify-center p-4">
                 <Card className="max-w-md w-full border-none shadow-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-xl rounded-[40px] p-10 text-center">
                     <div className="w-20 h-20 bg-primary-50 dark:bg-primary-900/20 rounded-3xl flex items-center justify-center mx-auto mb-6 text-primary-600">
-                        <Info className="w-10 h-10" />
+                        <CheckCircle2 className="w-10 h-10" />
                     </div>
-                    <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Application Under Review</h2>
-                    <p className="text-slate-500 mb-8">Our team is verifying your documents. We&apos;ll notify you once your store is activated.</p>
-                    <Button onClick={() => router.push('/')} className="w-full h-14 rounded-2xl bg-slate-900 text-white font-bold">
-                        Back to Shopping
-                    </Button>
+                    <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Registration Submitted!</h2>
+                    <p className="text-sm font-bold text-primary-600 bg-primary-50 dark:bg-primary-900/20 px-4 py-2 rounded-full inline-block mb-4">
+                        ID: {formData.operationalDetails?.registrationId || 'Generating...'}
+                    </p>
+                    <p className="text-slate-500 mb-8">Your application is under review. You can download your registration summary below.</p>
+
+                    <div className="space-y-4">
+                        <Button
+                            onClick={generatePDF}
+                            className="w-full h-14 rounded-2xl bg-slate-900 text-white font-bold flex items-center justify-center gap-2"
+                        >
+                            <FileText className="w-5 h-5" />
+                            Download Summary PDF
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            onClick={() => router.push('/')}
+                            className="w-full h-14 rounded-2xl text-slate-500 font-bold"
+                        >
+                            Back to Home
+                        </Button>
+                    </div>
                 </Card>
             </div>
         );
@@ -244,13 +361,13 @@ export default function AdvancedSellerRegister() {
                             const Icon = step.icon;
                             const isActive = currentStep === step.id;
                             const isCompleted = currentStep > step.id;
-                            
+
                             return (
                                 <div key={step.id} className="flex flex-col items-center relative flex-1">
                                     <div className={cn(
                                         "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 z-10 shadow-lg",
-                                        isActive ? "bg-primary-600 text-white scale-110 shadow-primary-500/25" : 
-                                        isCompleted ? "bg-green-500 text-white" : "bg-white dark:bg-slate-800 text-slate-400"
+                                        isActive ? "bg-primary-600 text-white scale-110 shadow-primary-500/25" :
+                                            isCompleted ? "bg-green-500 text-white" : "bg-white dark:bg-slate-800 text-slate-400"
                                     )}>
                                         {isCompleted ? <CheckCircle2 className="w-6 h-6" /> : <Icon className="w-5 h-5" />}
                                     </div>
@@ -289,12 +406,12 @@ export default function AdvancedSellerRegister() {
                                     {/* Step Title Section */}
                                     <div className="mb-10">
                                         <h2 className="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
-                                            {STEPS[currentStep-1].title}
+                                            {STEPS[currentStep - 1].title}
                                             <span className="text-sm font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
                                                 Step {currentStep}/5
                                             </span>
                                         </h2>
-                                        <p className="text-slate-500 mt-2">Please provide your {STEPS[currentStep-1].title.toLowerCase()} for verification.</p>
+                                        <p className="text-slate-500 mt-2">Please provide your {STEPS[currentStep - 1].title.toLowerCase()} for verification.</p>
                                     </div>
 
                                     {/* STEP CONTENT RENDERING */}
@@ -314,9 +431,9 @@ export default function AdvancedSellerRegister() {
                                     <div className="flex items-center justify-between pt-10 border-t border-slate-100 dark:border-white/5 mt-10">
                                         <div className="flex gap-4">
                                             {currentStep > 1 && (
-                                                <Button 
-                                                    type="button" 
-                                                    variant="outline" 
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
                                                     onClick={handleBack}
                                                     className="h-14 px-8 rounded-2xl font-bold border-slate-200"
                                                 >
@@ -324,9 +441,9 @@ export default function AdvancedSellerRegister() {
                                                     Back
                                                 </Button>
                                             )}
-                                            <Button 
-                                                type="button" 
-                                                variant="ghost" 
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
                                                 onClick={onSaveDraft}
                                                 className="h-14 px-8 rounded-2xl font-bold text-slate-500 hover:text-primary-600"
                                             >
@@ -334,8 +451,8 @@ export default function AdvancedSellerRegister() {
                                                 Save Draft
                                             </Button>
                                         </div>
-                                        <Button 
-                                            type="submit" 
+                                        <Button
+                                            type="submit"
                                             className="h-14 px-10 rounded-2xl font-bold bg-slate-900 text-white shadow-xl shadow-slate-900/10"
                                         >
                                             {currentStep === 5 ? 'Submit for Review' : 'Save & Continue'}
@@ -354,84 +471,134 @@ export default function AdvancedSellerRegister() {
 
 // --- RENDERING HELPERS ---
 function renderStepContent(
-    step: number, 
-    register: UseFormRegister<FlatOnboardingForm>, 
-    errors: FieldErrors<FlatOnboardingForm>, 
-    setValue: UseFormSetValue<FlatOnboardingForm>, 
-    watch: UseFormWatch<FlatOnboardingForm>, 
+    step: number,
+    register: UseFormRegister<FlatOnboardingForm>,
+    errors: FieldErrors<FlatOnboardingForm>,
+    setValue: UseFormSetValue<FlatOnboardingForm>,
+    watch: UseFormWatch<FlatOnboardingForm>,
     handleDocUpload: (key: string, file: File) => void
 ) {
+    const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+    const [otpSent, setOtpSent] = useState(false);
+
+    const handleSendOtp = () => {
+        setOtpSent(true);
+        setTimeout(() => alert('OTP sent to mobile number! (Mocked)'), 500);
+    };
+
+    const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const pincode = e.target.value;
+        if (pincode.length === 6) {
+            try {
+                const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+                const data = await res.json();
+                if (data[0].Status === 'Success') {
+                    const postOffice = data[0].PostOffice[0];
+                    setValue('shopAddress_city', postOffice.Block);
+                    setValue('shopAddress_district', postOffice.District);
+                    setValue('shopAddress_state', postOffice.State);
+                }
+            } catch (err) {
+                console.error('Failed to fetch pincode data', err);
+            }
+        }
+    };
+
     switch (step) {
         case 1:
             return (
                 <>
-                    <FormField label="Business Legal Name (as per PAN)" name="businessName" register={register} errors={errors} placeholder="Acme Corp" />
-                    <FormField label="Trade Name" name="tradeName" register={register} errors={errors} placeholder="Acme Store" />
+                    <FormField label="Shop Name" name="businessName" register={register} errors={errors} placeholder="Acme Store" />
+                    <FormField label="Owner Name" name="ownerName" register={register} errors={errors} placeholder="John Doe" />
                     <div className="space-y-3">
-                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Business Type</label>
-                        <select {...register('businessType')} className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm outline-none focus:border-primary-500 transition-all">
-                            <option value="Proprietorship">Proprietorship</option>
-                            <option value="Partnership">Partnership</option>
-                            <option value="LLP">LLP</option>
-                            <option value="Pvt Ltd">Pvt Ltd</option>
-                            <option value="OPC">OPC</option>
-                        </select>
+                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Mobile Number</label>
+                        <div className="flex gap-2">
+                            <Input {...register('mobileNumber')} placeholder="9988776655" className="h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm" />
+                            <Button type="button" onClick={handleSendOtp} variant="secondary" className="h-14 px-6 rounded-2xl font-bold bg-primary-50 text-primary-600 hover:bg-primary-100">
+                                {otpSent ? 'Resend' : 'Send OTP'}
+                            </Button>
+                        </div>
+                        {otpSent && (
+                            <div className="mt-2 flex gap-2">
+                                <Input placeholder="Enter 6-digit OTP" className="h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm" />
+                                <Button type="button" variant="ghost" className="h-14 px-6 rounded-2xl font-bold text-green-600">Verify</Button>
+                            </div>
+                        )}
                     </div>
+                    <FormField label="Email ID" name="email" register={register} errors={errors} placeholder="owner@example.com" />
                     <div className="space-y-3">
-                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Nature of Business</label>
+                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Business Category</label>
                         <select {...register('natureOfBusiness')} className="w-full h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm outline-none focus:border-primary-500 transition-all">
-                            <option value="Retailer">Retailer</option>
-                            <option value="Wholesaler">Wholesaler</option>
-                            <option value="Manufacturer">Manufacturer</option>
-                            <option value="Service Provider">Service Provider</option>
+                            <option value="Retailer">Retail</option>
+                            <option value="Wholesaler">Wholesale</option>
+                            <option value="Service Provider">Service</option>
+                            <option value="Manufacturer">Manufacturing</option>
+                            <option value="E-commerce">E-commerce</option>
                         </select>
                     </div>
+                    <FormField label="Specific Category" name="category" register={register} errors={errors} placeholder="Electronics, Clothing, etc." />
                 </>
             );
         case 2:
             return (
                 <>
+                    <FormField label="GST Number" name="gstin" register={register} errors={errors} placeholder="22AAAAA0000A1Z5" />
                     <FormField label="PAN Number" name="panNumber" register={register} errors={errors} placeholder="ABCDE1234F" />
-                    <FormField label="GSTIN (Optional)" name="gstin" register={register} errors={errors} placeholder="22AAAAA0000A1Z5" />
-                    <DocumentUpload label="PAN Card Copy" onUpload={(file) => handleDocUpload('panCard', file)} />
-                    <DocumentUpload label="GST Certificate" onUpload={(file) => handleDocUpload('gstCertificate', file)} />
+                    <FormField label="Shop & Establishment License (Optional)" name="licenseNumber" register={register} errors={errors} placeholder="LIC123456" />
+                    <FormField label="UDYAM Registration (Optional)" name="udyamNumber" register={register} errors={errors} placeholder="UDYAM-XX-00-1234567" />
                 </>
             );
         case 3:
             return (
                 <>
-                    <FormField label="Owner Full Name" name="ownerName" register={register} errors={errors} placeholder="John Doe" />
-                    <FormField label="Aadhaar Number" name="aadhaarNumber" register={register} errors={errors} placeholder="1234 5678 9012" />
-                    <FormField label="Mobile Number" name="mobileNumber" register={register} errors={errors} placeholder="9988776655" />
-                    <FormField label="Residential Address" name="address" register={register} errors={errors} placeholder="Flat, Street, Area, City" />
-                    <DocumentUpload label="Aadhaar Front/Back" onUpload={(file) => handleDocUpload('aadhaarCard', file)} />
-                    <DocumentUpload label="Owner Photo" onUpload={(file) => handleDocUpload('photo', file)} />
+                    <div className="col-span-1 md:col-span-2 space-y-3">
+                        <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Pincode (Auto-fills City/State)</label>
+                        <Input
+                            {...register('shopAddress_pincode')}
+                            placeholder="560001"
+                            onChange={(e) => {
+                                register('shopAddress_pincode').onChange(e);
+                                handlePincodeChange(e);
+                            }}
+                            className="h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm"
+                        />
+                    </div>
+                    <FormField label="Shop Address" name="shopAddress_street" register={register} errors={errors} placeholder="Flat, Street, Area" />
+                    <FormField label="District" name="shopAddress_district" register={register} errors={errors} placeholder="District" />
+                    <FormField label="City" name="shopAddress_city" register={register} errors={errors} placeholder="City" />
+                    <FormField label="State" name="shopAddress_state" register={register} errors={errors} placeholder="State" />
                 </>
             );
         case 4:
             return (
                 <>
-                    <FormField label="Account Holder Name" name="accountHolderName" register={register} errors={errors} placeholder="John Doe" />
                     <FormField label="Bank Name" name="bankName" register={register} errors={errors} placeholder="State Bank of India" />
                     <FormField label="Account Number" name="accountNumber" register={register} errors={errors} placeholder="1234567890" />
                     <FormField label="IFSC Code" name="ifscCode" register={register} errors={errors} placeholder="SBIN0001234" />
-                    <FormField label="UPI ID (Optional)" name="upiId" register={register} errors={errors} placeholder="john@upi" />
-                    <DocumentUpload label="Cancelled Cheque copy" onUpload={(file) => handleDocUpload('cancelledCheque', file)} />
+                    <FormField label="UPI ID (Optional)" name="upiId" register={register} errors={errors} placeholder="owner@upi" />
                 </>
             );
         case 5:
             return (
+                <>
+                    <DocumentUpload label="Shop Logo" onUpload={(file) => handleDocUpload('shopLogo', file)} />
+                    <DocumentUpload label="GST Certificate" onUpload={(file) => handleDocUpload('gstCertificate', file)} />
+                    <DocumentUpload label="ID Proof (Aadhaar/PAN)" onUpload={(file) => handleDocUpload('idProof', file)} />
+                    <DocumentUpload label="Digital Signature" onUpload={(file) => handleDocUpload('digitalSignature', file)} />
+                </>
+            );
+        case 6:
+            return (
                 <div className="col-span-1 md:col-span-2 space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField label="Warehouse Address" name="warehouseAddress" register={register} errors={errors} placeholder="Full Warehouse Address" />
-                        <FormField label="Pickup Address" name="pickupAddress" register={register} errors={errors} placeholder="Full Pickup Address" />
-                    </div>
-                    <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-white/5 space-y-4">
+                    <div className="p-10 rounded-[32px] bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-white/5 space-y-6">
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">Review Registration</h3>
+                        <p className="text-sm text-slate-500">Please review all your details before final submission. Once submitted, you cannot edit them until approved.</p>
+
                         <div className="flex items-start gap-4">
-                            <input {...register('commissionAccepted')} type="checkbox" className="mt-1 w-5 h-5 rounded-lg accent-primary-600" />
+                            <input {...register('commissionAccepted')} type="checkbox" className="mt-1 w-6 h-6 rounded-lg accent-primary-600" />
                             <div>
-                                <p className="text-sm font-bold text-slate-900 dark:text-white">Accept Commission Agreement</p>
-                                <p className="text-xs text-slate-500 mt-1">I agree to the 5% flat commission on all sales made through this platform.</p>
+                                <p className="text-sm font-bold text-slate-900 dark:text-white">I agree to the Terms & Conditions</p>
+                                <p className="text-xs text-slate-500 mt-1">By checking this, you agree to our platform seller agreement and 5% commission policy.</p>
                                 {errors.commissionAccepted && <p className="text-[10px] text-red-500 font-bold mt-1 uppercase tracking-widest">{errors.commissionAccepted.message as string}</p>}
                             </div>
                         </div>
@@ -462,9 +629,9 @@ function FormField({ label, name, register, errors, placeholder, type = "text" }
                 </span>}
             </label>
             <div className="relative group">
-                <Input 
-                    {...register(name)} 
-                    type={type} 
+                <Input
+                    {...register(name)}
+                    type={type}
                     placeholder={placeholder}
                     className={cn(
                         "h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 px-5 text-sm transition-all duration-300 focus-visible:ring-primary-500/20 group-hover:border-slate-300 dark:group-hover:border-white/20",
