@@ -14,6 +14,7 @@ export interface IBusinessProfile {
     ownerName: string;
     aadhaarNumber?: string;
     mobileNumber: string;
+    isMobileVerified?: boolean;
     address?: string; // Residential - renamed in form to shopAddress but keeping for compatibility if needed
     shopAddress?: {
         street: string;
