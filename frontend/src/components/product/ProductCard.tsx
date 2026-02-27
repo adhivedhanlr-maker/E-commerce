@@ -129,9 +129,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspec
                     </h3>
 
                     <div className="flex flex-col mt-auto pt-1">
-                        <p className="text-base font-black text-slate-950 dark:text-white">${product.price.toFixed(2)}</p>
+                        <p className="text-base font-black text-slate-950 dark:text-white">₹{product.price.toFixed(2)}</p>
                         {product.originalPrice > product.price && (
-                            <p className="text-[11px] text-slate-400 line-through font-medium leading-none">${product.originalPrice.toFixed(2)}</p>
+                            <p className="text-[11px] text-slate-400 line-through font-medium leading-none">₹{product.originalPrice.toFixed(2)}</p>
                         )}
                     </div>
                 </div>

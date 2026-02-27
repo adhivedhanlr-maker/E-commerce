@@ -56,7 +56,7 @@ export default function CartPage() {
                                         </div>
                                         <div className="flex-1">
                                             <h3 className="text-lg font-bold text-slate-900 dark:text-white">{item.name}</h3>
-                                            <p className="text-primary-600 font-bold mt-1">${item.price}</p>
+                                            <p className="text-primary-600 font-bold mt-1">₹{item.price}</p>
                                             <div className="mt-4 flex items-center gap-4">
                                                 <div className="flex h-10 items-center justify-between rounded-lg border px-2 bg-slate-50 dark:bg-slate-900 dark:border-slate-800 w-32">
                                                     <Button
@@ -88,7 +88,7 @@ export default function CartPage() {
                                             </div>
                                         </div>
                                         <div className="text-right hidden sm:block">
-                                            <p className="text-lg font-black text-slate-900 dark:text-white">${(item.price * item.qty).toFixed(2)}</p>
+                                            <p className="text-lg font-black text-slate-900 dark:text-white">₹{(item.price * item.qty).toFixed(2)}</p>
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -103,20 +103,20 @@ export default function CartPage() {
                                     <div className="space-y-4 text-sm font-medium">
                                         <div className="flex justify-between">
                                             <span className="text-slate-500">Subtotal ({cartItems.length} items)</span>
-                                            <span className="text-slate-900 dark:text-white">${itemsPrice.toFixed(2)}</span>
+                                            <span className="text-slate-900 dark:text-white">₹{itemsPrice.toFixed(2)}</span>
                                         </div>
                                         <div className="flex justify-between text-green-600">
                                             <span className="text-slate-500">Shipping</span>
-                                            <span className="font-bold">{shippingPrice === 0 ? 'FREE' : `$${shippingPrice.toFixed(2)}`}</span>
+                                            <span className="font-bold">{shippingPrice === 0 ? 'FREE' : `₹${shippingPrice.toFixed(2)}`}</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-slate-500">Estimated Tax</span>
-                                            <span className="text-slate-900 dark:text-white">${taxPrice.toFixed(2)}</span>
+                                            <span className="text-slate-900 dark:text-white">₹{taxPrice.toFixed(2)}</span>
                                         </div>
                                         <div className="h-px bg-slate-200 dark:bg-slate-800 my-4" />
                                         <div className="flex justify-between text-lg font-black">
                                             <span className="text-slate-900 dark:text-white">Total</span>
-                                            <span className="text-primary-600">${totalPrice.toFixed(2)}</span>
+                                            <span className="text-primary-600">₹{totalPrice.toFixed(2)}</span>
                                         </div>
                                     </div>
                                     <Button asChild size="lg" className="w-full h-14 rounded-full mt-8 bg-slate-900 hover:bg-primary-600 text-white font-bold transition-all shadow-lg hover:shadow-primary-500/20">

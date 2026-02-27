@@ -77,7 +77,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         <div className="space-y-6 px-1">
                             <div className="flex items-center gap-3">
                                 <div className="relative flex-1">
-                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">$</span>
+                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">₹</span>
                                     <Input
                                         value={priceRange[0]}
                                         onChange={(e) => onFilterChange('price', [Number(e.target.value), priceRange[1]])}
@@ -87,7 +87,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                 </div>
                                 <span className="text-slate-400 text-xs">-</span>
                                 <div className="relative flex-1">
-                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">$</span>
+                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">₹</span>
                                     <Input
                                         value={priceRange[1]}
                                         onChange={(e) => onFilterChange('price', [priceRange[0], Number(e.target.value)])}
