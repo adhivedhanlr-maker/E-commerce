@@ -117,6 +117,8 @@ export default function AdvancedSellerRegister() {
     // Moved from renderStepContent to respect Rules of Hooks
     const [otpSent, setOtpSent] = useState(false);
     const [isOtpVerified, setIsOtpVerified] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [globalError, setGlobalError] = useState<string | null>(null);
 
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -248,52 +250,78 @@ export default function AdvancedSellerRegister() {
     };
 
     const handleNext = async (data: FlatOnboardingForm) => {
+        setSubmitting(true);
+        setGlobalError(null);
         console.log('Submitting step:', currentStep, 'with data:', data);
-        // Map flat data to IBusinessProfile
-        const mappedData: Partial<IBusinessProfile> = {
-            ...formData,
-            businessName: data.businessName,
-            ownerName: data.ownerName,
-            mobileNumber: data.mobileNumber,
-            // email is not in IBusinessProfile directly usually, but we can store it or skip if it's user email
-            natureOfBusiness: data.natureOfBusiness,
-            category: data.category,
-            panNumber: data.panNumber,
-            gstin: data.gstin,
-            licenseNumber: data.licenseNumber,
-            udyamNumber: data.udyamNumber,
-            shopAddress: {
-                street: data.shopAddress_street,
-                city: data.shopAddress_city,
-                district: data.shopAddress_district,
-                state: data.shopAddress_state,
-                pincode: data.shopAddress_pincode
-            },
-            bankDetails: {
-                accountHolderName: data.accountHolderName,
-                bankName: data.bankName,
-                accountNumber: data.accountNumber,
-                ifscCode: data.ifscCode,
-                upiId: data.upiId
-            },
-            operationalDetails: {
-                ...(formData.operationalDetails || {}),
-                commissionAccepted: data.commissionAccepted,
-            } as IBusinessProfile['operationalDetails']
-        };
 
-        setFormData(mappedData);
+        try {
+            // Map flat data to IBusinessProfile
+            const mappedData: Partial<IBusinessProfile> = {
+                ...formData,
+                businessName: data.businessName || formData.businessName,
+                ownerName: data.ownerName || formData.ownerName,
+                mobileNumber: data.mobileNumber || formData.mobileNumber,
+                natureOfBusiness: data.natureOfBusiness || formData.natureOfBusiness,
+                category: data.category || formData.category,
+                panNumber: data.panNumber || formData.panNumber,
+                gstin: data.gstin || formData.gstin,
+                licenseNumber: data.licenseNumber || formData.licenseNumber,
+                udyamNumber: data.udyamNumber || formData.udyamNumber,
+            };
 
-        if (currentStep < 6) {
-            await saveOnboardingDraft(mappedData);
-            setCurrentStep(prev => prev + 1);
-        } else {
-            const res = await submitOnboarding(mappedData as IBusinessProfile);
-            if (res.success) {
-                // Store the full profile including registration ID
-                setFormData(res.data);
-                setStatus('pending');
+            // Only update address if we have street (from Step 3)
+            if (data.shopAddress_street) {
+                mappedData.shopAddress = {
+                    street: data.shopAddress_street,
+                    city: data.shopAddress_city,
+                    district: data.shopAddress_district,
+                    state: data.shopAddress_state,
+                    pincode: data.shopAddress_pincode
+                };
             }
+
+            // Only update bank if we have account number (from Step 4)
+            if (data.accountNumber) {
+                mappedData.bankDetails = {
+                    accountHolderName: data.accountHolderName,
+                    bankName: data.bankName,
+                    accountNumber: data.accountNumber,
+                    ifscCode: data.ifscCode,
+                    upiId: data.upiId
+                };
+            }
+
+            // Update operational/commission (Step 6)
+            mappedData.operationalDetails = {
+                ...(formData.operationalDetails || {}),
+                commissionAccepted: data.commissionAccepted ?? formData.operationalDetails?.commissionAccepted,
+            } as IBusinessProfile['operationalDetails'];
+
+            setFormData(mappedData);
+
+            if (currentStep < 6) {
+                const res = await saveOnboardingDraft(mappedData);
+                if (res.success) {
+                    setCurrentStep(prev => prev + 1);
+                    window.scrollTo(0, 0);
+                } else {
+                    setGlobalError(res.message || 'Failed to save draft');
+                }
+            } else {
+                const res = await submitOnboarding(mappedData as IBusinessProfile);
+                if (res.success) {
+                    setFormData(res.data);
+                    setStatus('pending');
+                    window.scrollTo(0, 0);
+                } else {
+                    setGlobalError(res.message || 'Failed to submit registration');
+                }
+            }
+        } catch (err: any) {
+            console.error('Error in handleNext:', err);
+            setGlobalError(err.response?.data?.message || err.message || 'An unexpected error occurred');
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -421,7 +449,13 @@ export default function AdvancedSellerRegister() {
                                         <p className="text-slate-500 mt-2">Please provide your {STEPS[currentStep - 1].title.toLowerCase()} for verification.</p>
                                         {Object.keys(errors).length > 0 && (
                                             <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-2xl">
-                                                <p className="text-xs font-bold text-red-500 uppercase tracking-widest">Please fix the highlighted errors to proceed</p>
+                                                <p className="text-xs font-bold text-red-500 uppercase tracking-widest">Please fix the highlighted field errors to proceed</p>
+                                            </div>
+                                        )}
+                                        {globalError && (
+                                            <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3">
+                                                <AlertCircle className="w-5 h-5 text-red-500" />
+                                                <p className="text-sm font-bold text-red-600 dark:text-red-400">{globalError}</p>
                                             </div>
                                         )}
                                     </div>
@@ -476,10 +510,11 @@ export default function AdvancedSellerRegister() {
                                         </div>
                                         <Button
                                             type="submit"
-                                            className="h-14 px-10 rounded-2xl font-bold bg-slate-900 text-white shadow-xl shadow-slate-900/10"
+                                            disabled={submitting}
+                                            className="h-14 px-10 rounded-2xl font-bold bg-slate-900 text-white shadow-xl shadow-slate-900/10 flex items-center gap-2"
                                         >
-                                            {currentStep === 6 ? 'Submit for Review' : 'Save & Continue'}
-                                            <ChevronRight className="w-5 h-5 ml-2" />
+                                            {submitting ? 'Saving...' : (currentStep === 6 ? 'Submit for Review' : 'Save & Continue')}
+                                            {!submitting && <ChevronRight className="w-5 h-5" />}
                                         </Button>
                                     </div>
                                 </form>
