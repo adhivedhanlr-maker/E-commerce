@@ -198,7 +198,13 @@ export default function AdvancedSellerRegister() {
     const generatePDF = () => {
         try {
             console.log('Generating PDF for:', formData.businessName);
-            const doc = new jsPDF();
+            // Handle different export shapes from 'jspdf' and 'jspdf-autotable' in Next.js
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const JSPDFClass = typeof jsPDF === 'function' ? jsPDF : (jsPDF as any).jsPDF || (jsPDF as any).default;
+            const doc = new JSPDFClass();
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const autoTableFn = typeof autoTable === 'function' ? autoTable : (autoTable as any).default || autoTable;
 
             // Header
             doc.setFontSize(22);
@@ -226,7 +232,7 @@ export default function AdvancedSellerRegister() {
                 ['PAN Number', formData.panNumber || 'N/A'],
             ];
 
-            autoTable(doc, {
+            autoTableFn(doc, {
                 startY: 60,
                 head: [['Field', 'Value']],
                 body: businessTable,
@@ -247,7 +253,7 @@ export default function AdvancedSellerRegister() {
                 ['Pincode', formData.shopAddress?.pincode || 'N/A'],
             ];
 
-            autoTable(doc, {
+            autoTableFn(doc, {
                 startY: addressY + 5,
                 head: [['Field', 'Value']],
                 body: addressTable,
@@ -268,7 +274,7 @@ export default function AdvancedSellerRegister() {
                 ['UPI ID', formData.bankDetails?.upiId || 'N/A'],
             ];
 
-            autoTable(doc, {
+            autoTableFn(doc, {
                 startY: bankY + 5,
                 head: [['Field', 'Value']],
                 body: bankTable,
@@ -436,6 +442,21 @@ export default function AdvancedSellerRegister() {
                         ID: {formData.operationalDetails?.registrationId || 'Generating...'}
                     </p>
                     <p className="text-slate-500 mb-8">Your application is under review. You can download your registration summary below.</p>
+
+                    {toast && (
+                        <div className={cn(
+                            "mb-6 p-4 rounded-2xl flex items-center justify-center gap-3 animate-in fade-in slide-in-from-top-2",
+                            toast.type === 'success' ? "bg-green-500/10 border border-green-500/20" : "bg-red-500/10 border border-red-500/20"
+                        )}>
+                            {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-green-500" /> : <AlertCircle className="w-5 h-5 text-red-500" />}
+                            <p className={cn("text-sm font-bold", toast.type === 'success' ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400")}>{toast.message}</p>
+                        </div>
+                    )}
+                    {globalError && (
+                        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl">
+                            <p className="text-sm font-bold text-red-600 dark:text-red-400">{globalError}</p>
+                        </div>
+                    )}
 
                     <div className="space-y-4">
                         <Button
