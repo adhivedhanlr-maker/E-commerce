@@ -165,9 +165,10 @@ export default function AdvancedSellerRegister() {
                         reset(flatData);
                     }
                 }
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error('Failed to fetch draft/status:', error);
-                if (error.response?.status === 401) {
+                const err = error as any;
+                if (err.response?.status === 401) {
                     setGlobalError('Not authorized. Please login as a demo user to continue.');
                 }
             } finally {
