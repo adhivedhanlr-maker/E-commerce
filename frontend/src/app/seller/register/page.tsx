@@ -5,15 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Building2,
     FileText,
-    User,
     CreditCard,
     Package,
     CheckCircle2,
     ChevronRight,
     ChevronLeft,
     Save,
-    AlertCircle,
-    Info
+    AlertCircle
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -82,7 +80,7 @@ const STEPS = [
     { id: 6, title: 'Review', icon: CheckCircle2 }
 ];
 
-interface FlatOnboardingForm extends Record<string, any> {
+interface FlatOnboardingForm extends Record<string, string | boolean | number | undefined> {
     businessName: string;
     ownerName: string;
     mobileNumber: string;
@@ -117,10 +115,10 @@ export default function AdvancedSellerRegister() {
     const [status, setStatus] = useState<string>('none');
 
     // Moved from renderStepContent to respect Rules of Hooks
-    const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
 
-    const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<FlatOnboardingForm>({
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: zodResolver(stepSchemas[currentStep - 1]) as any,
         mode: 'onChange',
         defaultValues: {
@@ -161,6 +159,7 @@ export default function AdvancedSellerRegister() {
     }, [reset]);
 
     const generatePDF = () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const doc = new jsPDF() as any;
 
         // Header
@@ -198,6 +197,7 @@ export default function AdvancedSellerRegister() {
         });
 
         // Address Info
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const addressY = (doc as any).lastAutoTable.finalY + 15;
         doc.setFontSize(16);
         doc.text('Shop Address', 20, addressY);
@@ -218,6 +218,7 @@ export default function AdvancedSellerRegister() {
         });
 
         // Banking Info
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const bankY = (doc as any).lastAutoTable.finalY + 15;
         doc.setFontSize(16);
         doc.text('Banking Details', 20, bankY);
@@ -276,7 +277,7 @@ export default function AdvancedSellerRegister() {
             operationalDetails: {
                 ...(formData.operationalDetails || {}),
                 commissionAccepted: data.commissionAccepted,
-            } as any
+            } as IBusinessProfile['operationalDetails']
         };
 
         setFormData(mappedData);
