@@ -19,7 +19,18 @@ export const protect = asyncHandler(async (req: AuthRequest, res: Response, next
             // Development hack: Allow demo token
             if (token === 'demo-access-token') {
                 logger.info('Using development demo token');
-                req.user = { _id: 'demo-user-id', name: 'Demo Developer', role: 'admin' };
+
+                // Ensure we have a real Mongoose document so .save() works in controllers
+                let user = await User.findOne({ email: 'dev@example.com' });
+                if (!user) {
+                    user = await User.create({
+                        name: 'Demo Developer',
+                        email: 'dev@example.com',
+                        password: 'password123',
+                        role: 'admin'
+                    });
+                }
+                req.user = user;
                 return next();
             }
 
