@@ -1,8 +1,8 @@
 export interface IBusinessProfile {
     businessName: string;
-    tradeName: string;
-    businessType: 'Proprietorship' | 'Partnership' | 'LLP' | 'Pvt Ltd' | 'OPC';
-    dateOfIncorporation: string;
+    tradeName?: string;
+    businessType?: 'Proprietorship' | 'Partnership' | 'LLP' | 'Pvt Ltd' | 'OPC';
+    dateOfIncorporation?: string;
     natureOfBusiness: 'Retailer' | 'Wholesaler' | 'Manufacturer' | 'Service Provider' | 'E-commerce';
     category: string;
     panNumber: string;
@@ -12,9 +12,9 @@ export interface IBusinessProfile {
     licenseNumber?: string;
     udyamNumber?: string;
     ownerName: string;
-    aadhaarNumber: string;
+    aadhaarNumber?: string;
     mobileNumber: string;
-    address: string;
+    address?: string; // Residential - renamed in form to shopAddress but keeping for compatibility if needed
     shopAddress?: {
         street: string;
         city: string;
@@ -30,10 +30,10 @@ export interface IBusinessProfile {
         upiId?: string;
     };
     operationalDetails: {
-        warehouseAddress: string;
-        pickupAddress: string;
-        returnAddress: string;
-        estimatedTurnover: string;
+        warehouseAddress?: string;
+        pickupAddress?: string;
+        returnAddress?: string;
+        estimatedTurnover?: string;
         commissionAccepted: boolean;
         registrationId?: string;
     };

@@ -116,7 +116,11 @@ export default function AdvancedSellerRegister() {
     const [isLoading, setIsLoading] = useState(true);
     const [status, setStatus] = useState<string>('none');
 
-    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<FlatOnboardingForm>({
+    // Moved from renderStepContent to respect Rules of Hooks
+    const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+    const [otpSent, setOtpSent] = useState(false);
+
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<FlatOnboardingForm>({
         resolver: zodResolver(stepSchemas[currentStep - 1]) as any,
         mode: 'onChange',
         defaultValues: {
@@ -408,7 +412,7 @@ export default function AdvancedSellerRegister() {
                                         <h2 className="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                                             {STEPS[currentStep - 1].title}
                                             <span className="text-sm font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
-                                                Step {currentStep}/5
+                                                Step {currentStep}/6
                                             </span>
                                         </h2>
                                         <p className="text-slate-500 mt-2">Please provide your {STEPS[currentStep - 1].title.toLowerCase()} for verification.</p>
@@ -416,15 +420,24 @@ export default function AdvancedSellerRegister() {
 
                                     {/* STEP CONTENT RENDERING */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {renderStepContent(currentStep, register, errors, setValue, watch, (docKey: string, file: File) => {
-                                            setFormData((prev: Partial<IBusinessProfile>) => ({
-                                                ...prev,
-                                                documents: {
-                                                    ...(prev.documents || {}),
-                                                    [docKey]: file.name // Simulating upload, storing name
-                                                }
-                                            }));
-                                        })}
+                                        {renderStepContent(
+                                            currentStep,
+                                            register,
+                                            errors,
+                                            setValue,
+                                            watch,
+                                            otpSent,
+                                            setOtpSent,
+                                            (docKey: string, file: File) => {
+                                                setFormData((prev: Partial<IBusinessProfile>) => ({
+                                                    ...prev,
+                                                    documents: {
+                                                        ...(prev.documents || {}),
+                                                        [docKey]: file.name // Simulating upload, storing name
+                                                    }
+                                                }));
+                                            }
+                                        )}
                                     </div>
 
                                     {/* Footer Actions */}
@@ -455,7 +468,7 @@ export default function AdvancedSellerRegister() {
                                             type="submit"
                                             className="h-14 px-10 rounded-2xl font-bold bg-slate-900 text-white shadow-xl shadow-slate-900/10"
                                         >
-                                            {currentStep === 5 ? 'Submit for Review' : 'Save & Continue'}
+                                            {currentStep === 6 ? 'Submit for Review' : 'Save & Continue'}
                                             <ChevronRight className="w-5 h-5 ml-2" />
                                         </Button>
                                     </div>
@@ -476,11 +489,10 @@ function renderStepContent(
     errors: FieldErrors<FlatOnboardingForm>,
     setValue: UseFormSetValue<FlatOnboardingForm>,
     watch: UseFormWatch<FlatOnboardingForm>,
+    otpSent: boolean,
+    setOtpSent: (val: boolean) => void,
     handleDocUpload: (key: string, file: File) => void
 ) {
-    const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
-    const [otpSent, setOtpSent] = useState(false);
-
     const handleSendOtp = () => {
         setOtpSent(true);
         setTimeout(() => alert('OTP sent to mobile number! (Mocked)'), 500);
