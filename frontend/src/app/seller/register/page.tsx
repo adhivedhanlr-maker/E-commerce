@@ -375,6 +375,7 @@ export default function AdvancedSellerRegister() {
             } else {
                 setGlobalError(res.message || 'Failed to save draft');
             }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             setGlobalError(err.message || 'Error saving draft');
         } finally {
