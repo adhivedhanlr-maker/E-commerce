@@ -25,6 +25,7 @@ import { DocumentUpload } from '@/components/seller/DocumentUpload';
 import { cn } from '@/lib/utils';
 import { IBusinessProfile } from '@/types/seller';
 import { useAuth } from '@/store/useAuth';
+import axios from 'axios';
 
 // --- SCHEMAS ---
 // --- SCHEMAS ---
@@ -167,8 +168,7 @@ export default function AdvancedSellerRegister() {
                 }
             } catch (error: unknown) {
                 console.error('Failed to fetch draft/status:', error);
-                const err = error as any;
-                if (err.response?.status === 401) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
                     setGlobalError('Not authorized. Please login as a demo user to continue.');
                 }
             } finally {
