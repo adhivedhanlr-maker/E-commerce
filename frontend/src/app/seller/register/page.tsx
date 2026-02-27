@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useForm, UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { useForm, UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch, Path } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { saveOnboardingDraft, submitOnboarding, getOnboardingStatus } from '@/services/sellerService';
@@ -625,7 +625,7 @@ function renderStepContent(
 
 interface FormFieldProps {
     label: string;
-    name: keyof FlatOnboardingForm;
+    name: Path<FlatOnboardingForm>;
     register: UseFormRegister<FlatOnboardingForm>;
     errors: FieldErrors<FlatOnboardingForm>;
     placeholder: string;
