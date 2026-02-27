@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Star, ShoppingCart, Heart, MapPin, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect, use } from 'react';
+import { Star, ShoppingCart, Heart, MapPin, Truck, ShieldCheck, RefreshCw, Loader2, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/store/useCart';
 import { useWishlist } from '@/store/useWishlist';
@@ -10,33 +10,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { getProductById } from '@/services/productService';
 
-const product = {
-    _id: '1',
-    name: 'Aura Pods Elite',
-    price: 349.00,
-    originalPrice: 429.00,
-    discountPercentage: 20,
-    rating: 4.8,
-    numReviews: 128,
-    brand: 'Nexus Audio',
-    description: 'Experience pure sound with the all-new Aura Pods Elite. Featuring active noise cancellation, 40-hour battery life, and cinematic audio quality with our bespoke titanium drivers.',
-    images: [
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?auto=format&fit=crop&q=80&w=800"
-    ],
-    countInStock: 25,
-    specifications: {
-        'Battery Life': '40 Hours',
-        'Connectivity': 'Bluetooth 5.3, USB-C',
-        'Noise Cancellation': 'Active (ANC)',
-        'Weight': '250g',
-    }
-};
+interface PageProps {
+    params: Promise<{ id: string }>;
+}
 
-export default function ProductPage() {
+export default function ProductPage({ params }: PageProps) {
+    const { id } = use(params);
+    const [productData, setProductData] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [qty, setQty] = useState(1);
     const [pincode, setPincode] = useState('');
     const [isCheckSuccess, setIsCheckSuccess] = useState<boolean | null>(null);
@@ -44,17 +28,38 @@ export default function ProductPage() {
     const { addItem: addToCart } = useCart();
     const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
 
-    const isWishlisted = isInWishlist(product._id);
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                setIsLoading(true);
+                const res = await getProductById(id);
+                if (res.success) {
+                    setProductData(res.data);
+                } else {
+                    setError(res.message || 'Product not found');
+                }
+            } catch (err: any) {
+                console.error('Error fetching product:', err);
+                setError(err.response?.data?.message || err.message || 'Failed to load product');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchProduct();
+    }, [id]);
+
+    const isWishlisted = productData ? isInWishlist(productData._id) : false;
 
     const toggleWishlist = () => {
+        if (!productData) return;
         if (isWishlisted) {
-            removeFromWishlist(product._id);
+            removeFromWishlist(productData._id);
         } else {
             addToWishlist({
-                _id: product._id,
-                name: product.name,
-                price: product.price,
-                image: product.images[0] || '',
+                _id: productData._id,
+                name: productData.name,
+                price: productData.price,
+                image: productData.images[0] || '',
             });
         }
     };
@@ -67,63 +72,110 @@ export default function ProductPage() {
         }
     };
 
+    if (isLoading) {
+        return (
+            <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+                <Loader2 className="w-10 h-10 text-primary-600 animate-spin" />
+                <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Loading product details...</p>
+            </div>
+        );
+    }
+
+    if (error || !productData) {
+        return (
+            <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6 p-4 text-center">
+                <div className="w-20 h-20 bg-red-50 dark:bg-red-900/10 rounded-3xl flex items-center justify-center text-red-500">
+                    <AlertCircle className="w-10 h-10" />
+                </div>
+                <div>
+                    <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Oops! Something went wrong</h2>
+                    <p className="text-slate-500 max-w-md mx-auto">{error || 'We couldn\'t find the product you\'re looking for.'}</p>
+                </div>
+                <Button onClick={() => window.location.reload()} variant="outline" className="rounded-2xl h-12 px-8 font-bold">
+                    Try Again
+                </Button>
+            </div>
+        );
+    }
+
     return (
         <div className="bg-white dark:bg-slate-900 pb-20 pt-8">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
                     {/* Left: Image Gallery */}
-                    <ImageGallery images={product.images} />
+                    <ImageGallery images={productData.images || []} />
 
                     {/* Right: Product Details */}
                     <div className="space-y-8">
                         <div>
                             <nav className="flex text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">
-                                <span className="hover:text-primary-600 cursor-pointer">Electronics</span>
-                                <span className="mx-2">/</span>
-                                <span className="hover:text-primary-600 cursor-pointer">Audio</span>
+                                <span className="hover:text-primary-600 cursor-pointer">{productData.category}</span>
+                                {productData.brand && (
+                                    <>
+                                        <span className="mx-2">/</span>
+                                        <span className="hover:text-primary-600 cursor-pointer">{productData.brand}</span>
+                                    </>
+                                )}
                             </nav>
-                            <h1 className="text-3xl font-extrabold text-slate-900 lg:text-4xl dark:text-white">
-                                {product.name}
+                            <h1 className="text-3xl font-extrabold text-slate-900 lg:text-4xl dark:text-white uppercase tracking-tight">
+                                {productData.name}
                             </h1>
                             <div className="mt-4 flex items-center gap-4">
                                 <div className="flex items-center text-amber-500">
                                     {[...Array(5)].map((_, i) => (
-                                        <Star key={i} className={cn("h-4 w-4 fill-current", i >= 4 && "fill-none")} />
+                                        <Star key={i} className={cn("h-4 w-4 fill-current", i >= Math.floor(productData.rating || 0) && "fill-none")} />
                                     ))}
                                     <span className="ml-2 text-sm font-bold text-slate-600 dark:text-slate-400">
-                                        {product.rating} ({product.numReviews} Reviews)
+                                        {productData.rating || 0} ({productData.numReviews || 0} Reviews)
                                     </span>
                                 </div>
                                 <span className="h-4 w-px bg-slate-200" />
-                                <Badge variant="outline" className="text-green-600 border-green-600 bg-green-50/50">In Stock</Badge>
+                                <Badge variant="outline" className={cn(
+                                    "font-bold px-3 py-1 rounded-full",
+                                    productData.countInStock > 0 ? "text-green-600 border-green-600 bg-green-50/50" : "text-red-600 border-red-600 bg-red-50/50"
+                                )}>
+                                    {productData.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                                </Badge>
                             </div>
                         </div>
 
                         <div className="flex items-baseline gap-4 border-y py-6">
-                            <span className="text-4xl font-black text-primary-600">${product.price}</span>
-                            <span className="text-xl text-slate-400 line-through">${product.originalPrice}</span>
-                            <Badge className="bg-red-500 hover:bg-red-500 text-white font-bold h-6 border-none px-2 rounded-full">
-                                {product.discountPercentage}% OFF
-                            </Badge>
+                            <span className="text-4xl font-black text-primary-600">${productData.price}</span>
+                            {productData.originalPrice > productData.price && (
+                                <>
+                                    <span className="text-xl text-slate-400 line-through">${productData.originalPrice}</span>
+                                    <Badge className="bg-red-500 hover:bg-red-500 text-white font-bold h-6 border-none px-2 rounded-full">
+                                        {productData.discountPercentage}% OFF
+                                    </Badge>
+                                </>
+                            )}
                         </div>
 
-                        <div className="space-y-4">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-none">Quantity</h3>
-                            <div className="flex h-12 w-32 items-center justify-between rounded-xl border border-slate-200 px-2 dark:border-slate-800 bg-slate-50/50">
-                                <Button variant="ghost" size="icon" onClick={() => setQty(Math.max(1, qty - 1))} className="h-8 w-8 font-bold">-</Button>
-                                <span className="font-bold">{qty}</span>
-                                <Button variant="ghost" size="icon" onClick={() => setQty(qty + 1)} className="h-8 w-8 font-bold">+</Button>
-                            </div>
+                        <div className="space-y-2">
+                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-none">Description</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">{productData.description}</p>
                         </div>
+
+                        {productData.countInStock > 0 && (
+                            <div className="space-y-4">
+                                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-none">Quantity</h3>
+                                <div className="flex h-12 w-32 items-center justify-between rounded-xl border border-slate-200 px-2 dark:border-slate-800 bg-slate-50/50">
+                                    <Button variant="ghost" size="icon" onClick={() => setQty(Math.max(1, qty - 1))} className="h-8 w-8 font-bold">-</Button>
+                                    <span className="font-bold">{qty}</span>
+                                    <Button variant="ghost" size="icon" onClick={() => setQty(Math.min(productData.countInStock, qty + 1))} className="h-8 w-8 font-bold">+</Button>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="flex gap-4">
                             <Button
                                 size="lg"
-                                onClick={() => addToCart({ ...product, qty, image: product.images[0] || '' })}
-                                className="flex-1 rounded-full bg-primary-600 h-14 text-sm font-bold text-white transition-all hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-500/30"
+                                disabled={productData.countInStock <= 0}
+                                onClick={() => addToCart({ ...productData, qty, image: productData.images?.[0] || '' })}
+                                className="flex-1 rounded-full bg-primary-600 h-14 text-sm font-bold text-white transition-all hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-500/30 disabled:opacity-50"
                             >
                                 <ShoppingCart className="mr-2 h-5 w-5" />
-                                Add to Cart
+                                {productData.countInStock > 0 ? 'Add to Cart' : 'Out of Stock'}
                             </Button>
                             <Button
                                 size="icon"
@@ -131,7 +183,7 @@ export default function ProductPage() {
                                 onClick={toggleWishlist}
                                 className={cn(
                                     "rounded-full border-slate-200 h-14 w-14 transition-all hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800",
-                                    isWishlisted ? "text-red-500" : "text-slate-900"
+                                    isWishlisted ? "text-red-500" : "text-slate-900 dark:text-white"
                                 )}
                             >
                                 <Heart className={cn("h-6 w-6", isWishlisted && "fill-current")} />
@@ -185,17 +237,19 @@ export default function ProductPage() {
                         </div>
 
                         {/* Specifications */}
-                        <div className="space-y-4 pt-6 border-t">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">Product Specifications</h3>
-                            <div className="grid grid-cols-1 gap-0">
-                                {Object.entries(product.specifications).map(([key, value]) => (
-                                    <div key={key} className="flex border-b border-slate-100 py-3 dark:border-slate-800 last:border-none">
-                                        <span className="w-1/3 text-xs font-medium text-slate-400 uppercase tracking-widest leading-none">{key}</span>
-                                        <span className="text-sm font-semibold text-slate-900 dark:text-white leading-none">{value}</span>
-                                    </div>
-                                ))}
+                        {productData.specifications && Object.keys(productData.specifications).length > 0 && (
+                            <div className="space-y-4 pt-6 border-t">
+                                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">Product Specifications</h3>
+                                <div className="grid grid-cols-1 gap-0">
+                                    {Object.entries(productData.specifications).map(([key, value]) => (
+                                        <div key={key} className="flex border-b border-slate-100 py-3 dark:border-slate-800 last:border-none">
+                                            <span className="w-1/3 text-xs font-medium text-slate-400 uppercase tracking-widest leading-none">{key}</span>
+                                            <span className="text-sm font-semibold text-slate-900 dark:text-white leading-none">{value as string}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>
