@@ -106,8 +106,8 @@ interface FlatOnboardingForm extends Record<string, string | boolean | number | 
     commissionAccepted: boolean;
 }
 
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default function AdvancedSellerRegister() {
     const router = useRouter();
@@ -189,91 +189,97 @@ export default function AdvancedSellerRegister() {
     };
 
     const generatePDF = () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const doc = new jsPDF() as any;
+        try {
+            console.log('Generating PDF for:', formData.businessName);
+            const doc = new jsPDF();
 
-        // Header
-        doc.setFontSize(22);
-        doc.text('Shop Registration Summary', 105, 20, { align: 'center' });
+            // Header
+            doc.setFontSize(22);
+            doc.text('Shop Registration Summary', 105, 20, { align: 'center' });
 
-        doc.setFontSize(12);
-        doc.setTextColor(100);
-        doc.text(`Registration ID: ${formData.operationalDetails?.registrationId || 'N/A'}`, 105, 30, { align: 'center' });
-        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 37, { align: 'center' });
+            doc.setFontSize(12);
+            doc.setTextColor(100);
+            doc.text(`Registration ID: ${formData.operationalDetails?.registrationId || 'N/A'}`, 105, 30, { align: 'center' });
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 37, { align: 'center' });
 
-        // Basic Info
-        doc.setDrawColor(200);
-        doc.line(20, 45, 190, 45);
+            // Basic Info
+            doc.setDrawColor(200);
+            doc.line(20, 45, 190, 45);
 
-        doc.setFontSize(16);
-        doc.setTextColor(0);
-        doc.text('Business Details', 20, 55);
+            doc.setFontSize(16);
+            doc.setTextColor(0);
+            doc.text('Business Details', 20, 55);
 
-        const businessTable = [
-            ['Shop Name', formData.businessName || 'N/A'],
-            ['Owner Name', formData.ownerName || 'N/A'],
-            ['Mobile Number', formData.mobileNumber || 'N/A'],
-            ['Category', formData.natureOfBusiness || 'N/A'],
-            ['GST Number', formData.gstin || 'N/A'],
-            ['PAN Number', formData.panNumber || 'N/A'],
-        ];
+            const businessTable = [
+                ['Shop Name', formData.businessName || 'N/A'],
+                ['Owner Name', formData.ownerName || 'N/A'],
+                ['Mobile Number', formData.mobileNumber || 'N/A'],
+                ['Category', formData.natureOfBusiness || 'N/A'],
+                ['GST Number', formData.gstin || 'N/A'],
+                ['PAN Number', formData.panNumber || 'N/A'],
+            ];
 
-        doc.autoTable({
-            startY: 60,
-            head: [['Field', 'Value']],
-            body: businessTable,
-            theme: 'striped',
-            headStyles: { fillColor: [15, 23, 42] }
-        });
+            autoTable(doc, {
+                startY: 60,
+                head: [['Field', 'Value']],
+                body: businessTable,
+                theme: 'striped',
+                headStyles: { fillColor: [15, 23, 42] }
+            });
 
-        // Address Info
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const addressY = (doc as any).lastAutoTable.finalY + 15;
-        doc.setFontSize(16);
-        doc.text('Shop Address', 20, addressY);
+            // Address Info
+            let finalY = (doc as any).lastAutoTable?.finalY || 100;
+            const addressY = finalY + 15;
+            doc.setFontSize(16);
+            doc.text('Shop Address', 20, addressY);
 
-        const addressTable = [
-            ['Street', formData.shopAddress?.street || 'N/A'],
-            ['City/District', `${formData.shopAddress?.city || ''}, ${formData.shopAddress?.district || ''}`],
-            ['State', formData.shopAddress?.state || 'N/A'],
-            ['Pincode', formData.shopAddress?.pincode || 'N/A'],
-        ];
+            const addressTable = [
+                ['Street', formData.shopAddress?.street || 'N/A'],
+                ['City/District', `${formData.shopAddress?.city || ''}, ${formData.shopAddress?.district || ''}`],
+                ['State', formData.shopAddress?.state || 'N/A'],
+                ['Pincode', formData.shopAddress?.pincode || 'N/A'],
+            ];
 
-        doc.autoTable({
-            startY: addressY + 5,
-            head: [['Field', 'Value']],
-            body: addressTable,
-            theme: 'striped',
-            headStyles: { fillColor: [15, 23, 42] }
-        });
+            autoTable(doc, {
+                startY: addressY + 5,
+                head: [['Field', 'Value']],
+                body: addressTable,
+                theme: 'striped',
+                headStyles: { fillColor: [15, 23, 42] }
+            });
 
-        // Banking Info
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const bankY = (doc as any).lastAutoTable.finalY + 15;
-        doc.setFontSize(16);
-        doc.text('Banking Details', 20, bankY);
+            // Banking Info
+            finalY = (doc as any).lastAutoTable?.finalY || 180;
+            const bankY = finalY + 15;
+            doc.setFontSize(16);
+            doc.text('Banking Details', 20, bankY);
 
-        const bankTable = [
-            ['Bank Name', formData.bankDetails?.bankName || 'N/A'],
-            ['Account Number', formData.bankDetails?.accountNumber || 'N/A'],
-            ['IFSC Code', formData.bankDetails?.ifscCode || 'N/A'],
-            ['UPI ID', formData.bankDetails?.upiId || 'N/A'],
-        ];
+            const bankTable = [
+                ['Bank Name', formData.bankDetails?.bankName || 'N/A'],
+                ['Account Number', formData.bankDetails?.accountNumber || 'N/A'],
+                ['IFSC Code', formData.bankDetails?.ifscCode || 'N/A'],
+                ['UPI ID', formData.bankDetails?.upiId || 'N/A'],
+            ];
 
-        doc.autoTable({
-            startY: bankY + 5,
-            head: [['Field', 'Value']],
-            body: bankTable,
-            theme: 'striped',
-            headStyles: { fillColor: [15, 23, 42] }
-        });
+            autoTable(doc, {
+                startY: bankY + 5,
+                head: [['Field', 'Value']],
+                body: bankTable,
+                theme: 'striped',
+                headStyles: { fillColor: [15, 23, 42] }
+            });
 
-        // Footer
-        doc.setFontSize(10);
-        doc.setTextColor(150);
-        doc.text('This is an auto-generated registration summary for reference.', 105, 280, { align: 'center' });
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(150);
+            doc.text('This is an auto-generated registration summary for reference.', 105, 280, { align: 'center' });
 
-        doc.save(`${formData.businessName || 'shop'}_registration_summary.pdf`);
+            doc.save(`${formData.businessName || 'shop'}_registration_summary.pdf`);
+            showToast('PDF downloaded successfully!');
+        } catch (error) {
+            console.error('PDF Generation Error:', error);
+            showToast('Failed to generate PDF. Please try again.', 'error');
+        }
     };
 
     const handleNext = async (data: FlatOnboardingForm) => {
