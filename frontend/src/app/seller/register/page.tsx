@@ -24,6 +24,7 @@ import { saveOnboardingDraft, submitOnboarding, getOnboardingStatus } from '@/se
 import { DocumentUpload } from '@/components/seller/DocumentUpload';
 import { cn } from '@/lib/utils';
 import { IBusinessProfile } from '@/types/seller';
+import { useAuth } from '@/store/useAuth';
 
 // --- SCHEMAS ---
 // --- SCHEMAS ---
