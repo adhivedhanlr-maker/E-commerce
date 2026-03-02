@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 
 interface DocumentUploadProps {
     label: string;
-    onUpload?: (file: File) => void;
+    onUpload?: (file: File, fileData?: string) => void;
     error?: string;
 }
 
@@ -19,17 +19,18 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({ label, onUpload,
         const file = e.target.files?.[0];
         if (file) {
             setFileName(file.name);
-            onUpload?.(file);
 
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setPreview(reader.result as string);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                setPreview(null);
-            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64Data = reader.result as string;
+                if (file.type.startsWith('image/')) {
+                    setPreview(base64Data);
+                } else {
+                    setPreview(null);
+                }
+                onUpload?.(file, base64Data);
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -39,7 +40,7 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({ label, onUpload,
                 {label}
                 {error && <span className="text-red-500 normal-case font-medium tracking-normal">{error}</span>}
             </label>
-            
+
             <div className={cn(
                 "relative h-40 border-2 border-dashed rounded-2xl transition-all duration-300 overflow-hidden group",
                 preview || fileName ? "border-primary-500 bg-primary-50/5 dark:bg-primary-900/5" : "border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5",
@@ -68,7 +69,7 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({ label, onUpload,
                             <p className="text-[10px] text-green-500 font-bold mt-1 flex items-center gap-1">
                                 <CheckCircle2 className="w-3 h-3" /> Ready to upload
                             </p>
-                            <button 
+                            <button
                                 onClick={() => { setFileName(null); setPreview(null); }}
                                 className="mt-2 text-[10px] font-bold text-red-500 hover:underline uppercase tracking-widest flex items-center gap-1"
                             >

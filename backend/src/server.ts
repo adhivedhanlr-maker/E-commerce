@@ -35,7 +35,8 @@ app.use((req, res, next) => {
 });
 
 app.use(helmet());
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
 // Routes
 app.use('/api/auth', authRoutes);

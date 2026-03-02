@@ -612,12 +612,12 @@ export default function AdvancedSellerRegister() {
                                             handleSendOtp,
                                             isOtpVerified,
                                             handleVerifyOtp,
-                                            (docKey: string, file: File) => {
+                                            (docKey: string, file: File, fileData?: string) => {
                                                 setFormData((prev: Partial<IBusinessProfile>) => ({
                                                     ...prev,
                                                     documents: {
                                                         ...(prev.documents || {}),
-                                                        [docKey]: file.name // Simulating upload, storing name
+                                                        [docKey]: fileData || file.name // Store base64 data for download
                                                     }
                                                 }));
                                             }
@@ -680,7 +680,7 @@ function renderStepContent(
     handleSendOtp: () => void,
     isOtpVerified: boolean,
     handleVerifyOtp: () => void,
-    handleDocUpload: (key: string, file: File) => void
+    handleDocUpload: (key: string, file: File, fileData?: string) => void
 ) {
     const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const pincode = e.target.value;
@@ -780,10 +780,10 @@ function renderStepContent(
         case 5:
             return (
                 <>
-                    <DocumentUpload label="Shop Logo" onUpload={(file) => handleDocUpload('shopLogo', file)} />
-                    <DocumentUpload label="GST Certificate" onUpload={(file) => handleDocUpload('gstCertificate', file)} />
-                    <DocumentUpload label="ID Proof (Aadhaar/PAN)" onUpload={(file) => handleDocUpload('idProof', file)} />
-                    <DocumentUpload label="Digital Signature" onUpload={(file) => handleDocUpload('digitalSignature', file)} />
+                    <DocumentUpload label="Shop Logo" onUpload={(file, fileData) => handleDocUpload('shopLogo', file, fileData)} />
+                    <DocumentUpload label="GST Certificate" onUpload={(file, fileData) => handleDocUpload('gstCertificate', file, fileData)} />
+                    <DocumentUpload label="ID Proof (Aadhaar/PAN)" onUpload={(file, fileData) => handleDocUpload('idProof', file, fileData)} />
+                    <DocumentUpload label="Digital Signature" onUpload={(file, fileData) => handleDocUpload('digitalSignature', file, fileData)} />
                 </>
             );
         case 6:

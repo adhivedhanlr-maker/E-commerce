@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-    Users, 
+import {
+    Users,
     Eye,
     Check,
     X,
@@ -105,7 +105,7 @@ export default function AdminSellersPage() {
                             </div>
                         ) : (
                             sellers.map((seller) => (
-                                <Card 
+                                <Card
                                     key={seller._id}
                                     onClick={() => setSelectedSeller(seller)}
                                     className={cn(
@@ -169,14 +169,14 @@ export default function AdminSellersPage() {
                                                 </div>
                                                 {selectedSeller.onboardingStatus === 'pending' && (
                                                     <div className="flex gap-3">
-                                                        <Button 
+                                                        <Button
                                                             onClick={() => handleUpdateStatus(selectedSeller._id, 'rejected')}
-                                                            variant="outline" 
+                                                            variant="outline"
                                                             className="h-14 px-8 rounded-2xl font-bold border-red-100 text-red-600 hover:bg-red-50"
                                                         >
                                                             <X className="w-5 h-5 mr-2" /> Reject
                                                         </Button>
-                                                        <Button 
+                                                        <Button
                                                             onClick={() => handleUpdateStatus(selectedSeller._id, 'approved')}
                                                             className="h-14 px-8 rounded-2xl font-bold bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20"
                                                         >
@@ -196,8 +196,8 @@ export default function AdminSellersPage() {
                                                         <DetailItem label="GSTIN" value={selectedSeller.businessProfile?.gstin || 'Not Provided'} />
                                                         <DetailItem label="Aadhaar Number" value={selectedSeller.businessProfile?.aadhaarNumber} />
                                                         <div className="pt-4 grid grid-cols-2 gap-4">
-                                                            <DocPreview label="PAN Card" />
-                                                            <DocPreview label="GST Certificate" />
+                                                            <DocPreview label="PAN Card" url={selectedSeller.businessProfile?.documents?.panCard} />
+                                                            <DocPreview label="GST Certificate" url={selectedSeller.businessProfile?.documents?.gstCertificate} />
                                                         </div>
                                                     </div>
                                                 </section>
@@ -245,16 +245,66 @@ function DetailItem({ label, value }: { label: string, value?: string }) {
     );
 }
 
-function DocPreview({ label }: { label: string }) {
+function DocPreview({ label, url }: { label: string, url?: string }) {
+    if (!url) {
+        return (
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5 flex items-center justify-between opacity-50 cursor-not-allowed">
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                        <Download className="w-4 h-4" />
+                    </div>
+                    <p className="text-[10px] font-bold text-slate-500 uppercase">{label}</p>
+                </div>
+            </div>
+        );
+    }
+
+    const handleDownload = async (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        let fileUrl = url;
+        if (!url.startsWith('http') && !url.startsWith('data:')) {
+            fileUrl = `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
+        }
+
+        try {
+            if (fileUrl.startsWith('data:')) {
+                const res = await fetch(fileUrl);
+                const blob = await res.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                // Guess extension based on mime type in blob
+                const ext = blob.type === 'application/pdf' ? '.pdf' : blob.type.replace('image/', '.');
+                a.download = `${label.replace(/\s+/g, '_').toLowerCase()}${ext.startsWith('.') ? ext : '.png'}`;
+
+                document.body.appendChild(a);
+                a.click();
+
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            } else {
+                window.open(fileUrl, '_blank');
+            }
+        } catch (error) {
+            console.error('Failed to download file', error);
+            alert('Failed to download file.');
+        }
+    };
+
     return (
-        <div className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-between group hover:border-primary-500 transition-all cursor-pointer">
+        <div
+            onClick={handleDownload}
+            className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-between group hover:border-primary-500 transition-all cursor-pointer"
+        >
             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600">
+                <div className="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600 transition-transform group-hover:-translate-y-1">
                     <Download className="w-4 h-4" />
                 </div>
                 <p className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase">{label}</p>
             </div>
-            <ExternalLink className="w-3 h-3 text-slate-300 group-hover:text-primary-500" />
+            <ExternalLink className="w-3 h-3 text-slate-300 group-hover:text-primary-500 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
         </div>
     );
 }
