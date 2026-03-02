@@ -196,7 +196,7 @@ export default function AdminSellersPage() {
                                                         <DetailItem label="GSTIN" value={selectedSeller.businessProfile?.gstin || 'Not Provided'} />
                                                         <DetailItem label="Aadhaar Number" value={selectedSeller.businessProfile?.aadhaarNumber} />
                                                         <div className="pt-4 grid grid-cols-2 gap-4">
-                                                            <DocPreview label="PAN Card" url={selectedSeller.businessProfile?.documents?.panCard} />
+                                                            <DocPreview label="PAN Card" url={selectedSeller.businessProfile?.documents?.panCard || selectedSeller.businessProfile?.documents?.idProof} />
                                                             <DocPreview label="GST Certificate" url={selectedSeller.businessProfile?.documents?.gstCertificate} />
                                                         </div>
                                                     </div>
