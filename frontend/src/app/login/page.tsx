@@ -9,6 +9,8 @@ import * as z from 'zod';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 import { loginUser } from '@/services/authService';
 import { useAuth } from '@/store/useAuth';
 
@@ -29,6 +31,33 @@ export default function LoginPage() {
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginForm>({
         resolver: zodResolver(loginSchema),
+    });
+
+    const loginWithGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                const userInfo = await axios.get(
+                    'https://www.googleapis.com/oauth2/v3/userinfo',
+                    { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
+                );
+
+                const { googleLoginUser } = await import('@/services/authService');
+                const googleResponse = await googleLoginUser({
+                    token: tokenResponse.access_token,
+                    email: userInfo.data.email,
+                    name: userInfo.data.name,
+                    picture: userInfo.data.picture
+                });
+
+                if (googleResponse.success) {
+                    setUser(googleResponse.data);
+                    router.push('/');
+                }
+            } catch {
+                setError('root', { message: 'Google Sign-In failed to verify.' });
+            }
+        },
+        onError: () => setError('root', { message: 'Google Sign-In popup closed or failed.' })
     });
 
     const onSubmit = async (data: LoginForm) => {
@@ -129,24 +158,7 @@ export default function LoginPage() {
                                 type="button"
                                 variant="outline"
                                 className="w-full h-14 rounded-xl font-bold bg-white hover:bg-slate-50 border-slate-200 text-slate-900 dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-white transition-all shadow-sm"
-                                onClick={async () => {
-                                    try {
-                                        // Simulate Google Auth for demonstration
-                                        const { googleLoginUser } = await import('@/services/authService');
-                                        const googleResponse = await googleLoginUser({
-                                            token: 'mock_google_token',
-                                            email: 'john.google@example.com',
-                                            name: 'John Google'
-                                        });
-
-                                        if (googleResponse.success) {
-                                            setUser(googleResponse.data);
-                                            router.push('/');
-                                        }
-                                    } catch {
-                                        setError('root', { message: 'Google Sign-In failed' });
-                                    }
-                                }}
+                                onClick={() => loginWithGoogle()}
                             >
                                 <FcGoogle className="mr-2 h-6 w-6" />
                                 Google
