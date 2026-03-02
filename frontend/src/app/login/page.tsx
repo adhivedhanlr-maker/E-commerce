@@ -132,12 +132,6 @@ export default function LoginPage() {
                                 onClick={async () => {
                                     try {
                                         // Simulate Google Auth for demonstration
-                                        await loginUser({
-                                            email: 'google@example.com',
-                                            password: 'google_oauth_placeholder' // The backend doesn't check password for Google Auth if we use the googleLogin endpoint
-                                        });
-                                        
-                                        // Actually call the google endpoint
                                         const { googleLoginUser } = await import('@/services/authService');
                                         const googleResponse = await googleLoginUser({
                                             token: 'mock_google_token',
