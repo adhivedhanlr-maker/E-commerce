@@ -247,16 +247,17 @@ export default function PaymentsPage() {
                         </motion.div>
                     ))}
 
-                    {/* Adding UI */}
+                    {/* Form for adding new method */}
                     <AnimatePresence mode="wait">
-                        {isAdding ? (
+                        {isAdding && (
                             <motion.div
                                 key="add-form-container"
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
+                                className="col-span-1 md:col-span-2"
                             >
-                                <Card className="relative rounded-[24px] shadow-premium bg-white dark:bg-slate-900 border-2 border-primary-500 w-full min-h-[320px]">
+                                <Card className="relative rounded-[24px] shadow-premium bg-white dark:bg-slate-900 border-2 border-primary-500 w-full max-w-2xl mx-auto">
                                     <div className="absolute top-4 right-4">
                                         <Button variant="ghost" size="icon" onClick={() => setIsAdding(false)} className="h-8 w-8 rounded-full">
                                             <X className="h-4 w-4" />
@@ -373,21 +374,6 @@ export default function PaymentsPage() {
                                         </form>
                                     </CardContent>
                                 </Card>
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                key="add-tile"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ delay: payments.length * 0.1 }}
-                            >
-                                <button onClick={() => { setIsAdding(true); setAddCategory('card'); }} className="w-full h-full min-h-[220px] rounded-[24px] border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:bg-slate-50 dark:hover:bg-slate-900 hover:border-primary-400 dark:hover:border-primary-600 transition-all flex flex-col items-center justify-center group p-8">
-                                    <div className="h-16 w-16 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary-50 dark:group-hover:bg-primary-900/40 transition-all duration-300">
-                                        <Plus className="h-8 w-8 text-slate-400 group-hover:text-primary-600" />
-                                    </div>
-                                    <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-primary-600">Add New Payment Method</h3>
-                                </button>
                             </motion.div>
                         )}
                     </AnimatePresence>
