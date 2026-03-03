@@ -90,9 +90,10 @@ export default function CheckoutPage() {
 
             clearCart();
             router.push(`/profile/orders/${createdOrder._id}`);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("CRITICAL Order Placement Error:", err);
-            const errMsg = err.response?.data?.message || err.message || 'Unknown error occurred during order placement';
+            const error = err as { response?: { data?: { message?: string } }; message?: string };
+            const errMsg = error.response?.data?.message || error.message || 'Unknown error occurred during order placement';
             setError(errMsg);
 
             // Extreme debug for the user since we can't see their console

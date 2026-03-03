@@ -41,6 +41,22 @@ export interface Order {
     updatedAt: string;
 }
 
+export interface CreateOrderInput {
+    orderItems: {
+        name: string;
+        qty: number;
+        image: string;
+        price: number;
+        product: string;
+    }[];
+    shippingAddress: ShippingAddress;
+    paymentMethod: string;
+    itemsPrice: number;
+    shippingPrice: number;
+    taxPrice: number;
+    totalPrice: number;
+}
+
 export const orderService = {
     // Get logged in user orders
     getMyOrders: async (): Promise<Order[]> => {
@@ -55,7 +71,7 @@ export const orderService = {
     },
 
     // Create a new order
-    createOrder: async (order: any): Promise<Order> => {
+    createOrder: async (order: CreateOrderInput): Promise<Order> => {
         const response = await api.post('/orders', order);
         return response.data.data;
     }
