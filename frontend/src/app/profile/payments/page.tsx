@@ -30,6 +30,22 @@ const DEMO_CARDS = [
         expiry: '08/27',
         isDefault: false,
         logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png'
+    },
+    {
+        id: 'card-3',
+        type: 'Visa',
+        last4: '5555',
+        expiry: '05/26',
+        isDefault: false,
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'
+    },
+    {
+        id: 'card-4',
+        type: 'Mastercard',
+        last4: '1234',
+        expiry: '11/29',
+        isDefault: false,
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png'
     }
 ];
 
