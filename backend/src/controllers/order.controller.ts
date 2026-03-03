@@ -8,6 +8,9 @@ import { AuthRequest } from '../middleware/auth.middleware';
 // @route   POST /api/orders
 // @access  Private
 export const addOrderItems = asyncHandler(async (req: AuthRequest, res: Response) => {
+    if (!req.user?._id) {
+        throw new AppError('User context missing', 401);
+    }
     const {
         orderItems,
         shippingAddress,
@@ -41,6 +44,9 @@ export const addOrderItems = asyncHandler(async (req: AuthRequest, res: Response
 // @route   GET /api/orders/:id
 // @access  Private
 export const getOrderById = asyncHandler(async (req: AuthRequest, res: Response) => {
+    if (!req.user?._id) {
+        throw new AppError('User context missing', 401);
+    }
     const order = await Order.findById(req.params.id).populate('user', 'name email');
 
     if (order) {
@@ -77,6 +83,10 @@ export const updateOrderToPaid = asyncHandler(async (req: AuthRequest, res: Resp
 // @route   GET /api/orders/myorders
 // @access  Private
 export const getMyOrders = asyncHandler(async (req: AuthRequest, res: Response) => {
+    if (!req.user?._id) {
+        throw new AppError('User context missing', 401);
+    }
+
     const orders = await Order.find({ user: req.user._id });
     sendResponse(res, 200, true, 'User orders fetched successfully', orders);
 });

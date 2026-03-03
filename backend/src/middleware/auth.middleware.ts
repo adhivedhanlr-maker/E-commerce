@@ -37,6 +37,11 @@ export const protect = asyncHandler(async (req: AuthRequest, res: Response, next
             const decoded: any = jwt.verify(token!, process.env.JWT_ACCESS_SECRET!);
 
             req.user = await User.findById(decoded.id).select('-password');
+
+            if (!req.user) {
+                return next(new AppError('User not found in database', 404));
+            }
+
             next();
         } catch (error) {
             next(new AppError('Not authorized, token failed', 401));
