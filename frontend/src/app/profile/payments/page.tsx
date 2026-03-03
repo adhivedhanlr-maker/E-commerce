@@ -247,53 +247,73 @@ export default function PaymentsPage() {
                         </motion.div>
                     ))}
 
-                    {/* Form for adding new method */}
-                    <AnimatePresence mode="wait">
+                    {/* Modal Backdrop & Popup */}
+                    <AnimatePresence>
                         {isAdding && (
-                            <motion.div
-                                key="add-form-container"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                className="col-span-1 md:col-span-2"
-                            >
-                                <Card className="relative rounded-[24px] shadow-premium bg-white dark:bg-slate-900 border-2 border-primary-500 w-full max-w-2xl mx-auto">
-                                    <div className="absolute top-4 right-4">
-                                        <Button variant="ghost" size="icon" onClick={() => setIsAdding(false)} className="h-8 w-8 rounded-full">
-                                            <X className="h-4 w-4" />
+                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                                {/* Animated Backdrop */}
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    onClick={() => setIsAdding(false)}
+                                    className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+                                />
+
+                                {/* Modal Container */}
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                                    className="relative w-full max-w-xl bg-white dark:bg-slate-900 rounded-[32px] shadow-2xl overflow-hidden border border-white/20 dark:border-slate-800"
+                                >
+                                    <div className="absolute top-6 right-6 z-10">
+                                        <Button variant="ghost" size="icon" onClick={() => setIsAdding(false)} className="h-10 w-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+                                            <X className="h-5 w-5" />
                                         </Button>
                                     </div>
-                                    <CardContent className="p-8">
-                                        <div className="flex space-x-1 mb-6 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+
+                                    <CardContent className="p-10 pt-12">
+                                        <div className="mb-8">
+                                            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white mb-2">New Payment Method</h2>
+                                            <p className="text-sm text-slate-500 font-medium">Choose a category and enter your details to continue.</p>
+                                        </div>
+
+                                        <div className="flex space-x-1 mb-8 p-1.5 bg-slate-100 dark:bg-slate-800/50 rounded-2xl">
                                             {(['card', 'upi', 'wallet'] as const).map(cat => (
                                                 <button
                                                     key={cat}
+                                                    type="button"
                                                     onClick={() => setAddCategory(cat)}
-                                                    className={`flex-1 py-2 px-1 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${addCategory === cat ? 'bg-white dark:bg-slate-700 shadow-sm text-primary-600' : 'text-slate-400'}`}
+                                                    className={`flex-1 py-3 px-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${addCategory === cat ? 'bg-white dark:bg-slate-700 shadow-premium text-primary-600' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
                                                 >
                                                     {cat}
                                                 </button>
                                             ))}
                                         </div>
 
-                                        <form onSubmit={handleSave} className="space-y-4">
+                                        <form onSubmit={handleSave} className="space-y-6">
                                             {addCategory === 'card' && (
                                                 <div className="space-y-4">
-                                                    <Input
-                                                        placeholder="Card Number (16 digits)"
-                                                        value={formDetails.number}
-                                                        onChange={(e) => setFormDetails({ ...formDetails, number: e.target.value.replace(/\D/g, '') })}
-                                                        maxLength={16}
-                                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-12 rounded-xl"
-                                                        required
-                                                    />
+                                                    <div className="space-y-1.5">
+                                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Card Details</label>
+                                                        <Input
+                                                            placeholder="Card Number (16 digits)"
+                                                            value={formDetails.number}
+                                                            onChange={(e) => setFormDetails({ ...formDetails, number: e.target.value.replace(/\D/g, '') })}
+                                                            maxLength={16}
+                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-[0.2em] h-14 rounded-2xl focus:ring-primary-500/20"
+                                                            required
+                                                        />
+                                                    </div>
                                                     <div className="flex gap-4">
                                                         <Input
                                                             placeholder="MM/YY"
                                                             value={formDetails.expiry}
                                                             onChange={(e) => setFormDetails({ ...formDetails, expiry: e.target.value })}
                                                             maxLength={5}
-                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest w-1/2 h-12 rounded-xl"
+                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest w-1/2 h-14 rounded-2xl focus:ring-primary-500/20"
                                                             required
                                                         />
                                                         <Input
@@ -302,7 +322,7 @@ export default function PaymentsPage() {
                                                             value={formDetails.cvc}
                                                             onChange={(e) => setFormDetails({ ...formDetails, cvc: e.target.value.replace(/\D/g, '') })}
                                                             maxLength={4}
-                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest w-1/2 h-12 rounded-xl"
+                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest w-1/2 h-14 rounded-2xl focus:ring-primary-500/20"
                                                             required
                                                         />
                                                     </div>
@@ -310,71 +330,83 @@ export default function PaymentsPage() {
                                             )}
 
                                             {addCategory === 'upi' && (
-                                                <div className="space-y-4">
-                                                    <div className="grid grid-cols-3 gap-2">
+                                                <div className="space-y-6">
+                                                    <div className="grid grid-cols-3 gap-3">
                                                         {['GPay', 'Paytm', 'PhonePe'].map(provider => (
                                                             <button
                                                                 key={provider}
                                                                 type="button"
                                                                 onClick={() => setFormDetails({ ...formDetails, upiProvider: provider })}
-                                                                className={`h-12 rounded-xl border-2 flex items-center justify-center px-2 transition-all relative overflow-hidden ${formDetails.upiProvider === provider ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50'}`}
+                                                                className={`h-16 rounded-2xl border-2 flex items-center justify-center px-4 transition-all duration-300 relative overflow-hidden ${formDetails.upiProvider === provider ? 'border-primary-500 bg-primary-50/50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50 hover:border-slate-200'}`}
                                                             >
-                                                                <div className="relative h-3 w-full">
+                                                                <div className="relative h-4 w-full">
                                                                     <Image src={LOGOS[provider]} alt={provider} fill className="object-contain" />
                                                                 </div>
                                                             </button>
                                                         ))}
                                                     </div>
-                                                    <div className="relative">
-                                                        <Input
-                                                            placeholder="username@bank"
-                                                            value={formDetails.upiId}
-                                                            onChange={(e) => setFormDetails({ ...formDetails, upiId: e.target.value })}
-                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono pl-11 h-12 rounded-xl"
-                                                            required
-                                                        />
-                                                        <Smartphone className="absolute left-4 top-4 h-4 w-4 text-slate-400" />
+                                                    <div className="space-y-1.5 text-left">
+                                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">UPI Identifier</label>
+                                                        <div className="relative">
+                                                            <Input
+                                                                placeholder="username@bank"
+                                                                value={formDetails.upiId}
+                                                                onChange={(e) => setFormDetails({ ...formDetails, upiId: e.target.value })}
+                                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono pl-12 h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                required
+                                                            />
+                                                            <Smartphone className="absolute left-4 top-5 h-4 w-4 text-slate-400" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
 
                                             {addCategory === 'wallet' && (
-                                                <div className="space-y-4">
-                                                    <div className="grid grid-cols-2 gap-3">
+                                                <div className="space-y-6">
+                                                    <div className="grid grid-cols-2 gap-4">
                                                         {['PayPal', 'ApplePay'].map(provider => (
                                                             <button
                                                                 key={provider}
                                                                 type="button"
                                                                 onClick={() => setFormDetails({ ...formDetails, walletProvider: provider })}
-                                                                className={`h-12 rounded-xl border-2 flex items-center justify-center p-2 transition-all relative overflow-hidden ${formDetails.walletProvider === provider ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50'}`}
+                                                                className={`h-16 rounded-2xl border-2 flex items-center justify-center p-4 transition-all duration-300 relative overflow-hidden ${formDetails.walletProvider === provider ? 'border-primary-500 bg-primary-50/50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50 hover:border-slate-200'}`}
                                                             >
-                                                                <div className="relative h-5 w-full">
+                                                                <div className="relative h-6 w-full">
                                                                     <Image src={LOGOS[provider]} alt={provider} fill className="object-contain" />
                                                                 </div>
                                                             </button>
                                                         ))}
                                                     </div>
-                                                    <div className="relative">
-                                                        <Input
-                                                            placeholder="Account Email / Identifier"
-                                                            type="text"
-                                                            value={formDetails.walletEmail}
-                                                            onChange={(e) => setFormDetails({ ...formDetails, walletEmail: e.target.value })}
-                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono pl-11 h-12 rounded-xl"
-                                                            required
-                                                        />
-                                                        <Mail className="absolute left-4 top-4 h-4 w-4 text-slate-400" />
+                                                    <div className="space-y-1.5 text-left">
+                                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Account Identifier</label>
+                                                        <div className="relative">
+                                                            <Input
+                                                                placeholder="Email / Phone / Username"
+                                                                type="text"
+                                                                value={formDetails.walletEmail}
+                                                                onChange={(e) => setFormDetails({ ...formDetails, walletEmail: e.target.value })}
+                                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono pl-12 h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                required
+                                                            />
+                                                            <Mail className="absolute left-4 top-5 h-4 w-4 text-slate-400" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
 
-                                            <Button type="submit" className="w-full h-12 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold uppercase tracking-widest text-[10px] sm:mt-6 shadow-lg shadow-primary-500/20">
-                                                Save {addCategory.toUpperCase()} Method
-                                            </Button>
+                                            <div className="pt-4">
+                                                <Button type="submit" className="w-full h-14 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-primary-500/30 transition-all hover:scale-[1.02] active:scale-95">
+                                                    Confirm & Register Method
+                                                </Button>
+                                                <p className="text-[9px] text-center text-slate-400 font-bold uppercase tracking-widest mt-6 flex items-center justify-center gap-2">
+                                                    <Lock className="h-3 w-3" />
+                                                    End-to-End Encrypted Secure Registration
+                                                </p>
+                                            </div>
                                         </form>
                                     </CardContent>
-                                </Card>
-                            </motion.div>
+                                </motion.div>
+                            </div>
                         )}
                     </AnimatePresence>
                 </div>
