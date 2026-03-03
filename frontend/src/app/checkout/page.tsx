@@ -47,15 +47,29 @@ export default function CheckoutPage() {
     const placeOrderHandler = async () => {
         setLoading(true);
         setError(null);
+        console.log("Attempting to place order with data:", {
+            cartItems,
+            shippingData,
+            paymentMethod,
+            totalPrice
+        });
+
         try {
+            // Validate basic data before sending
+            if (!cartItems || cartItems.length === 0) throw new Error("Cart is empty");
+            if (!shippingData.address || !shippingData.city) throw new Error("Shipping address incomplete");
+
             const orderData = {
-                orderItems: cartItems.map(item => ({
-                    name: item.name,
-                    qty: item.qty,
-                    image: item.image,
-                    price: item.price,
-                    product: item._id
-                })),
+                orderItems: cartItems.map(item => {
+                    if (!item._id) console.error("Item missing _id!", item);
+                    return {
+                        name: item.name,
+                        qty: item.qty,
+                        image: item.image,
+                        price: item.price,
+                        product: item._id
+                    };
+                }),
                 shippingAddress: {
                     address: shippingData.address,
                     city: shippingData.city,
@@ -69,12 +83,22 @@ export default function CheckoutPage() {
                 totalPrice: totalPrice,
             };
 
+            console.log("Final order payload:", orderData);
+
             const createdOrder = await orderService.createOrder(orderData);
+            console.log("Order created successfully:", createdOrder);
+
             clearCart();
             router.push(`/profile/orders/${createdOrder._id}`);
         } catch (err: any) {
-            console.error("Order Placement Error:", err);
-            setError(err.response?.data?.message || err.message || 'Failed to place order. Please try again.');
+            console.error("CRITICAL Order Placement Error:", err);
+            const errMsg = err.response?.data?.message || err.message || 'Unknown error occurred during order placement';
+            setError(errMsg);
+
+            // Extreme debug for the user since we can't see their console
+            if (process.env.NODE_ENV === 'development') {
+                alert(`Placement Failed: ${errMsg}`);
+            }
             setLoading(false);
         }
     };

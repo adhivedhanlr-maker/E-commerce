@@ -8,8 +8,11 @@ import { AuthRequest } from '../middleware/auth.middleware';
 // @route   POST /api/orders
 // @access  Private
 export const addOrderItems = asyncHandler(async (req: AuthRequest, res: Response) => {
+    console.log("Received Order Request Body:", JSON.stringify(req.body, null, 2));
+    console.log("User Context In Request:", req.user ? req.user._id : "NULL");
+
     if (!req.user?._id) {
-        throw new AppError('User context missing', 401);
+        throw new AppError('User authentication failed - please login again', 401);
     }
     const {
         orderItems,
@@ -21,9 +24,18 @@ export const addOrderItems = asyncHandler(async (req: AuthRequest, res: Response
         totalPrice,
     } = req.body;
 
-    if (orderItems && orderItems.length === 0) {
-        throw new AppError('No order items', 400);
-    } else {
+    if (!orderItems || orderItems.length === 0) {
+        throw new AppError('Your cart is empty or no order items provided', 400);
+    }
+
+    // Validate each order item has a product ID
+    for (const item of orderItems) {
+        if (!item.product) {
+            throw new AppError(`Product missing for item: ${item.name}`, 400);
+        }
+    }
+
+    try {
         const order = new Order({
             orderItems,
             user: req.user._id,
@@ -36,7 +48,11 @@ export const addOrderItems = asyncHandler(async (req: AuthRequest, res: Response
         });
 
         const createdOrder = await order.save();
+        console.log("Order Saved Successfully:", createdOrder._id);
         sendResponse(res, 201, true, 'Order created successfully', createdOrder);
+    } catch (dbError: any) {
+        console.error("Database Error creating order:", dbError);
+        throw new AppError(`Database Error: ${dbError.message}`, 500);
     }
 });
 
