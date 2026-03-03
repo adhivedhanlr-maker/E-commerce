@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { User, Mail, Shield, LogOut, Settings, Bell, CreditCard, Package } from 'lucide-react';
 import { useAuth } from '@/store/useAuth';
