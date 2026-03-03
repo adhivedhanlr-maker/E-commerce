@@ -128,7 +128,7 @@ export default function OrdersPage() {
                                                 <Truck className="mr-2 h-4 w-4 text-primary-500" />
                                                 {order.status === 'Delivered' ? 'Delivered successfully' : 'Expected delivery in 2-3 days'}
                                             </div>
-                                            <Button variant="ghost" className="text-xs font-bold uppercase tracking-widest text-primary-600 hover:text-primary-700 group h-auto p-0">
+                                            <Button variant="ghost" className="text-xs font-bold uppercase tracking-widest text-primary-600 hover:text-primary-700 group h-auto p-0" onClick={() => alert(`Order details for ${order.id} will be available when the backend is connected!`)}>
                                                 View Order Details
                                                 <ChevronRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                                             </Button>
