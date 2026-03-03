@@ -3,9 +3,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CreditCard, Plus, Lock, CheckCircle2, MoreVertical } from 'lucide-react';
+import { ArrowLeft, CreditCard, Plus, Lock, CheckCircle, CheckCircle2, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 
 const DEMO_CARDS = [
     {
@@ -28,17 +29,33 @@ const DEMO_CARDS = [
 
 export default function PaymentsPage() {
     const [cards, setCards] = useState(DEMO_CARDS);
+    const [isAddingCard, setIsAddingCard] = useState(false);
+    const [newCardDetails, setNewCardDetails] = useState({ number: '', expiry: '', cvc: '' });
 
-    const handleAddCard = () => {
+    const handleSaveCard = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!newCardDetails.number || !newCardDetails.expiry || !newCardDetails.cvc) {
+            alert("Please fill in all card details.");
+            return;
+        }
+
+        const last4 = newCardDetails.number.slice(-4).padStart(4, '*');
+        const isMastercard = newCardDetails.number.startsWith('5');
+
         const newCard = {
             id: `card-${Math.random()}`,
-            type: 'Visa',
-            last4: Math.floor(1000 + Math.random() * 9000).toString(),
-            expiry: '12/29',
+            type: isMastercard ? 'Mastercard' : 'Visa',
+            last4: last4,
+            expiry: newCardDetails.expiry,
             isDefault: cards.length === 0,
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'
+            logo: isMastercard
+                ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png'
+                : 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'
         };
         setCards([...cards, newCard]);
+        setIsAddingCard(false);
+        setNewCardDetails({ number: '', expiry: '', cvc: '' });
         alert("New payment method added successfully!");
     };
 
@@ -65,7 +82,7 @@ export default function PaymentsPage() {
                         </div>
                     </div>
 
-                    <Button onClick={handleAddCard} className="h-12 px-6 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all">
+                    <Button onClick={() => setIsAddingCard(true)} className="h-12 px-6 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all">
                         <Plus className="mr-2 h-4 w-4" />
                         Add New Card
                     </Button>
@@ -118,18 +135,73 @@ export default function PaymentsPage() {
                     ))}
 
                     {/* Empty State / Add Card Tile */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: cards.length * 0.1 }}
-                    >
-                        <button onClick={handleAddCard} className="w-full h-full min-h-[220px] rounded-[24px] border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:bg-slate-50 dark:hover:bg-slate-900 hover:border-primary-400 dark:hover:border-primary-600 transition-all flex flex-col items-center justify-center group p-8">
-                            <div className="h-16 w-16 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary-50 dark:group-hover:bg-primary-900/40 transition-all duration-300">
-                                <Plus className="h-8 w-8 text-slate-400 group-hover:text-primary-600" />
-                            </div>
-                            <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-primary-600">Add New Payment Method</h3>
-                        </button>
-                    </motion.div>
+                    {isAddingCard ? (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                        >
+                            <Card className="relative rounded-[24px] overflow-hidden shadow-premium bg-white dark:bg-slate-900 transition-all border-2 border-primary-500 w-full h-full min-h-[220px]">
+                                <CardContent className="p-8">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-slate-800 dark:text-slate-200 mb-6 flex items-center">
+                                        <CreditCard className="mr-2 h-4 w-4 text-primary-500" />
+                                        Enter Card Details
+                                    </h3>
+                                    <form onSubmit={handleSaveCard} className="space-y-4">
+                                        <div>
+                                            <Input
+                                                placeholder="Card Number (16 digits)"
+                                                value={newCardDetails.number}
+                                                onChange={(e) => setNewCardDetails({ ...newCardDetails, number: e.target.value.replace(/\D/g, '') })}
+                                                maxLength={16}
+                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <Input
+                                                placeholder="MM/YY"
+                                                value={newCardDetails.expiry}
+                                                onChange={(e) => setNewCardDetails({ ...newCardDetails, expiry: e.target.value })}
+                                                maxLength={5}
+                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest w-1/2"
+                                                required
+                                            />
+                                            <Input
+                                                placeholder="CVC"
+                                                type="password"
+                                                value={newCardDetails.cvc}
+                                                onChange={(e) => setNewCardDetails({ ...newCardDetails, cvc: e.target.value.replace(/\D/g, '') })}
+                                                maxLength={4}
+                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest w-1/2"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="flex gap-3 pt-4">
+                                            <Button type="button" variant="ghost" onClick={() => setIsAddingCard(false)} className="w-1/2">
+                                                Cancel
+                                            </Button>
+                                            <Button type="submit" className="w-1/2 bg-primary-600 hover:bg-primary-700 text-white">
+                                                Save
+                                            </Button>
+                                        </div>
+                                    </form>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: cards.length * 0.1 }}
+                        >
+                            <button onClick={() => setIsAddingCard(true)} className="w-full h-full min-h-[220px] rounded-[24px] border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:bg-slate-50 dark:hover:bg-slate-900 hover:border-primary-400 dark:hover:border-primary-600 transition-all flex flex-col items-center justify-center group p-8">
+                                <div className="h-16 w-16 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary-50 dark:group-hover:bg-primary-900/40 transition-all duration-300">
+                                    <Plus className="h-8 w-8 text-slate-400 group-hover:text-primary-600" />
+                                </div>
+                                <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-primary-600">Add New Payment Method</h3>
+                            </button>
+                        </motion.div>
+                    )}
                 </div>
             </div>
         </div>
