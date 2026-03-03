@@ -28,10 +28,10 @@ export default function ProfilePage() {
     };
 
     const menuItems = [
-        { icon: Package, label: 'My Orders', desc: 'Track and manage your purchases' },
-        { icon: CreditCard, label: 'Payment Methods', desc: 'Securely manage your cards' },
-        { icon: Bell, label: 'Notifications', desc: 'Configure your alert preferences' },
-        { icon: Settings, label: 'Account Settings', desc: 'Personalize your profile' },
+        { icon: Package, label: 'My Orders', desc: 'Track and manage your purchases', href: '/profile/orders' },
+        { icon: CreditCard, label: 'Payment Methods', desc: 'Securely manage your cards', href: '/profile/payments' },
+        { icon: Bell, label: 'Notifications', desc: 'Configure your alert preferences', href: '/profile/notifications' },
+        { icon: Settings, label: 'Account Settings', desc: 'Personalize your profile', href: '/settings' },
     ];
 
     return (
@@ -106,17 +106,19 @@ export default function ProfilePage() {
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {menuItems.map((item) => (
-                                <Card key={item.label} className="group rounded-[32px] border-none shadow-premium hover:shadow-2xl transition-all bg-white dark:bg-slate-900 cursor-pointer overflow-hidden border border-transparent hover:border-primary-600/20">
-                                    <CardContent className="p-8 flex items-start space-x-6">
-                                        <div className="h-14 w-14 rounded-2xl bg-secondary-100 dark:bg-white/5 flex items-center justify-center text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-all duration-500">
-                                            <item.icon className="h-6 w-6 stroke-[1.5px]" />
-                                        </div>
-                                        <div className="flex flex-col justify-center h-14">
-                                            <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-1 group-hover:text-primary-600 transition-colors uppercase tracking-tight">{item.label}</h3>
-                                            <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <Link href={item.href} key={item.label} className="block group">
+                                    <Card className="rounded-[32px] border-none shadow-premium hover:shadow-2xl transition-all bg-white dark:bg-slate-900 cursor-pointer overflow-hidden border border-transparent hover:border-primary-600/20 h-full">
+                                        <CardContent className="p-8 flex items-start space-x-6">
+                                            <div className="h-14 w-14 rounded-2xl bg-secondary-100 dark:bg-white/5 flex items-center justify-center text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-all duration-500 shrink-0">
+                                                <item.icon className="h-6 w-6 stroke-[1.5px]" />
+                                            </div>
+                                            <div className="flex flex-col justify-center h-14">
+                                                <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-1 group-hover:text-primary-600 transition-colors uppercase tracking-tight">{item.label}</h3>
+                                                <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             ))}
                         </div>
 
