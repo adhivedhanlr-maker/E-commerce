@@ -477,13 +477,17 @@ const Navbar = () => {
                                     <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-premium border-secondary-200/50">
                                         <DropdownMenuLabel className="font-accent">My Account</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem className="rounded-lg">
-                                            <User className="mr-2 h-4 w-4 stroke-[1.5px]" />
-                                            <span>Profile</span>
+                                        <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                                            <Link href="/profile" className="flex items-center w-full">
+                                                <User className="mr-2 h-4 w-4 stroke-[1.5px]" />
+                                                <span>Profile</span>
+                                            </Link>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem className="rounded-lg">
-                                            <Settings className="mr-2 h-4 w-4 stroke-[1.5px]" />
-                                            <span>Settings</span>
+                                        <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                                            <Link href="/settings" className="flex items-center w-full">
+                                                <Settings className="mr-2 h-4 w-4 stroke-[1.5px]" />
+                                                <span>Settings</span>
+                                            </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         {hasMounted && user?.role === 'admin' && (
@@ -503,7 +507,7 @@ const Navbar = () => {
                                             </DropdownMenuItem>
                                         )}
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem onClick={logout} className="text-red-500 focus:text-red-500 rounded-lg">
+                                        <DropdownMenuItem onClick={() => { logout(); router.push('/login'); }} className="text-red-500 focus:text-red-500 rounded-lg cursor-pointer">
                                             <LogOut className="mr-2 h-4 w-4 stroke-[1.5px]" />
                                             <span>Logout</span>
                                         </DropdownMenuItem>
