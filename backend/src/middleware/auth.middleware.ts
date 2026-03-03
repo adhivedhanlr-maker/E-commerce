@@ -34,7 +34,8 @@ export const protect = asyncHandler(async (req: AuthRequest, res: Response, next
                 return next();
             }
 
-            const decoded: any = jwt.verify(token!, process.env.JWT_ACCESS_SECRET!);
+            const secret = process.env.JWT_ACCESS_SECRET || 'your_access_token_secret';
+            const decoded: any = jwt.verify(token!, secret);
 
             req.user = await User.findById(decoded.id).select('-password');
 
@@ -43,8 +44,12 @@ export const protect = asyncHandler(async (req: AuthRequest, res: Response, next
             }
 
             next();
-        } catch (error) {
-            next(new AppError('Not authorized, token failed', 401));
+        } catch (error: any) {
+            let message = 'Not authorized, token failed';
+            if (error.name === 'TokenExpiredError') message = 'Session expired, please login again';
+            if (error.name === 'JsonWebTokenError') message = 'Invalid session, please login again';
+
+            next(new AppError(`${message}: ${error.message}`, 401));
         }
     }
 
