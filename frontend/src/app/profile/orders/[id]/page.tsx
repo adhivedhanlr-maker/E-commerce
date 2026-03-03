@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Package, Truck, MapPin, CreditCard, ChevronRight, CheckCircle2, Clock, CalendarDays, ExternalLink, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Package, Truck, MapPin, CreditCard, CheckCircle2, Clock, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/store/useCart';
@@ -26,9 +26,10 @@ export default function OrderDetailsPage() {
                 const data = await orderService.getOrderById(orderId);
                 setOrder(data);
                 setError(null);
-            } catch (err: any) {
+            } catch (err) {
+                const error = err as { response?: { data?: { message?: string } } };
                 console.error("Failed to fetch order details:", err);
-                setError(err.response?.data?.message || 'Failed to load order details.');
+                setError(error.response?.data?.message || 'Failed to load order details.');
             } finally {
                 setLoading(false);
             }
@@ -173,6 +174,7 @@ export default function OrderDetailsPage() {
                                             <div key={idx} className="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
                                                 <div className="flex items-center space-x-6 w-full sm:w-auto">
                                                     <div className="h-24 w-24 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200/50 dark:border-white/5">
+                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                                         <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                                                     </div>
                                                     <div>
@@ -273,6 +275,7 @@ export default function OrderDetailsPage() {
                                         </div>
                                         <div className="flex items-center p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5">
                                             <div className="h-8 w-12 bg-white rounded flex items-center justify-center p-1 border border-slate-200">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img src={paymentMethod.toLowerCase().includes('paypal') ? 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'} alt="Payment" className="h-full object-contain" />
                                             </div>
                                             <p className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">{paymentMethod}</p>

@@ -89,6 +89,7 @@ export default function PaymentsPage() {
                                 <CardContent className="p-8">
                                     <div className="flex items-between mb-8">
                                         <div className="h-10 w-16 bg-white rounded-lg flex items-center justify-center p-2 shadow-sm border border-slate-100 dark:border-white/5">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img src={card.logo} alt={card.type} className="h-full object-contain" />
                                         </div>
                                     </div>

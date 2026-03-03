@@ -25,9 +25,10 @@ export default function OrdersPage() {
                 const data = await orderService.getMyOrders();
                 setOrders(data);
                 setError(null);
-            } catch (err: any) {
+            } catch (err) {
+                const error = err as { response?: { data?: { message?: string } } };
                 console.error("Failed to fetch orders:", err);
-                setError(err.response?.data?.message || 'Failed to load your orders.');
+                setError(error.response?.data?.message || 'Failed to load your orders.');
             } finally {
                 setLoading(false);
             }
@@ -120,6 +121,7 @@ export default function OrdersPage() {
                                             {order.orderItems.map((item, itemIdx) => (
                                                 <div key={itemIdx} className="flex items-center p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-100 dark:border-white/5">
                                                     <div className="h-16 w-16 rounded-xl overflow-hidden bg-slate-200 shrink-0 border border-slate-200/50 dark:border-white/5">
+                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                                         <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                                                     </div>
                                                     <div className="ml-4 flex-1 overflow-hidden">
