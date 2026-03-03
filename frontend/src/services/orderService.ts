@@ -52,5 +52,11 @@ export const orderService = {
     getOrderById: async (id: string): Promise<Order> => {
         const response = await api.get(`/orders/${id}`);
         return response.data.data;
+    },
+
+    // Create a new order
+    createOrder: async (order: any): Promise<Order> => {
+        const response = await api.post('/orders', order);
+        return response.data.data;
     }
 };
