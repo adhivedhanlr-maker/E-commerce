@@ -28,6 +28,7 @@ export interface Order {
         update_time: string;
         email_address: string;
     };
+    itemsPrice: number;
     taxPrice: number;
     shippingPrice: number;
     totalPrice: number;
