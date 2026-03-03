@@ -7,6 +7,12 @@ import { ArrowLeft, CreditCard, Plus, Lock, CheckCircle, CheckCircle2, MoreVerti
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const DEMO_CARDS = [
     {
@@ -57,6 +63,17 @@ export default function PaymentsPage() {
         setIsAddingCard(false);
         setNewCardDetails({ number: '', expiry: '', cvc: '' });
         alert("New payment method added successfully!");
+    };
+
+    const handleMakeDefault = (cardId: string) => {
+        setCards(cards.map(card => ({
+            ...card,
+            isDefault: card.id === cardId
+        })));
+    };
+
+    const handleDeleteCard = (cardId: string) => {
+        setCards(cards.filter(card => card.id !== cardId));
     };
 
     return (
@@ -124,9 +141,21 @@ export default function PaymentsPage() {
                                                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Expires</p>
                                                 <p className="text-sm font-bold text-slate-950 dark:text-white">{card.expiry}</p>
                                             </div>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white">
-                                                <MoreVertical className="h-4 w-4" />
-                                            </Button>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                                                        <MoreVertical className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="w-[160px]">
+                                                    <DropdownMenuItem onClick={() => handleMakeDefault(card.id)} disabled={card.isDefault}>
+                                                        Make Default
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => handleDeleteCard(card.id)} className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950 cursor-pointer">
+                                                        Delete Card
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </div>
                                     </div>
                                 </CardContent>

@@ -127,7 +127,7 @@ export default function ProfilePage() {
                         <Card className="rounded-[40px] border-none shadow-premium bg-white dark:bg-slate-900 overflow-hidden">
                             <CardHeader className="p-10 pb-0 flex flex-row items-center justify-between">
                                 <CardTitle className="text-xl font-bold uppercase tracking-tight text-slate-950 dark:text-white">Recent Purchases</CardTitle>
-                                <Button variant="ghost" className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">View All Account History</Button>
+                                <Button variant="ghost" className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600" onClick={() => router.push('/profile/orders')}>View All Account History</Button>
                             </CardHeader>
                             <CardContent className="p-10 pt-8">
                                 <div className="flex flex-col items-center justify-center py-20 bg-slate-50 dark:bg-white/5 rounded-[32px] border-2 border-dashed border-slate-200 dark:border-white/10">
@@ -135,7 +135,7 @@ export default function ProfilePage() {
                                     <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">No recent purchase data found</p>
                                     <p className="text-[10px] text-slate-400 mt-2 uppercase">Ready to start curation?</p>
                                     <Button asChild variant="link" className="mt-4 text-primary-600 font-black h-auto p-0 uppercase tracking-widest text-[10px]">
-                                        <a href="/shop">Explore Collections</a>
+                                        <Link href="/shop">Explore Collections</Link>
                                     </Button>
                                 </div>
                             </CardContent>
