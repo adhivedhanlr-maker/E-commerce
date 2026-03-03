@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/store/useCart';
 import { orderService, Order } from '@/services/orderService';
-import { format } from 'date-fns';
 
 export default function OrderDetailsPage() {
     const params = useParams();
@@ -60,16 +59,18 @@ export default function OrderDetailsPage() {
     const { status, isDelivered, createdAt, isPaid, paidAt, orderItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice } = order;
 
     // Derived variables for display
-    const orderDateFormatted = format(new Date(createdAt), 'MMM dd, yyyy');
-    const orderTimeFormatted = format(new Date(createdAt), 'HH:mm a');
+    const orderDateFormatted = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).format(new Date(createdAt));
+    const orderTimeFormatted = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).format(new Date(createdAt));
+
+    const formatDateTimeShort = (date: string | number | Date) => new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(date));
 
     // Generate simplified tracking based on DB state
     const tracking = [
-        { step: 'Order Placed', date: format(new Date(createdAt), 'MMM dd, HH:mm'), completed: true },
-        { step: 'Payment Confirmed', date: isPaid && paidAt ? format(new Date(paidAt), 'MMM dd, HH:mm') : 'Pending', completed: isPaid },
+        { step: 'Order Placed', date: formatDateTimeShort(createdAt), completed: true },
+        { step: 'Payment Confirmed', date: isPaid && paidAt ? formatDateTimeShort(paidAt) : 'Pending', completed: isPaid },
         { step: 'Processing', date: (status === 'processing' || status === 'shipped' || status === 'delivered') ? 'Started' : 'Pending', completed: status === 'processing' || status === 'shipped' || status === 'delivered' },
         { step: 'Shipped', date: (status === 'shipped' || status === 'delivered') ? 'In Transit' : 'Pending', completed: status === 'shipped' || status === 'delivered' || isDelivered },
-        { step: 'Delivered', date: isDelivered ? format(new Date(order.deliveredAt || Date.now()), 'MMM dd, HH:mm') : 'Pending', completed: isDelivered || status === 'delivered' }
+        { step: 'Delivered', date: isDelivered ? formatDateTimeShort(order.deliveredAt || Date.now()) : 'Pending', completed: isDelivered || status === 'delivered' }
     ];
 
     const getStatusIcon = (st: string, delivered: boolean) => {

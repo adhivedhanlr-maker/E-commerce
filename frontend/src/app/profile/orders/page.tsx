@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/store/useCart';
 import { orderService, Order } from '@/services/orderService';
-import { format } from 'date-fns';
 
 export default function OrdersPage() {
     const { addItem } = useCart();
@@ -101,7 +100,7 @@ export default function OrdersPage() {
                                             <div>
                                                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Order Date</p>
                                                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                                    {format(new Date(order.createdAt), 'MMM dd, yyyy')}
+                                                    {new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).format(new Date(order.createdAt))}
                                                 </p>
                                             </div>
                                             <div>
