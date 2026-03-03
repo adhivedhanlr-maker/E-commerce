@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CreditCard, Plus, Lock, CheckCircle2, MoreVertical } from 'lucide-react';
@@ -27,6 +27,21 @@ const DEMO_CARDS = [
 ];
 
 export default function PaymentsPage() {
+    const [cards, setCards] = useState(DEMO_CARDS);
+
+    const handleAddCard = () => {
+        const newCard = {
+            id: `card-${Math.random()}`,
+            type: 'Visa',
+            last4: Math.floor(1000 + Math.random() * 9000).toString(),
+            expiry: '12/29',
+            isDefault: cards.length === 0,
+            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'
+        };
+        setCards([...cards, newCard]);
+        alert("New payment method added successfully!");
+    };
+
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
             <div className="mx-auto max-w-4xl px-6 lg:px-12">
@@ -50,14 +65,14 @@ export default function PaymentsPage() {
                         </div>
                     </div>
 
-                    <Button className="h-12 px-6 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all">
+                    <Button onClick={handleAddCard} className="h-12 px-6 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all">
                         <Plus className="mr-2 h-4 w-4" />
                         Add New Card
                     </Button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {DEMO_CARDS.map((card, index) => (
+                    {cards.map((card, index) => (
                         <motion.div
                             key={card.id}
                             initial={{ opacity: 0, scale: 0.95 }}
@@ -105,9 +120,9 @@ export default function PaymentsPage() {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: DEMO_CARDS.length * 0.1 }}
+                        transition={{ delay: cards.length * 0.1 }}
                     >
-                        <button className="w-full h-full min-h-[220px] rounded-[24px] border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:bg-slate-50 dark:hover:bg-slate-900 hover:border-primary-400 dark:hover:border-primary-600 transition-all flex flex-col items-center justify-center group p-8">
+                        <button onClick={handleAddCard} className="w-full h-full min-h-[220px] rounded-[24px] border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:bg-slate-50 dark:hover:bg-slate-900 hover:border-primary-400 dark:hover:border-primary-600 transition-all flex flex-col items-center justify-center group p-8">
                             <div className="h-16 w-16 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary-50 dark:group-hover:bg-primary-900/40 transition-all duration-300">
                                 <Plus className="h-8 w-8 text-slate-400 group-hover:text-primary-600" />
                             </div>

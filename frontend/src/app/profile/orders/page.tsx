@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Package, ArrowLeft, Clock, CheckCircle2, ChevronRight, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useCart } from '@/store/useCart';
 
 // Dummy data for orders until backend integration is ready
 const DEMO_ORDERS = [
@@ -31,6 +32,8 @@ const DEMO_ORDERS = [
 ];
 
 export default function OrdersPage() {
+    const { addItem } = useCart();
+
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
             <div className="mx-auto max-w-5xl px-6 lg:px-12">
@@ -77,8 +80,8 @@ export default function OrdersPage() {
                                         </div>
 
                                         <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${order.status === 'Delivered'
-                                                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                                : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                            : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
                                             }`}>
                                             {order.status === 'Delivered' ? <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" /> : <Clock className="mr-1.5 h-3.5 w-3.5" />}
                                             {order.status}
@@ -97,7 +100,22 @@ export default function OrdersPage() {
                                                         <p className="text-xs text-slate-500 mt-1">Qty: {item.qty} × ₹{item.price.toFixed(2)}</p>
                                                     </div>
                                                     <div className="ml-4 text-right hidden sm:block">
-                                                        <Button variant="outline" size="sm" className="rounded-full text-[10px] font-bold uppercase tracking-widest h-8 px-4">
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            className="rounded-full text-[10px] font-bold uppercase tracking-widest h-8 px-4"
+                                                            onClick={() => {
+                                                                addItem({
+                                                                    _id: Math.random().toString(),
+                                                                    name: item.name,
+                                                                    price: item.price,
+                                                                    image: item.img,
+                                                                    qty: 1,
+                                                                    countInStock: 10
+                                                                });
+                                                                alert(`${item.name} has been added to your cart!`);
+                                                            }}
+                                                        >
                                                             Buy Again
                                                         </Button>
                                                     </div>

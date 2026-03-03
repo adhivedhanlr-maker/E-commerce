@@ -68,7 +68,7 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
                                 <div className="mt-8 pt-6 border-t border-slate-100 dark:border-white/5 flex justify-end">
-                                    <Button className="h-12 px-8 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all">
+                                    <Button className="h-12 px-8 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all" onClick={() => alert("Profile updated successfully!")}>
                                         Save Changes
                                     </Button>
                                 </div>
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                                             <p className="text-xs text-slate-500 mt-1">Update your password to keep your account secure</p>
                                         </div>
                                     </div>
-                                    <Button variant="outline" className="h-10 px-6 rounded-xl font-bold uppercase tracking-widest text-[10px] w-full sm:w-auto">
+                                    <Button variant="outline" className="h-10 px-6 rounded-xl font-bold uppercase tracking-widest text-[10px] w-full sm:w-auto" onClick={() => alert("Change password flow will be triggered here.")}>
                                         Update
                                     </Button>
                                 </div>
@@ -115,7 +115,7 @@ export default function SettingsPage() {
                                             <p className="text-xs text-slate-500 mt-1">Manage delivery locations for faster checkout</p>
                                         </div>
                                     </div>
-                                    <Button variant="outline" className="h-10 px-6 rounded-xl font-bold uppercase tracking-widest text-[10px] w-full sm:w-auto">
+                                    <Button variant="outline" className="h-10 px-6 rounded-xl font-bold uppercase tracking-widest text-[10px] w-full sm:w-auto" onClick={() => alert("Manage shipping addresses.")}>
                                         Manage
                                     </Button>
                                 </div>

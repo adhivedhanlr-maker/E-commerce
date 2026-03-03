@@ -115,7 +115,7 @@ export default function NotificationsPage() {
                                 <p className="text-sm font-bold text-slate-950 dark:text-white uppercase tracking-widest">Unsubscribe from all</p>
                                 <p className="text-xs text-slate-500 mt-1">Turn off all non-essential notifications</p>
                             </div>
-                            <Button variant="outline" className="h-10 rounded-xl font-bold uppercase tracking-widest text-[10px] w-full sm:w-auto">
+                            <Button variant="outline" className="h-10 rounded-xl font-bold uppercase tracking-widest text-[10px] w-full sm:w-auto" onClick={() => alert("Advanced settings will be available in the next app update.")}>
                                 Manage Advanced Settings
                             </Button>
                         </div>
