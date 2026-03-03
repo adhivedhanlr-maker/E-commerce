@@ -99,12 +99,20 @@ export const updateOrderToPaid = asyncHandler(async (req: AuthRequest, res: Resp
 // @route   GET /api/orders/myorders
 // @access  Private
 export const getMyOrders = asyncHandler(async (req: AuthRequest, res: Response) => {
+    console.log("Fetching orders for user:", req.user?._id);
+
     if (!req.user?._id) {
-        throw new AppError('User context missing', 401);
+        throw new AppError('User authentication failed - no ID found in context', 401);
     }
 
-    const orders = await Order.find({ user: req.user._id });
-    sendResponse(res, 200, true, 'User orders fetched successfully', orders);
+    try {
+        const orders = await Order.find({ user: req.user._id });
+        console.log(`Found ${orders.length} orders for user ${req.user._id}`);
+        sendResponse(res, 200, true, 'User orders fetched successfully', orders);
+    } catch (error: any) {
+        console.error("Error fetching user orders from DB:", error);
+        throw new AppError(`Database query failed: ${error.message}`, 500);
+    }
 });
 
 // @desc    Get all orders
