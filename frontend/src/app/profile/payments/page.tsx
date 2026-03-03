@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, CreditCard, Plus, Lock, CheckCircle2, MoreVertical, Smartphone, X, Wallet, Mail } from 'lucide-react';
+import { ArrowLeft, CreditCard, Plus, Lock, CheckCircle2, MoreVertical, Smartphone, X, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,7 +15,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-const LOGOS = {
+const LOGOS: Record<string, string> = {
     Visa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png',
     Mastercard: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png',
     GPay: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Google_Pay_Logo_%282020%29.svg/2560px-Google_Pay_Logo_%282020%29.svg.png',
@@ -110,7 +111,7 @@ export default function PaymentsPage() {
                 type: formDetails.upiProvider,
                 upiId: formDetails.upiId,
                 isDefault: payments.length === 0,
-                logo: (LOGOS as any)[formDetails.upiProvider]
+                logo: LOGOS[formDetails.upiProvider]
             };
         } else {
             if (!formDetails.walletEmail) {
@@ -123,7 +124,7 @@ export default function PaymentsPage() {
                 type: formDetails.walletProvider,
                 email: formDetails.walletEmail,
                 isDefault: payments.length === 0,
-                logo: (LOGOS as any)[formDetails.walletProvider]
+                logo: LOGOS[formDetails.walletProvider]
             };
         }
 
@@ -191,9 +192,8 @@ export default function PaymentsPage() {
                                 )}
                                 <CardContent className="p-8">
                                     <div className="flex items-between mb-8">
-                                        <div className="h-10 w-16 bg-white rounded-lg flex items-center justify-center p-2 shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={p.logo} alt={p.type} className="h-full object-contain" />
+                                        <div className="h-10 w-16 bg-white rounded-lg flex items-center justify-center p-2 shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden relative">
+                                            <Image src={p.logo} alt={p.type} fill className="object-contain p-2" />
                                         </div>
                                     </div>
 
@@ -316,9 +316,11 @@ export default function PaymentsPage() {
                                                                 key={provider}
                                                                 type="button"
                                                                 onClick={() => setFormDetails({ ...formDetails, upiProvider: provider })}
-                                                                className={`h-12 rounded-xl border-2 flex items-center justify-center px-2 transition-all ${formDetails.upiProvider === provider ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50'}`}
+                                                                className={`h-12 rounded-xl border-2 flex items-center justify-center px-2 transition-all relative overflow-hidden ${formDetails.upiProvider === provider ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50'}`}
                                                             >
-                                                                <img src={(LOGOS as any)[provider]} alt={provider} className="h-3 object-contain" />
+                                                                <div className="relative h-3 w-full">
+                                                                    <Image src={LOGOS[provider]} alt={provider} fill className="object-contain" />
+                                                                </div>
                                                             </button>
                                                         ))}
                                                     </div>
@@ -343,9 +345,11 @@ export default function PaymentsPage() {
                                                                 key={provider}
                                                                 type="button"
                                                                 onClick={() => setFormDetails({ ...formDetails, walletProvider: provider })}
-                                                                className={`h-12 rounded-xl border-2 flex items-center justify-center p-2 transition-all ${formDetails.walletProvider === provider ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50'}`}
+                                                                className={`h-12 rounded-xl border-2 flex items-center justify-center p-2 transition-all relative overflow-hidden ${formDetails.walletProvider === provider ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-slate-800/50'}`}
                                                             >
-                                                                <img src={(LOGOS as any)[provider]} alt={provider} className="h-5 object-contain" />
+                                                                <div className="relative h-5 w-full">
+                                                                    <Image src={LOGOS[provider]} alt={provider} fill className="object-contain" />
+                                                                </div>
                                                             </button>
                                                         ))}
                                                     </div>
