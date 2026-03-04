@@ -107,17 +107,22 @@ export default function CheckoutPage() {
             }
 
             // 2. Prepare order data
+            const orderItemsPayload = cartItems
+                .filter(item => item._id && /^[0-9a-fA-F]{24}$/.test(item._id))
+                .map(item => ({
+                    name: item.name,
+                    qty: item.qty,
+                    image: item.image,
+                    price: item.price,
+                    product: item._id
+                }));
+
+            if (orderItemsPayload.length === 0) {
+                throw new Error("No valid items in cart to checkout");
+            }
+
             const orderData = {
-                orderItems: cartItems.map(item => {
-                    if (!item._id) console.error("Item missing _id!", item);
-                    return {
-                        name: item.name,
-                        qty: item.qty,
-                        image: item.image,
-                        price: item.price,
-                        product: item._id
-                    };
-                }),
+                orderItems: orderItemsPayload,
                 shippingAddress: {
                     address: shippingData.address,
                     city: shippingData.city,

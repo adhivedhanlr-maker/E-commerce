@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import Order from '../models/order.model';
 import asyncHandler from '../utils/asyncHandler';
 import { sendResponse, AppError } from '../utils/response';
@@ -28,10 +29,13 @@ export const addOrderItems = asyncHandler(async (req: AuthRequest, res: Response
         throw new AppError('Your cart is empty or no order items provided', 400);
     }
 
-    // Validate each order item has a product ID
+    // Validate each order item has a product ID and it's a valid ObjectId
     for (const item of orderItems) {
         if (!item.product) {
             throw new AppError(`Product missing for item: ${item.name}`, 400);
+        }
+        if (!mongoose.Types.ObjectId.isValid(item.product)) {
+            throw new AppError(`Invalid product ID format for item: ${item.name}`, 400);
         }
     }
 

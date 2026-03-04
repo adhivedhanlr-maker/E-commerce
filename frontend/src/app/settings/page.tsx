@@ -14,7 +14,7 @@ import axios from 'axios';
 export default function SettingsPage() {
     const { user, setUser } = useAuth();
     const [name, setName] = React.useState(user?.name || '');
-    const [avatar, setAvatar] = React.useState(user?.avatar || '');
+    const [avatar] = React.useState(user?.avatar || '');
     const [isSaving, setIsSaving] = React.useState(false);
 
     const handleSave = async () => {
