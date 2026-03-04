@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Settings, User, Mail, Shield, Smartphone, Key, MapPin } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -34,9 +35,10 @@ export default function SettingsPage() {
                 setUser({ ...user!, name, avatar });
                 alert("Profile updated successfully!");
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error updating profile:', error);
-            alert(error.response?.data?.message || "Failed to update profile");
+            const err = error as { response?: { data?: { message?: string } }; message?: string };
+            alert(err.response?.data?.message || err.message || "Failed to update profile");
         } finally {
             setIsSaving(false);
         }
@@ -81,9 +83,9 @@ export default function SettingsPage() {
                                     <div className="space-y-4 md:col-span-2">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Profile Picture (Auto-linked to Email)</label>
                                         <div className="flex items-center space-x-6">
-                                            <div className="h-20 w-20 rounded-2xl bg-slate-900 flex-shrink-0 overflow-hidden border-2 border-slate-100 dark:border-white/5 shadow-inner">
+                                            <div className="h-20 w-20 rounded-2xl bg-slate-900 flex-shrink-0 overflow-hidden border-2 border-slate-100 dark:border-white/5 shadow-inner relative">
                                                 {avatar ? (
-                                                    <img src={avatar} alt="Preview" className="w-full h-full object-cover" />
+                                                    <Image src={avatar} alt="Preview" fill className="object-cover" sizes="80px" />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-white font-bold text-2xl uppercase">
                                                         {name.charAt(0)}

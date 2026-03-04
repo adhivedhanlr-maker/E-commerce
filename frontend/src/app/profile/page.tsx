@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { User, Mail, Shield, LogOut, Settings, Bell, Package } from 'lucide-react';
 import { useAuth } from '@/store/useAuth';
@@ -53,16 +54,13 @@ export default function ProfilePage() {
                                 <div className="flex justify-center -mt-12 mb-6">
                                     <div className="h-24 w-24 rounded-3xl bg-slate-950 flex items-center justify-center text-4xl font-black text-white border-4 border-white dark:border-slate-900 shadow-xl overflow-hidden relative group">
                                         {user.avatar ? (
-                                            <img
+                                            <Image
                                                 src={user.avatar}
                                                 alt={user.name}
-                                                className="w-full h-full object-cover"
-                                                onError={(e) => {
-                                                    // Fallback if image fails to load
-                                                    const target = e.target as HTMLImageElement;
-                                                    target.style.display = 'none';
-                                                    target.parentElement!.innerText = user.name.charAt(0);
-                                                }}
+                                                fill
+                                                className="object-cover"
+                                                sizes="96px"
+                                                priority
                                             />
                                         ) : (
                                             user.name.charAt(0)

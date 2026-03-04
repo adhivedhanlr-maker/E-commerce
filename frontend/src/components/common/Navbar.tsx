@@ -469,17 +469,15 @@ const Navbar = () => {
                                         <button className="flex items-center outline-none ml-2">
                                             <div className="h-8 w-8 rounded-full border-2 border-secondary-200 p-0.5 overflow-hidden transition-all hover:border-primary-600 dark:border-white/10 flex items-center justify-center">
                                                 {user.avatar ? (
-                                                    <img
-                                                        src={user.avatar}
-                                                        alt={user.name}
-                                                        className="h-full w-full rounded-full object-cover"
-                                                        onError={(e) => {
-                                                            const target = e.target as HTMLImageElement;
-                                                            target.style.display = 'none';
-                                                            const parent = target.parentElement as HTMLElement;
-                                                            parent.innerHTML = `<div class="h-full w-full rounded-full bg-slate-900 flex items-center justify-center text-[10px] text-white font-bold dark:bg-white dark:text-black">${user.name.charAt(0)}</div>`;
-                                                        }}
-                                                    />
+                                                    <div className="h-full w-full relative">
+                                                        <Image
+                                                            src={user.avatar}
+                                                            alt={user.name}
+                                                            fill
+                                                            className="rounded-full object-cover"
+                                                            sizes="32px"
+                                                        />
+                                                    </div>
                                                 ) : (
                                                     <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center text-[10px] text-white font-bold dark:bg-white dark:text-black">
                                                         {user.name.charAt(0)}
