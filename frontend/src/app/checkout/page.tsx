@@ -256,10 +256,7 @@ export default function CheckoutPage() {
                                         {['Credit / Debit Card', 'UPI / NetBanking', 'Cash on Delivery'].map((method) => (
                                             <div
                                                 key={method}
-                                                onClick={() => {
-                                                    setPaymentMethod(method);
-                                                    setTimeout(() => setCurrentStep(2), 200); // Small delay for visual feedback
-                                                }}
+                                                onClick={() => setPaymentMethod(method)}
                                                 className={cn(
                                                     "flex items-center justify-between p-6 border-2 rounded-2xl cursor-pointer transition-all",
                                                     paymentMethod === method
@@ -282,6 +279,10 @@ export default function CheckoutPage() {
 
                                     <div className="pt-8 border-t dark:border-slate-800 flex justify-between">
                                         <Button variant="ghost" onClick={() => setCurrentStep(0)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
+                                        <Button onClick={() => setCurrentStep(2)} size="lg" className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-10 h-14 rounded-2xl font-bold flex items-center gap-3 group hover:bg-primary-600 hover:text-white transition-all shadow-xl hover:shadow-primary-500/20">
+                                            Next: Review
+                                            <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                        </Button>
                                     </div>
                                 </motion.div>
                             )}
