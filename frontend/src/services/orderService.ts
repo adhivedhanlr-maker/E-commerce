@@ -16,18 +16,20 @@ export interface ShippingAddress {
     country: string;
 }
 
+export interface PaymentResult {
+    id: string;
+    status: string;
+    update_time: string;
+    email_address: string;
+}
+
 export interface Order {
     _id: string;
     user: string;
     orderItems: OrderItem[];
     shippingAddress: ShippingAddress;
     paymentMethod: string;
-    paymentResult?: {
-        id: string;
-        status: string;
-        update_time: string;
-        email_address: string;
-    };
+    paymentResult?: PaymentResult;
     itemsPrice: number;
     taxPrice: number;
     shippingPrice: number;
@@ -77,7 +79,7 @@ export const orderService = {
     },
 
     // Update order to paid
-    payOrder: async (orderId: string, paymentResult: any): Promise<Order> => {
+    payOrder: async (orderId: string, paymentResult: PaymentResult): Promise<Order> => {
         const response = await api.put(`/orders/${orderId}/pay`, paymentResult);
         return response.data.data;
     }
