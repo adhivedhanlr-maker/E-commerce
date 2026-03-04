@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 const featuredProducts = [
   {
-    _id: "1",
+    _id: "65d1f1e1f1e1f1e1f1e1f1e1",
     name: "Aura Pods Elite",
     price: 349.00,
     originalPrice: 429.00,
@@ -20,7 +20,7 @@ const featuredProducts = [
     brand: "Nexus Audio",
   },
   {
-    _id: "2",
+    _id: "65d1f1e1f1e1f1e1f1e1f1e2",
     name: "Titan Phone 15",
     price: 1199.00,
     originalPrice: 1299.00,
@@ -30,7 +30,7 @@ const featuredProducts = [
     brand: "Titan Tech",
   },
   {
-    _id: "3",
+    _id: "65d1f1e1f1e1f1e1f1e1f1e3",
     name: "Lumina Vision Pro",
     price: 2499.00,
     originalPrice: 2799.00,
@@ -40,7 +40,7 @@ const featuredProducts = [
     brand: "Visionary",
   },
   {
-    _id: "5",
+    _id: "65d1f1e1f1e1f1e1f1e1f1e5",
     name: "Eames Silhouette Lounge",
     price: 1250.00,
     originalPrice: 1500.00,
@@ -50,7 +50,7 @@ const featuredProducts = [
     brand: "Heritage Home",
   },
   {
-    _id: "6",
+    _id: "65d1f1e1f1e1f1e1f1e1f1e6",
     name: "Zenith Minimalist Desk",
     price: 850.00,
     originalPrice: 950.00,
@@ -60,7 +60,7 @@ const featuredProducts = [
     brand: "Heritage Home",
   },
   {
-    _id: "8",
+    _id: "65d1f1e1f1e1f1e1f1e1f1e8",
     name: "Obsidian Tech Jacket",
     price: 549.00,
     originalPrice: 650.00,
@@ -70,7 +70,7 @@ const featuredProducts = [
     brand: "Apex Outdoor",
   },
   {
-    _id: "10",
+    _id: "65d1f1e1f1e1f1e1f1e1f110",
     name: "Equinox Chrono X",
     price: 890.00,
     originalPrice: 1100.00,
@@ -80,7 +80,7 @@ const featuredProducts = [
     brand: "Temporal",
   },
   {
-    _id: "18",
+    _id: "65d1f1e1f1e1f1e1f1e1f118",
     name: "Cashmere Overcoat",
     price: 750.00,
     originalPrice: 850.00,
@@ -100,7 +100,7 @@ const categories = [
 
 const newArrivals = [
   {
-    _id: "13",
+    _id: "65d1f1e1f1e1f1e1f1e1f113",
     name: "Zenith Keyboard",
     price: 159.99,
     originalPrice: 159.99,
@@ -110,7 +110,7 @@ const newArrivals = [
     brand: "KeyClick",
   },
   {
-    _id: "15",
+    _id: "65d1f1e1f1e1f1e1f1e1f115",
     name: "Velvet Cloud Sofa",
     price: 1800.00,
     originalPrice: 2200.00,
@@ -120,7 +120,7 @@ const newArrivals = [
     brand: "Heritage Home",
   },
   {
-    _id: "22",
+    _id: "65d1f1e1f1e1f1e1f1e1f122",
     name: "Aerospace Aviators",
     price: 155.00,
     originalPrice: 195.00,
@@ -130,7 +130,7 @@ const newArrivals = [
     brand: "Visionary",
   },
   {
-    _id: "20",
+    _id: "65d1f1e1f1e1f1e1f1e1f120",
     name: "Nomad Canvas Backpack",
     price: 185.00,
     originalPrice: 210.00,
@@ -143,7 +143,7 @@ const newArrivals = [
 
 const trendingProducts = [
   {
-    _id: "7",
+    _id: "65d1f1e1f1e1f1e1f1e1f1a7",
     name: "Lunar Orbital Lamp",
     price: 220.00,
     originalPrice: 280.00,
@@ -153,7 +153,7 @@ const trendingProducts = [
     brand: "Lumina Design",
   },
   {
-    _id: "9",
+    _id: "65d1f1e1f1e1f1e1f1e1f1a9",
     name: "Merino Precision Knit",
     price: 180.00,
     originalPrice: 180.00,
@@ -163,7 +163,7 @@ const trendingProducts = [
     brand: "Apex Outdoor",
   },
   {
-    _id: "14",
+    _id: "65d1f1e1f1e1f1e1f1e1f114",
     name: "SlimBook Ultra 14",
     price: 899.99,
     originalPrice: 999.99,
@@ -173,7 +173,7 @@ const trendingProducts = [
     brand: "SlimBook",
   },
   {
-    _id: "16",
+    _id: "65d1f1e1f1e1f1e1f1e1f116",
     name: "Onyx Coffee Table",
     price: 650.00,
     originalPrice: 750.00,

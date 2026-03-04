@@ -52,6 +52,7 @@ export const addOrderItems = asyncHandler(async (req: AuthRequest, res: Response
         sendResponse(res, 201, true, 'Order created successfully', createdOrder);
     } catch (dbError: any) {
         console.error("Database Error creating order:", dbError);
+        console.error("Payload that caused error:", JSON.stringify(orderItems, null, 2));
         throw new AppError(`Database Error: ${dbError.message}`, 500);
     }
 });
