@@ -93,10 +93,23 @@ export default function OrderDetailsPage() {
     const getPaymentIcon = (method: string) => {
         const m = method.toLowerCase();
 
-        let logoUrl = '';
+        // Cash on Delivery — inline SVG (no external dependency)
         if (m.includes('cash') || m.includes('cod')) {
-            logoUrl = 'https://cdn-icons-png.flaticon.com/512/2331/2331941.png';
-        } else if (m.includes('upi') || m.includes('net') || m.includes('banking')) {
+            return (
+                <div className="h-8 w-12 bg-green-50 rounded flex items-center justify-center border border-green-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" className="h-6 w-6" fill="none">
+                        <rect x="4" y="20" width="40" height="26" rx="3" fill="#16a34a" opacity="0.15" />
+                        <rect x="4" y="20" width="40" height="26" rx="3" stroke="#16a34a" strokeWidth="3" />
+                        <circle cx="24" cy="33" r="6" stroke="#16a34a" strokeWidth="2.5" />
+                        <path d="M10 26h4M34 26h4M10 40h4M34 40h4" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M44 28l10 4-10 4" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </div>
+            );
+        }
+
+        let logoUrl = '';
+        if (m.includes('upi') || m.includes('net') || m.includes('banking')) {
             logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1280px-UPI-Logo-vector.svg.png';
         } else if (m.includes('paypal')) {
             logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg';
@@ -111,6 +124,7 @@ export default function OrderDetailsPage() {
             </div>
         );
     };
+
 
 
     const downloadInvoice = async () => {
