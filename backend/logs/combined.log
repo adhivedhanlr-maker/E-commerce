@@ -151,3 +151,11 @@
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-03-04T09:07:04.624Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-04T09:07:05.594Z"}
 {"level":"info","message":"GET /api/config/paypal","timestamp":"2026-03-04T09:19:41.298Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-04T10:25:00.629Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-04T10:25:01.528Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-04T10:25:01.637Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-03-04T10:25:02.502Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-04T10:46:26.863Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-04T10:46:27.673Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-04T10:46:27.770Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-04T10:46:28.524Z"}

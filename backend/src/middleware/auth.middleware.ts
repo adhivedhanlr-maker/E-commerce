@@ -10,51 +10,52 @@ export interface AuthRequest extends Request {
 }
 
 export const protect = asyncHandler(async (req: AuthRequest, res: Response, next: NextFunction) => {
-    let token;
+    let token: string | undefined;
 
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
-            token = req.headers.authorization.split(' ')[1];
-
-            // Development hack: Allow demo token
-            if (token === 'demo-access-token') {
-                logger.info('Using development demo token');
-
-                // Ensure we have a real Mongoose document so .save() works in controllers
-                let user = await User.findOne({ email: 'dev@example.com' });
-                if (!user) {
-                    user = await User.create({
-                        name: 'Demo Developer',
-                        email: 'dev@example.com',
-                        password: 'password123',
-                        role: 'admin'
-                    });
-                }
-                req.user = user;
-                return next();
-            }
-
-            const secret = process.env.JWT_ACCESS_SECRET || 'your_access_token_secret';
-            const decoded: any = jwt.verify(token!, secret);
-
-            req.user = await User.findById(decoded.id).select('-password');
-
-            if (!req.user) {
-                return next(new AppError('User not found in database', 404));
-            }
-
-            next();
-        } catch (error: any) {
-            let message = 'Not authorized, token failed';
-            if (error.name === 'TokenExpiredError') message = 'Session expired, please login again';
-            if (error.name === 'JsonWebTokenError') message = 'Invalid session, please login again';
-
-            next(new AppError(`${message}: ${error.message}`, 401));
-        }
+    // 1. Prefer HTTP-only cookie (most secure, persists across browser restarts)
+    if (req.cookies?.accessToken) {
+        token = req.cookies.accessToken;
+        // 2. Fall back to Authorization header (for API clients / mobile)
+    } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
     }
 
     if (!token) {
-        next(new AppError('Not authorized, no token', 401));
+        return next(new AppError('Not authorized, no token', 401));
+    }
+
+    try {
+        // Development hack: Allow demo token
+        if (token === 'demo-access-token') {
+            logger.info('Using development demo token');
+            let user = await User.findOne({ email: 'dev@example.com' });
+            if (!user) {
+                user = await User.create({
+                    name: 'Demo Developer',
+                    email: 'dev@example.com',
+                    password: 'password123',
+                    role: 'admin'
+                });
+            }
+            req.user = user;
+            return next();
+        }
+
+        const secret = process.env.JWT_ACCESS_SECRET || 'your_access_token_secret';
+        const decoded: any = jwt.verify(token, secret);
+
+        req.user = await User.findById(decoded.id).select('-password');
+
+        if (!req.user) {
+            return next(new AppError('User not found in database', 404));
+        }
+
+        next();
+    } catch (error: any) {
+        let message = 'Not authorized, token failed';
+        if (error.name === 'TokenExpiredError') message = 'Session expired, please login again';
+        if (error.name === 'JsonWebTokenError') message = 'Invalid session, please login again';
+        next(new AppError(`${message}: ${error.message}`, 401));
     }
 });
 

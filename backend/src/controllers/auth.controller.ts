@@ -7,6 +7,18 @@ import { OAuth2Client } from 'google-auth-library';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+const COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 10 * 365 * 24 * 60 * 60 * 1000, // 10 years in ms
+    path: '/',
+} as const;
+
+const setAuthCookie = (res: Response, token: string) => {
+    res.cookie('accessToken', token, COOKIE_OPTIONS);
+};
+
 export const register = async (req: Request, res: Response) => {
     try {
         const { name, email, password } = req.body;
@@ -19,25 +31,15 @@ export const register = async (req: Request, res: Response) => {
         const hash = crypto.createHash('md5').update(email.toLowerCase().trim()).digest('hex');
         const gravatarUrl = `https://www.gravatar.com/avatar/${hash}?d=identicon`;
 
-        const user = await User.create({
-            name,
-            email,
-            password,
-            avatar: gravatarUrl
-        });
+        const user = await User.create({ name, email, password, avatar: gravatarUrl });
 
         if (user) {
             const accessToken = generateAccessToken(user._id.toString(), user.role);
             const refreshToken = generateRefreshToken(user._id.toString());
-
+            setAuthCookie(res, accessToken);
             sendResponse(res, 201, true, 'User registered successfully', {
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                avatar: user.avatar,
-                accessToken,
-                refreshToken,
+                _id: user._id, name: user.name, email: user.email,
+                role: user.role, avatar: user.avatar, accessToken, refreshToken,
             });
         } else {
             sendResponse(res, 400, false, 'Invalid user data');
@@ -50,28 +52,22 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-
         const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
             const accessToken = generateAccessToken(user._id.toString(), user.role);
             const refreshToken = generateRefreshToken(user._id.toString());
 
-            // Assign Gravatar if missing
             if (!user.avatar) {
                 const hash = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
                 user.avatar = `https://www.gravatar.com/avatar/${hash}?d=identicon`;
                 await user.save();
             }
 
+            setAuthCookie(res, accessToken);
             sendResponse(res, 200, true, 'Login successful', {
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                avatar: user.avatar,
-                accessToken,
-                refreshToken,
+                _id: user._id, name: user.name, email: user.email,
+                role: user.role, avatar: user.avatar, accessToken, refreshToken,
             });
         } else {
             sendResponse(res, 401, false, 'Invalid email or password');
@@ -92,20 +88,15 @@ export const googleLogin = async (req: Request, res: Response) => {
         let user = await User.findOne({ email });
 
         if (!user) {
-            // Register new user via Google
             user = await User.create({
-                name: name || 'Google User',
-                email,
-                avatar: picture,
-                password: Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8), // Dummy password
+                name: name || 'Google User', email, avatar: picture,
+                password: Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8),
                 role: 'user'
             });
         } else if (picture && !user.avatar) {
-            // Update avatar if missing
             user.avatar = picture;
             await user.save();
         } else if (!user.avatar) {
-            // Final fallback to Gravatar
             const hash = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
             user.avatar = `https://www.gravatar.com/avatar/${hash}?d=identicon`;
             await user.save();
@@ -114,20 +105,20 @@ export const googleLogin = async (req: Request, res: Response) => {
         const accessToken = generateAccessToken(user._id.toString(), user.role);
         const refreshToken = generateRefreshToken(user._id.toString());
 
+        setAuthCookie(res, accessToken);
         sendResponse(res, 200, true, 'Google Login successful', {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            avatar: user.avatar,
-            accessToken,
-            refreshToken,
+            _id: user._id, name: user.name, email: user.email,
+            role: user.role, avatar: user.avatar, accessToken, refreshToken,
         });
-
     } catch (error: any) {
         console.error('Google Auth Error:', error);
         sendResponse(res, 500, false, 'Google authentication failed');
     }
+};
+
+export const logout = async (req: Request, res: Response) => {
+    res.clearCookie('accessToken', { path: '/' });
+    sendResponse(res, 200, true, 'Logged out successfully', null);
 };
 
 export const updateUserProfile = async (req: any, res: Response) => {
@@ -149,18 +140,13 @@ export const updateUserProfile = async (req: any, res: Response) => {
             }
 
             const updatedUser = await user.save();
-
             const accessToken = generateAccessToken(updatedUser._id.toString(), updatedUser.role);
             const refreshToken = generateRefreshToken(updatedUser._id.toString());
 
+            setAuthCookie(res, accessToken);
             sendResponse(res, 200, true, 'Profile updated successfully', {
-                _id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                role: updatedUser.role,
-                avatar: updatedUser.avatar,
-                accessToken,
-                refreshToken,
+                _id: updatedUser._id, name: updatedUser.name, email: updatedUser.email,
+                role: updatedUser.role, avatar: updatedUser.avatar, accessToken, refreshToken,
             });
         } else {
             sendResponse(res, 404, false, 'User not found');

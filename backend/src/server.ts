@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import connectDB from './config/db';
 import logger from './utils/logger';
 
@@ -11,6 +12,7 @@ import categoryRoutes from './routes/category.routes';
 import orderRoutes from './routes/order.routes';
 import adminRoutes from './routes/admin.routes';
 import paymentRoutes from './routes/payment.routes';
+import sellerRoutes from './routes/seller.routes';
 import errorHandler from './middleware/error.middleware';
 
 dotenv.config();
@@ -35,6 +37,7 @@ app.use((req, res, next) => {
 });
 
 app.use(helmet());
+app.use(cookieParser()); // Parse HTTP-only cookies
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
@@ -45,6 +48,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/seller', sellerRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is running...');

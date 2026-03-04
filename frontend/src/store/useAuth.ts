@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import api from '@/services/api';
 
 interface User {
     _id: string;
@@ -21,7 +22,7 @@ const DEMO_USER: User = {
 interface AuthStore {
     user: User | null;
     setUser: (user: User | null) => void;
-    logout: () => void;
+    logout: () => Promise<void>;
     loginAsDev: () => void;
 }
 
@@ -31,14 +32,22 @@ export const useAuth = create<AuthStore>()(
             user: null,
             setUser: (user) => {
                 if (user) {
+                    // Also store in localStorage as fallback for non-cookie environments
                     localStorage.setItem('accessToken', user.accessToken);
                 } else {
                     localStorage.removeItem('accessToken');
                 }
                 set({ user });
             },
-            logout: () => {
+            logout: async () => {
+                try {
+                    // Tell backend to clear the HTTP-only cookie
+                    await api.post('/auth/logout');
+                } catch {
+                    // Ignore errors — clear local state regardless
+                }
                 localStorage.removeItem('accessToken');
+                localStorage.removeItem('auth-storage');
                 set({ user: null });
             },
             loginAsDev: () => {
@@ -49,7 +58,6 @@ export const useAuth = create<AuthStore>()(
         {
             name: 'auth-storage',
             onRehydrateStorage: () => (state) => {
-                // Auto-login in development if no user is found after rehydration
                 if (
                     process.env.NODE_ENV === 'development' &&
                     state &&
