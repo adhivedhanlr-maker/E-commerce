@@ -12,13 +12,15 @@ import { useCart } from '@/store/useCart';
 import { orderService } from '@/services/orderService';
 import Link from 'next/link';
 
-const steps = ['Shipping', 'Payment', 'Review'];
+const steps = ['Shipping', 'Review', 'Payment'];
 
 export default function CheckoutPage() {
+    // ... items above remain same ...
     const router = useRouter();
     const { cartItems, itemsPrice, shippingPrice, taxPrice, totalPrice, clearCart } = useCart();
 
     const [currentStep, setCurrentStep] = useState(0);
+    // ... states ...
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -72,14 +74,15 @@ export default function CheckoutPage() {
             if (!cartItems || cartItems.length === 0) throw new Error("Cart is empty");
             if (!shippingData.address || !shippingData.city) throw new Error("Shipping address incomplete");
 
-            // Simulate mobile payment request for non-COD methods
+            // 1. Simulate mobile payment request first for non-COD methods
             if (paymentMethod !== 'Cash on Delivery') {
                 setIsPaymentProcessing(true);
-                // Simulate wait for mobile confirmation - longer delay for realistic feel
-                await new Promise(resolve => setTimeout(resolve, 4000));
-                setIsPaymentProcessing(false);
+                // Simulate wait for mobile confirmation - realistic wait time
+                await new Promise(resolve => setTimeout(resolve, 5000));
+                // In a real app, we would verify the payment status here before proceeding
             }
 
+            // 2. Prepare order data
             const orderData = {
                 orderItems: cartItems.map(item => {
                     if (!item._id) console.error("Item missing _id!", item);
@@ -104,10 +107,27 @@ export default function CheckoutPage() {
                 totalPrice: totalPrice,
             };
 
-            console.log("Final order payload:", orderData);
+            console.log("Creating order after payment confirmation:", orderData);
 
+            // 3. Create the order in the database
             const createdOrder = await orderService.createOrder(orderData);
             console.log("Order created successfully:", createdOrder);
+
+            // 4. Mark order as paid in the backend if applicable
+            if (paymentMethod !== 'Cash on Delivery') {
+                try {
+                    await orderService.payOrder(createdOrder._id, {
+                        id: `PAY-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+                        status: 'COMPLETED',
+                        update_time: new Date().toISOString(),
+                        email_address: 'customer@nexusstore.com'
+                    });
+                    console.log("Order status updated to PAID");
+                } catch (payError) {
+                    console.error("Failed to update payment status:", payError);
+                }
+                setIsPaymentProcessing(false);
+            }
 
             clearCart();
             router.push(`/profile/orders/${createdOrder._id}`);
@@ -249,7 +269,7 @@ export default function CheckoutPage() {
                                             size="lg"
                                             className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-10 h-14 rounded-2xl font-bold flex items-center gap-3 group hover:bg-primary-600 hover:text-white transition-all shadow-xl hover:shadow-primary-500/20"
                                         >
-                                            Next: Payment
+                                            Next: Review Order
                                             <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                                         </Button>
                                     </div>
@@ -257,6 +277,66 @@ export default function CheckoutPage() {
                             )}
 
                             {currentStep === 1 && (
+                                <motion.div
+                                    key="step-review"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="space-y-10"
+                                >
+                                    <div className="text-center">
+                                        <div className="flex justify-center mb-6">
+                                            <div className="h-20 w-20 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500">
+                                                <CheckCircle2 className="h-10 w-10" />
+                                            </div>
+                                        </div>
+                                        <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Review Your Order</h2>
+                                        <p className="text-slate-500 mt-2">Please double check everything before proceeding to payment.</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-8">
+                                        <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 space-y-4 text-left">
+                                            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">Shipping To</h3>
+                                            <p className="font-bold text-slate-900 dark:text-white">{shippingData.firstName} {shippingData.lastName}</p>
+                                            <p className="text-sm text-slate-500 leading-relaxed italic">{shippingData.address}, {shippingData.city}, {shippingData.postalCode}, {shippingData.country}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-8 rounded-3xl bg-slate-950 text-white space-y-4">
+                                        <div className="flex justify-between text-sm">
+                                            <span className="opacity-60 uppercase tracking-widest font-bold">Subtotal</span>
+                                            <span className="font-mono tabular-nums font-bold">₹{itemsPrice.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between text-sm">
+                                            <span className="opacity-60 uppercase tracking-widest font-bold">Shipping</span>
+                                            <span className="font-mono tabular-nums font-bold">₹{shippingPrice.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between text-sm">
+                                            <span className="opacity-60 uppercase tracking-widest font-bold">Tax</span>
+                                            <span className="font-mono tabular-nums font-bold">₹{taxPrice.toFixed(2)}</span>
+                                        </div>
+                                        <div className="h-px bg-white/10 my-4" />
+                                        <div className="flex justify-between text-xl">
+                                            <span className="font-black uppercase tracking-tight">Total</span>
+                                            <span className="font-mono tabular-nums font-black text-2xl text-primary-400">₹{totalPrice.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-8 border-t dark:border-slate-800 flex justify-between gap-4">
+                                        <Button variant="ghost" onClick={() => setCurrentStep(0)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
+                                        <Button
+                                            onClick={() => setCurrentStep(2)}
+                                            size="lg"
+                                            className="flex-1 bg-slate-900 dark:bg-white dark:text-slate-900 text-white h-14 rounded-2xl font-bold flex items-center justify-center gap-3 group hover:bg-primary-600 hover:text-white transition-all shadow-xl hover:shadow-primary-500/20"
+                                        >
+                                            Next: Payment Method
+                                            <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                        </Button>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {currentStep === 2 && (
                                 <motion.div
                                     key="step-payment"
                                     initial={{ opacity: 0, x: 20 }}
@@ -270,7 +350,7 @@ export default function CheckoutPage() {
                                         </div>
                                         <div>
                                             <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Payment Method</h2>
-                                            <p className="text-sm text-slate-500">Choose how you&apos;d like to pay (Select to auto-advance)</p>
+                                            <p className="text-sm text-slate-500">Select your preferred method to complete payment.</p>
                                         </div>
                                     </div>
 
@@ -362,77 +442,11 @@ export default function CheckoutPage() {
                                         ))}
                                     </div>
 
-                                    <div className="pt-8 border-t dark:border-slate-800 flex justify-between">
-                                        <Button variant="ghost" onClick={() => setCurrentStep(0)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
-                                        <Button
-                                            disabled={!isPaymentValid()}
-                                            onClick={() => setCurrentStep(2)}
-                                            size="lg"
-                                            className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-10 h-14 rounded-2xl font-bold flex items-center gap-3 group hover:bg-primary-600 hover:text-white transition-all shadow-xl hover:shadow-primary-500/20"
-                                        >
-                                            Next: Review
-                                            <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                                        </Button>
-                                    </div>
-                                </motion.div>
-                            )}
-
-                            {currentStep === 2 && (
-                                <motion.div
-                                    key="step-review"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    className="space-y-10"
-                                >
-                                    <div className="text-center">
-                                        <div className="flex justify-center mb-6">
-                                            <div className="h-20 w-20 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500">
-                                                <CheckCircle2 className="h-10 w-10" />
-                                            </div>
-                                        </div>
-                                        <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Review Your Order</h2>
-                                        <p className="text-slate-500 mt-2">Please double check everything before placing the order.</p>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 space-y-4 text-left">
-                                            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">Shipping To</h3>
-                                            <p className="font-bold text-slate-900 dark:text-white">{shippingData.firstName} {shippingData.lastName}</p>
-                                            <p className="text-sm text-slate-500 leading-relaxed italic">{shippingData.address}, {shippingData.city}, {shippingData.postalCode}, {shippingData.country}</p>
-                                        </div>
-                                        <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 space-y-4 text-left">
-                                            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">Payment Via</h3>
-                                            <p className="font-bold text-slate-900 dark:text-white">{paymentMethod}</p>
-                                            <p className="text-sm text-slate-500 opacity-60 italic">Your order will be processed immediately.</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="p-8 rounded-3xl bg-slate-950 text-white space-y-4">
-                                        <div className="flex justify-between text-sm">
-                                            <span className="opacity-60 uppercase tracking-widest font-bold">Subtotal</span>
-                                            <span className="font-mono tabular-nums font-bold">₹{itemsPrice.toFixed(2)}</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="opacity-60 uppercase tracking-widest font-bold">Shipping</span>
-                                            <span className="font-mono tabular-nums font-bold">₹{shippingPrice.toFixed(2)}</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="opacity-60 uppercase tracking-widest font-bold">Tax</span>
-                                            <span className="font-mono tabular-nums font-bold">₹{taxPrice.toFixed(2)}</span>
-                                        </div>
-                                        <div className="h-px bg-white/10 my-4" />
-                                        <div className="flex justify-between text-xl">
-                                            <span className="font-black uppercase tracking-tight">Total</span>
-                                            <span className="font-mono tabular-nums font-black text-2xl text-primary-400">₹{totalPrice.toFixed(2)}</span>
-                                        </div>
-                                    </div>
-
                                     <div className="pt-8 border-t dark:border-slate-800 flex justify-between gap-4">
                                         <Button variant="ghost" onClick={() => setCurrentStep(1)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
                                         <Button
                                             onClick={placeOrderHandler}
-                                            disabled={loading}
+                                            disabled={loading || !isPaymentValid()}
                                             size="lg"
                                             className="flex-1 bg-primary-600 text-white h-14 rounded-2xl font-black text-lg hover:bg-primary-700 hover:shadow-2xl hover:shadow-primary-500/40 transition-all flex items-center justify-center gap-3"
                                         >
@@ -442,7 +456,7 @@ export default function CheckoutPage() {
                                                     Placing Order...
                                                 </>
                                             ) : (
-                                                'Place Order'
+                                                'Pay & Place Order'
                                             )}
                                         </Button>
                                     </div>

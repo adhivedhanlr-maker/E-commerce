@@ -74,5 +74,11 @@ export const orderService = {
     createOrder: async (order: CreateOrderInput): Promise<Order> => {
         const response = await api.post('/orders', order);
         return response.data.data;
+    },
+
+    // Update order to paid
+    payOrder: async (orderId: string, paymentResult: any): Promise<Order> => {
+        const response = await api.put(`/orders/${orderId}/pay`, paymentResult);
+        return response.data.data;
     }
 };
