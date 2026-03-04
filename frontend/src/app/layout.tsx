@@ -7,6 +7,7 @@ import BottomNav from "@/components/common/BottomNav";
 import PageTransition from "@/components/common/PageTransition";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import CartCleaner from "@/components/common/CartCleaner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased selection:bg-primary-500/30 selection:text-white`}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'your-google-client-id-here'}>
           <ThemeProvider attribute="class" defaultTheme="light" themes={["light", "dark", "dim"]}>
+            <CartCleaner />
             <Navbar />
             <main className="min-h-screen pt-20 md:pb-0">
               <PageTransition>

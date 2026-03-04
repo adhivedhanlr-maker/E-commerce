@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Package, Truck, MapPin, CreditCard, CheckCircle2, Clock, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Package, Truck, MapPin, CreditCard, CheckCircle2, Clock, RefreshCw, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/store/useCart';
@@ -14,6 +14,7 @@ export default function OrderDetailsPage() {
     const params = useParams();
     const orderId = params.id as string;
     const { addItem } = useCart();
+    const [isDownloading, setIsDownloading] = useState(false);
 
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
@@ -89,6 +90,113 @@ export default function OrderDetailsPage() {
         return 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400';
     };
 
+    const downloadInvoice = async () => {
+        if (!order) return;
+        setIsDownloading(true);
+        try {
+            const { jsPDF } = await import('jspdf');
+            const { default: autoTable } = await import('jspdf-autotable');
+
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+
+            // Header
+            doc.setFillColor(15, 23, 42); // slate-900
+            doc.rect(0, 0, pageWidth, 40, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold');
+            doc.text('NEXUSSTORE', 14, 18);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Tax Invoice / Receipt', 14, 28);
+            doc.setFontSize(10);
+            doc.text(`Invoice Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}`, pageWidth - 14, 18, { align: 'right' });
+            doc.text(`Order ID: ${order._id.toUpperCase()}`, pageWidth - 14, 28, { align: 'right' });
+
+            // Divider
+            doc.setDrawColor(99, 102, 241);
+            doc.setLineWidth(1.5);
+            doc.line(0, 40, pageWidth, 40);
+
+            // Shipping address
+            doc.setTextColor(30, 41, 59);
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SHIP TO', 14, 55);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(71, 85, 105);
+            doc.text(order.shippingAddress.address, 14, 63);
+            doc.text(`${order.shippingAddress.city}, ${order.shippingAddress.postalCode}`, 14, 70);
+            doc.text(order.shippingAddress.country, 14, 77);
+
+            // Payment method
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(30, 41, 59);
+            doc.text('PAYMENT METHOD', pageWidth / 2, 55);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(71, 85, 105);
+            doc.text(order.paymentMethod, pageWidth / 2, 63);
+            doc.text(order.isPaid ? 'Status: PAID' : 'Status: PENDING', pageWidth / 2, 70);
+
+            // Items table
+            autoTable(doc, {
+                startY: 90,
+                head: [['#', 'Product', 'Qty', 'Unit Price', 'Total']],
+                body: order.orderItems.map((item, i) => [
+                    i + 1,
+                    item.name,
+                    item.qty,
+                    `Rs. ${item.price.toFixed(2)}`,
+                    `Rs. ${(item.price * item.qty).toFixed(2)}`
+                ]),
+                headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 9 },
+                bodyStyles: { fontSize: 9, textColor: [51, 65, 85] },
+                alternateRowStyles: { fillColor: [248, 250, 252] },
+                columnStyles: { 0: { cellWidth: 10 }, 1: { cellWidth: 80 }, 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } },
+                margin: { left: 14, right: 14 },
+            });
+
+            // Pricing summary
+            const finalY = (doc as jsPDF & { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+            const summaryX = pageWidth - 80;
+
+            doc.setFontSize(9);
+            doc.setTextColor(71, 85, 105);
+            doc.text('Subtotal:', summaryX, finalY);
+            doc.text(`Rs. ${order.itemsPrice?.toFixed(2) || '0.00'}`, pageWidth - 14, finalY, { align: 'right' });
+
+            doc.text('Shipping:', summaryX, finalY + 8);
+            doc.text(order.shippingPrice === 0 ? 'FREE' : `Rs. ${order.shippingPrice?.toFixed(2)}`, pageWidth - 14, finalY + 8, { align: 'right' });
+
+            doc.text('Tax (15%):', summaryX, finalY + 16);
+            doc.text(`Rs. ${order.taxPrice?.toFixed(2) || '0.00'}`, pageWidth - 14, finalY + 16, { align: 'right' });
+
+            doc.setDrawColor(226, 232, 240);
+            doc.line(summaryX, finalY + 20, pageWidth - 14, finalY + 20);
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(11);
+            doc.setTextColor(99, 102, 241);
+            doc.text('TOTAL:', summaryX, finalY + 30);
+            doc.text(`Rs. ${order.totalPrice?.toFixed(2)}`, pageWidth - 14, finalY + 30, { align: 'right' });
+
+            // Footer
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(148, 163, 184);
+            doc.text('Thank you for shopping with NexusStore!', pageWidth / 2, 285, { align: 'center' });
+            doc.text('For support: support@nexusstore.com', pageWidth / 2, 290, { align: 'center' });
+
+            doc.save(`NexusStore-Invoice-${order._id.substring(0, 8).toUpperCase()}.pdf`);
+        } catch (err) {
+            console.error('Failed to generate invoice:', err);
+            alert('Could not generate invoice. Please try again.');
+        } finally {
+            setIsDownloading(false);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
             <div className="mx-auto max-w-5xl px-6 lg:px-12">
@@ -115,8 +223,18 @@ export default function OrderDetailsPage() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-3">
-                        <Button variant="outline" className="h-12 rounded-xl border-slate-200 dark:border-white/10 dark:hover:bg-slate-800">
-                            Download Invoice
+                        <Button
+                            variant="outline"
+                            onClick={downloadInvoice}
+                            disabled={isDownloading}
+                            className="h-12 rounded-xl border-slate-200 dark:border-white/10 dark:hover:bg-slate-800 gap-2"
+                        >
+                            {isDownloading ? (
+                                <RefreshCw className="h-4 w-4 animate-spin" />
+                            ) : (
+                                <Download className="h-4 w-4" />
+                            )}
+                            {isDownloading ? 'Generating...' : 'Download Invoice'}
                         </Button>
                         {(isDelivered || status === 'delivered') && (
                             <Button className="h-12 rounded-xl bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 px-8 font-bold uppercase tracking-widest text-[10px]" onClick={() => alert("Return process started.")}>
