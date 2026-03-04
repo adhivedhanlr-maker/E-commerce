@@ -12,7 +12,7 @@ import { useCart } from '@/store/useCart';
 import { orderService } from '@/services/orderService';
 import Link from 'next/link';
 
-const steps = ['Shipping', 'Payment & Review'];
+const steps = ['Shipping', 'Payment', 'Review'];
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -35,7 +35,7 @@ export default function CheckoutPage() {
 
     // Redirect if cart is empty
     useEffect(() => {
-        if (cartItems.length === 0 && !loading && currentStep !== 1) {
+        if (cartItems.length === 0 && !loading && currentStep !== 2) {
             // router.push('/cart'); // Keep it on page for now to show state
         }
     }, [cartItems, loading, currentStep]);
@@ -236,87 +236,109 @@ export default function CheckoutPage() {
 
                             {currentStep === 1 && (
                                 <motion.div
-                                    key="step-payment-review"
+                                    key="step-payment"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="space-y-8"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div className="h-12 w-12 rounded-2xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600">
+                                            <CreditCard className="h-6 w-6" />
+                                        </div>
+                                        <div>
+                                            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Payment Method</h2>
+                                            <p className="text-sm text-slate-500">Choose how you&apos;d like to pay (Select to auto-advance)</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {['Credit / Debit Card', 'UPI / NetBanking', 'Cash on Delivery'].map((method) => (
+                                            <div
+                                                key={method}
+                                                onClick={() => {
+                                                    setPaymentMethod(method);
+                                                    setTimeout(() => setCurrentStep(2), 200); // Small delay for visual feedback
+                                                }}
+                                                className={cn(
+                                                    "flex items-center justify-between p-6 border-2 rounded-2xl cursor-pointer transition-all",
+                                                    paymentMethod === method
+                                                        ? "border-primary-500 bg-primary-50/30 dark:bg-primary-900/10"
+                                                        : "border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
+                                                )}
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <div className={cn(
+                                                        "h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all",
+                                                        paymentMethod === method ? "border-primary-500 bg-primary-500" : "border-slate-200"
+                                                    )}>
+                                                        {paymentMethod === method && <div className="h-2.5 w-2.5 rounded-full bg-white" />}
+                                                    </div>
+                                                    <span className="font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">{method}</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="pt-8 border-t dark:border-slate-800 flex justify-between">
+                                        <Button variant="ghost" onClick={() => setCurrentStep(0)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {currentStep === 2 && (
+                                <motion.div
+                                    key="step-review"
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
                                     className="space-y-10"
                                 >
-                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                                        <div className="space-y-8">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-2xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600">
-                                                    <CreditCard className="h-6 w-6" />
-                                                </div>
-                                                <div>
-                                                    <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Payment Method</h2>
-                                                    <p className="text-sm text-slate-500">Choose how you&apos;d like to pay</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid grid-cols-1 gap-4">
-                                                {['Credit / Debit Card', 'UPI / NetBanking', 'Cash on Delivery'].map((method) => (
-                                                    <label
-                                                        key={method}
-                                                        onClick={() => setPaymentMethod(method)}
-                                                        className={cn(
-                                                            "flex items-center justify-between p-6 border-2 rounded-2xl cursor-pointer transition-all",
-                                                            paymentMethod === method
-                                                                ? "border-primary-500 bg-primary-50/30 dark:bg-primary-900/10"
-                                                                : "border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
-                                                        )}
-                                                    >
-                                                        <div className="flex items-center gap-4">
-                                                            <div className={cn(
-                                                                "h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all",
-                                                                paymentMethod === method ? "border-primary-500 bg-primary-500" : "border-slate-200"
-                                                            )}>
-                                                                {paymentMethod === method && <div className="h-2.5 w-2.5 rounded-full bg-white" />}
-                                                            </div>
-                                                            <span className="font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">{method}</span>
-                                                        </div>
-                                                    </label>
-                                                ))}
+                                    <div className="text-center">
+                                        <div className="flex justify-center mb-6">
+                                            <div className="h-20 w-20 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500">
+                                                <CheckCircle2 className="h-10 w-10" />
                                             </div>
                                         </div>
+                                        <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Review Your Order</h2>
+                                        <p className="text-slate-500 mt-2">Please double check everything before placing the order.</p>
+                                    </div>
 
-                                        <div className="space-y-8">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-2xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500">
-                                                    <CheckCircle2 className="h-6 w-6" />
-                                                </div>
-                                                <div>
-                                                    <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Order Review</h2>
-                                                    <p className="text-sm text-slate-500">Double check before placing order</p>
-                                                </div>
-                                            </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 space-y-4 text-left">
+                                            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">Shipping To</h3>
+                                            <p className="font-bold text-slate-900 dark:text-white">{shippingData.firstName} {shippingData.lastName}</p>
+                                            <p className="text-sm text-slate-500 leading-relaxed italic">{shippingData.address}, {shippingData.city}, {shippingData.postalCode}, {shippingData.country}</p>
+                                        </div>
+                                        <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 space-y-4 text-left">
+                                            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">Payment Via</h3>
+                                            <p className="font-bold text-slate-900 dark:text-white">{paymentMethod}</p>
+                                            <p className="text-sm text-slate-500 opacity-60 italic">Your order will be processed immediately.</p>
+                                        </div>
+                                    </div>
 
-                                            <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 space-y-4 text-left">
-                                                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">Shipping To</h3>
-                                                <p className="font-bold text-slate-900 dark:text-white">{shippingData.firstName} {shippingData.lastName}</p>
-                                                <p className="text-xs text-slate-500 leading-relaxed italic">{shippingData.address}, {shippingData.city}, {shippingData.postalCode}, {shippingData.country}</p>
-                                            </div>
-
-                                            <div className="p-6 rounded-3xl bg-slate-950 text-white space-y-3">
-                                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                                                    <span className="opacity-60">Subtotal</span>
-                                                    <span className="font-mono tabular-nums">₹{itemsPrice.toFixed(2)}</span>
-                                                </div>
-                                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                                                    <span className="opacity-60">Shipping</span>
-                                                    <span className="font-mono tabular-nums">₹{shippingPrice.toFixed(2)}</span>
-                                                </div>
-                                                <div className="h-px bg-white/10 my-1" />
-                                                <div className="flex justify-between items-center mt-2">
-                                                    <span className="font-black uppercase tracking-tight text-xs">Total</span>
-                                                    <span className="font-mono tabular-nums font-black text-lg text-primary-400">₹{totalPrice.toFixed(2)}</span>
-                                                </div>
-                                            </div>
+                                    <div className="p-8 rounded-3xl bg-slate-950 text-white space-y-4">
+                                        <div className="flex justify-between text-sm">
+                                            <span className="opacity-60 uppercase tracking-widest font-bold">Subtotal</span>
+                                            <span className="font-mono tabular-nums font-bold">₹{itemsPrice.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between text-sm">
+                                            <span className="opacity-60 uppercase tracking-widest font-bold">Shipping</span>
+                                            <span className="font-mono tabular-nums font-bold">₹{shippingPrice.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between text-sm">
+                                            <span className="opacity-60 uppercase tracking-widest font-bold">Tax</span>
+                                            <span className="font-mono tabular-nums font-bold">₹{taxPrice.toFixed(2)}</span>
+                                        </div>
+                                        <div className="h-px bg-white/10 my-4" />
+                                        <div className="flex justify-between text-xl">
+                                            <span className="font-black uppercase tracking-tight">Total</span>
+                                            <span className="font-mono tabular-nums font-black text-2xl text-primary-400">₹{totalPrice.toFixed(2)}</span>
                                         </div>
                                     </div>
 
                                     <div className="pt-8 border-t dark:border-slate-800 flex justify-between gap-4">
-                                        <Button variant="ghost" onClick={() => setCurrentStep(0)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
+                                        <Button variant="ghost" onClick={() => setCurrentStep(1)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
                                         <Button
                                             onClick={placeOrderHandler}
                                             disabled={loading}
