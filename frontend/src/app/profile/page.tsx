@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { User, Mail, Shield, LogOut, Settings, Bell, CreditCard, Package } from 'lucide-react';
+import { User, Mail, Shield, LogOut, Settings, Bell, Package } from 'lucide-react';
 import { useAuth } from '@/store/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,7 +30,6 @@ export default function ProfilePage() {
 
     const menuItems = [
         { icon: Package, label: 'My Orders', desc: 'Track and manage your purchases', href: '/profile/orders' },
-        { icon: CreditCard, label: 'Payment Methods', desc: 'Securely manage your cards', href: '/profile/payments' },
         { icon: Bell, label: 'Notifications', desc: 'Configure your alert preferences', href: '/profile/notifications' },
         { icon: Settings, label: 'Account Settings', desc: 'Personalize your profile', href: '/settings' },
     ];
