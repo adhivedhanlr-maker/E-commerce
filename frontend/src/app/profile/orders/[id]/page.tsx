@@ -90,6 +90,29 @@ export default function OrderDetailsPage() {
         return 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400';
     };
 
+    const getPaymentIcon = (method: string) => {
+        const m = method.toLowerCase();
+
+        let logoUrl = '';
+        if (m.includes('cash') || m.includes('cod')) {
+            logoUrl = 'https://cdn-icons-png.flaticon.com/512/2331/2331941.png';
+        } else if (m.includes('upi') || m.includes('net') || m.includes('banking')) {
+            logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1280px-UPI-Logo-vector.svg.png';
+        } else if (m.includes('paypal')) {
+            logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg';
+        } else {
+            logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png';
+        }
+
+        return (
+            <div className="h-8 w-12 bg-white rounded flex items-center justify-center p-1 border border-slate-200">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={logoUrl} alt={method} className="h-full w-full object-contain" />
+            </div>
+        );
+    };
+
+
     const downloadInvoice = async () => {
         if (!order) return;
         setIsDownloading(true);
@@ -392,10 +415,7 @@ export default function OrderDetailsPage() {
                                             <h3 className="text-xs font-bold uppercase tracking-widest text-slate-950 dark:text-white">Payment Method</h3>
                                         </div>
                                         <div className="flex items-center p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5">
-                                            <div className="h-8 w-12 bg-white rounded flex items-center justify-center p-1 border border-slate-200">
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img src={paymentMethod.toLowerCase().includes('paypal') ? 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'} alt="Payment" className="h-full object-contain" />
-                                            </div>
+                                            {getPaymentIcon(paymentMethod)}
                                             <p className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">{paymentMethod}</p>
                                         </div>
                                     </div>
