@@ -158,7 +158,7 @@ export default function OrderDetailsPage() {
             });
 
             // Pricing summary
-            const finalY = (doc as jsPDF & { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+            const finalY = (doc as InstanceType<typeof jsPDF> & { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
             const summaryX = pageWidth - 80;
 
             doc.setFontSize(9);
