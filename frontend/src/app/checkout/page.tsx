@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/store/useCart';
 import { orderService } from '@/services/orderService';
+import { paymentService } from '@/services/paymentService';
 import Link from 'next/link';
 
 const steps = ['Shipping', 'Review', 'Payment'];
@@ -74,12 +75,35 @@ export default function CheckoutPage() {
             if (!cartItems || cartItems.length === 0) throw new Error("Cart is empty");
             if (!shippingData.address || !shippingData.city) throw new Error("Shipping address incomplete");
 
-            // 1. Simulate mobile payment request first for non-COD methods
+            // 1. Backend-driven payment request for non-COD methods
             if (paymentMethod !== 'Cash on Delivery') {
                 setIsPaymentProcessing(true);
-                // Simulate wait for mobile confirmation - realistic wait time
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                // In a real app, we would verify the payment status here before proceeding
+
+                // Initiate real backend request
+                const { transactionId } = await paymentService.initiatePayment(paymentMethod, totalPrice);
+                console.log("Payment initiated on backend. Transaction ID:", transactionId);
+
+                // Polling for confirmation (Simulates original gateway behavior)
+                let paymentFinished = false;
+                let attempts = 0;
+                const maxAttempts = 15; // ~30 seconds max wait
+
+                while (!paymentFinished && attempts < maxAttempts) {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    const check = await paymentService.checkPaymentStatus(transactionId);
+
+                    if (check.status === 'COMPLETED') {
+                        paymentFinished = true;
+                        console.log("Backend confirmed payment success!");
+                    } else if (check.status === 'FAILED') {
+                        throw new Error("Payment was declined or failed on your mobile device.");
+                    }
+                    attempts++;
+                }
+
+                if (!paymentFinished) {
+                    throw new Error("Payment session timed out. Please try again.");
+                }
             }
 
             // 2. Prepare order data

@@ -51,8 +51,22 @@ export default function ProfilePage() {
                             </div>
                             <CardContent className="pt-0 relative px-8 pb-8">
                                 <div className="flex justify-center -mt-12 mb-6">
-                                    <div className="h-24 w-24 rounded-3xl bg-slate-950 flex items-center justify-center text-4xl font-black text-white border-4 border-white dark:border-slate-900 shadow-xl overflow-hidden">
-                                        {user.name.charAt(0)}
+                                    <div className="h-24 w-24 rounded-3xl bg-slate-950 flex items-center justify-center text-4xl font-black text-white border-4 border-white dark:border-slate-900 shadow-xl overflow-hidden relative group">
+                                        {user.avatar ? (
+                                            <img
+                                                src={user.avatar}
+                                                alt={user.name}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    // Fallback if image fails to load
+                                                    const target = e.target as HTMLImageElement;
+                                                    target.style.display = 'none';
+                                                    target.parentElement!.innerText = user.name.charAt(0);
+                                                }}
+                                            />
+                                        ) : (
+                                            user.name.charAt(0)
+                                        )}
                                     </div>
                                 </div>
                                 <div className="text-center mb-8">

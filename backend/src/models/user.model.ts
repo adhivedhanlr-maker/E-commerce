@@ -71,6 +71,7 @@ export interface IUser extends Document {
     password?: string;
     role: 'user' | 'admin' | 'seller';
     isActive: boolean;
+    avatar?: string;
     onboardingStatus: 'none' | 'draft' | 'pending' | 'approved' | 'rejected';
     businessProfile?: IBusinessProfile;
     matchPassword(password: string): Promise<boolean>;
@@ -87,6 +88,7 @@ const userSchema: Schema = new Schema(
             default: 'user',
         },
         isActive: { type: Boolean, default: true },
+        avatar: { type: String },
         onboardingStatus: {
             type: String,
             enum: ['none', 'draft', 'pending', 'approved', 'rejected'],

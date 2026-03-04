@@ -8,9 +8,39 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/store/useAuth';
+import axios from 'axios';
 
 export default function SettingsPage() {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
+    const [name, setName] = React.useState(user?.name || '');
+    const [avatar, setAvatar] = React.useState(user?.avatar || '');
+    const [isSaving, setIsSaving] = React.useState(false);
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            const token = localStorage.getItem('accessToken');
+            const response = await axios.put(
+                `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/profile`,
+                { name, avatar },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.data.success) {
+                setUser({ ...user!, name, avatar });
+                alert("Profile updated successfully!");
+            }
+        } catch (error: any) {
+            console.error('Error updating profile:', error);
+            alert(error.response?.data?.message || "Failed to update profile");
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     if (!user) return null;
 
@@ -48,9 +78,38 @@ export default function SettingsPage() {
                             </div>
                             <CardContent className="p-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-4 md:col-span-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Profile Picture (Auto-linked to Email)</label>
+                                        <div className="flex items-center space-x-6">
+                                            <div className="h-20 w-20 rounded-2xl bg-slate-900 flex-shrink-0 overflow-hidden border-2 border-slate-100 dark:border-white/5 shadow-inner">
+                                                {avatar ? (
+                                                    <img src={avatar} alt="Preview" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-2xl uppercase">
+                                                        {name.charAt(0)}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex-1 space-y-2">
+                                                <Input
+                                                    value={avatar}
+                                                    onChange={(e) => setAvatar(e.target.value)}
+                                                    placeholder="Enter image URL to override"
+                                                    className="h-12 rounded-xl border-slate-200 bg-slate-50/50 dark:bg-slate-950/50 dark:border-white/5"
+                                                />
+                                                <p className="text-[10px] text-slate-500 ml-1 italic">
+                                                    * We automatically fetch your profile photo from Google or Gravatar based on your email.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
-                                        <Input defaultValue={user.name} className="h-12 rounded-xl border-slate-200 bg-slate-50/50 dark:bg-slate-950/50 dark:border-white/5" />
+                                        <Input
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="h-12 rounded-xl border-slate-200 bg-slate-50/50 dark:bg-slate-950/50 dark:border-white/5"
+                                        />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
@@ -68,8 +127,12 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
                                 <div className="mt-8 pt-6 border-t border-slate-100 dark:border-white/5 flex justify-end">
-                                    <Button className="h-12 px-8 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all" onClick={() => alert("Profile updated successfully!")}>
-                                        Save Changes
+                                    <Button
+                                        disabled={isSaving}
+                                        className="h-12 px-8 rounded-xl font-bold uppercase tracking-widest text-xs bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-500/20 transition-all"
+                                        onClick={handleSave}
+                                    >
+                                        {isSaving ? 'Saving...' : 'Save Changes'}
                                     </Button>
                                 </div>
                             </CardContent>
