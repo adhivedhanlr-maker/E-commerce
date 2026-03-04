@@ -32,6 +32,8 @@ export default function CheckoutPage() {
         country: 'India' // Default
     });
     const [paymentMethod, setPaymentMethod] = useState('Credit / Debit Card');
+    const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '' });
+    const [upiId, setUpiId] = useState('');
 
     // Redirect if cart is empty
     useEffect(() => {
@@ -42,6 +44,16 @@ export default function CheckoutPage() {
 
     const handleShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setShippingData({ ...shippingData, [e.target.name]: e.target.value });
+    };
+
+    const isPaymentValid = () => {
+        if (paymentMethod === 'Credit / Debit Card') {
+            return cardData.number.length === 16 && cardData.expiry.length >= 5 && cardData.cvc.length >= 3;
+        }
+        if (paymentMethod === 'UPI / NetBanking') {
+            return upiId.includes('@');
+        }
+        return true; // Cash on Delivery
     };
 
     const placeOrderHandler = async () => {
@@ -254,32 +266,100 @@ export default function CheckoutPage() {
 
                                     <div className="grid grid-cols-1 gap-4">
                                         {['Credit / Debit Card', 'UPI / NetBanking', 'Cash on Delivery'].map((method) => (
-                                            <div
-                                                key={method}
-                                                onClick={() => setPaymentMethod(method)}
-                                                className={cn(
-                                                    "flex items-center justify-between p-6 border-2 rounded-2xl cursor-pointer transition-all",
-                                                    paymentMethod === method
-                                                        ? "border-primary-500 bg-primary-50/30 dark:bg-primary-900/10"
-                                                        : "border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
-                                                )}
-                                            >
-                                                <div className="flex items-center gap-4">
-                                                    <div className={cn(
-                                                        "h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all",
-                                                        paymentMethod === method ? "border-primary-500 bg-primary-500" : "border-slate-200"
-                                                    )}>
-                                                        {paymentMethod === method && <div className="h-2.5 w-2.5 rounded-full bg-white" />}
+                                            <div key={method} className="space-y-4">
+                                                <div
+                                                    onClick={() => setPaymentMethod(method)}
+                                                    className={cn(
+                                                        "flex items-center justify-between p-6 border-2 rounded-2xl cursor-pointer transition-all",
+                                                        paymentMethod === method
+                                                            ? "border-primary-500 bg-primary-50/30 dark:bg-primary-900/10"
+                                                            : "border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
+                                                    )}
+                                                >
+                                                    <div className="flex items-center gap-4">
+                                                        <div className={cn(
+                                                            "h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all",
+                                                            paymentMethod === method ? "border-primary-500 bg-primary-500" : "border-slate-200"
+                                                        )}>
+                                                            {paymentMethod === method && <div className="h-2.5 w-2.5 rounded-full bg-white" />}
+                                                        </div>
+                                                        <span className="font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">{method}</span>
                                                     </div>
-                                                    <span className="font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">{method}</span>
                                                 </div>
+
+                                                {/* Detail Forms */}
+                                                <AnimatePresence>
+                                                    {paymentMethod === method && method === 'Credit / Debit Card' && (
+                                                        <motion.div
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: 'auto', opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            className="overflow-hidden px-2 pb-4 space-y-4"
+                                                        >
+                                                            <div className="space-y-1.5">
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Card Number</label>
+                                                                <Input
+                                                                    placeholder="0000 0000 0000 0000"
+                                                                    value={cardData.number}
+                                                                    onChange={(e) => setCardData({ ...cardData, number: e.target.value.replace(/\D/g, '').slice(0, 16) })}
+                                                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                />
+                                                            </div>
+                                                            <div className="flex gap-4">
+                                                                <div className="flex-1 space-y-1.5">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Expiry</label>
+                                                                    <Input
+                                                                        placeholder="MM/YY"
+                                                                        value={cardData.expiry}
+                                                                        onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
+                                                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex-1 space-y-1.5">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">CVC</label>
+                                                                    <Input
+                                                                        placeholder="123"
+                                                                        type="password"
+                                                                        value={cardData.cvc}
+                                                                        onChange={(e) => setCardData({ ...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 4) })}
+                                                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+
+                                                    {paymentMethod === method && method === 'UPI / NetBanking' && (
+                                                        <motion.div
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: 'auto', opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            className="overflow-hidden px-2 pb-4 space-y-4"
+                                                        >
+                                                            <div className="space-y-1.5">
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">UPI ID</label>
+                                                                <Input
+                                                                    placeholder="username@bank"
+                                                                    value={upiId}
+                                                                    onChange={(e) => setUpiId(e.target.value)}
+                                                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                />
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
                                             </div>
                                         ))}
                                     </div>
 
                                     <div className="pt-8 border-t dark:border-slate-800 flex justify-between">
                                         <Button variant="ghost" onClick={() => setCurrentStep(0)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
-                                        <Button onClick={() => setCurrentStep(2)} size="lg" className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-10 h-14 rounded-2xl font-bold flex items-center gap-3 group hover:bg-primary-600 hover:text-white transition-all shadow-xl hover:shadow-primary-500/20">
+                                        <Button
+                                            disabled={!isPaymentValid()}
+                                            onClick={() => setCurrentStep(2)}
+                                            size="lg"
+                                            className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-10 h-14 rounded-2xl font-bold flex items-center gap-3 group hover:bg-primary-600 hover:text-white transition-all shadow-xl hover:shadow-primary-500/20"
+                                        >
                                             Next: Review
                                             <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                                         </Button>
