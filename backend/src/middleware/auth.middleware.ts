@@ -21,10 +21,12 @@ export const protect = asyncHandler(async (req: AuthRequest, res: Response, next
     }
 
     if (!token) {
+        logger.warn('Auth check failed: No token provided');
         return next(new AppError('Not authorized, no token', 401));
     }
 
     try {
+        logger.info('Verifying auth token...');
         // Development hack: Allow demo token
         if (token === 'demo-access-token') {
             logger.info('Using development demo token');

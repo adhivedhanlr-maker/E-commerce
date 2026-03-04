@@ -1,6 +1,20 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, StateStorage, createJSONStorage } from 'zustand/middleware';
 import api from '@/services/api';
+import { get, set, del } from 'idb-keyval';
+
+// Custom storage using IndexedDB for better "browser cache" persistence
+const storage: StateStorage = {
+    getItem: async (name: string): Promise<string | null> => {
+        return (await get(name)) || null;
+    },
+    setItem: async (name: string, value: string): Promise<void> => {
+        await set(name, value);
+    },
+    removeItem: async (name: string): Promise<void> => {
+        await del(name);
+    },
+};
 
 interface User {
     _id: string;
@@ -31,38 +45,34 @@ export const useAuth = create<AuthStore>()(
         (set) => ({
             user: null,
             setUser: (user) => {
-                if (user) {
-                    // Also store in localStorage as fallback for non-cookie environments
-                    localStorage.setItem('accessToken', user.accessToken);
-                } else {
-                    localStorage.removeItem('accessToken');
-                }
                 set({ user });
             },
             logout: async () => {
                 try {
-                    // Tell backend to clear the HTTP-only cookie
                     await api.post('/auth/logout');
                 } catch {
-                    // Ignore errors — clear local state regardless
+                    // Ignore errors
                 }
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('auth-storage');
                 set({ user: null });
             },
             loginAsDev: () => {
                 set({ user: DEMO_USER });
-                localStorage.setItem('accessToken', DEMO_USER.accessToken);
             },
         }),
         {
-            name: 'auth-storage',
-            onRehydrateStorage: () => (state) => {
-                if (
-                    process.env.NODE_ENV === 'development' &&
-                    state &&
-                    !state.user
-                ) {
+            name: 'auth-storage-v2', // New name to avoid conflicts with old localStorage
+            storage: createJSONStorage(() => storage),
+            onRehydrateStorage: () => async (state) => {
+                // SWR Style: Instant Load + Background Revalidation
+                if (state?.user) {
+                    api.get('/auth/profile').catch((error: any) => {
+                        console.warn('[Auth] Background revalidation failed:', error.message);
+                        // Interceptor handles 401, but we can clear state here too if needed
+                    });
+                }
+
+                // Dev auto-login fallback
+                if (process.env.NODE_ENV === 'development' && state && !state.user) {
                     state.loginAsDev();
                 }
             }

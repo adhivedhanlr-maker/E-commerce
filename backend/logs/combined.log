@@ -159,3 +159,11 @@
 {"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-04T10:46:27.673Z"}
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-03-04T10:46:27.770Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-04T10:46:28.524Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-04T10:50:51.843Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-04T10:50:54.228Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-04T10:50:54.310Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-04T10:50:55.822Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-04T10:58:05.216Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-04T10:58:08.510Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-04T10:58:08.765Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-04T10:58:09.954Z"}

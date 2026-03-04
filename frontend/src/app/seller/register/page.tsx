@@ -372,10 +372,12 @@ export default function AdvancedSellerRegister() {
                     setGlobalError(res.message || 'Failed to submit registration');
                 }
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error('Error in handleNext:', err);
-            setGlobalError(err.response?.data?.message || err.message || 'An unexpected error occurred');
+            // Let the global interceptor handle 401
+            if (err.response?.status !== 401) {
+                setGlobalError(err.response?.data?.message || err.message || 'An unexpected error occurred');
+            }
         } finally {
             setSubmitting(false);
         }

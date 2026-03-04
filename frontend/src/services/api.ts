@@ -16,15 +16,9 @@ const api = axios.create({
     },
 });
 
-// Request interceptor — attach token from localStorage as fallback for non-cookie environments
+// Request interceptor — relies on automatic withCredentials for cookies
 api.interceptors.request.use(
-    (config) => {
-        const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
+    (config) => config,
     (error) => Promise.reject(error)
 );
 
@@ -35,9 +29,14 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             console.warn('[Auth] Session expired or invalid — clearing session and redirecting to login.');
             if (typeof window !== 'undefined') {
+                // Clear all auth related storage
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('auth-storage');
-                window.location.href = '/login';
+
+                // Do not redirect if already on login page to avoid loops
+                if (!window.location.pathname.includes('/login')) {
+                    window.location.href = '/login?session_expired=true';
+                }
             }
         }
         return Promise.reject(error);
