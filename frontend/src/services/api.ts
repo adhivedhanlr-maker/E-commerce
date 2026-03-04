@@ -36,11 +36,11 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             // Only clear if it's an auth error, not if it's a "User not found" which might be 404
-            console.warn('Unauthorized request detected. Clearing auth state.');
+            console.warn('Unauthorized request detected. Clearing auth state and redirecting to login.');
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('accessToken');
-                // We don't want to force refresh here as it might loop, 
-                // but components using useAuth will react to the missing token if synced
+                // Use window.location.href for a hard redirect to ensure auth state is fully reset
+                window.location.href = '/login';
             }
         }
         return Promise.reject(error);
