@@ -34,6 +34,7 @@ export default function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState('Credit / Debit Card');
     const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '' });
     const [upiId, setUpiId] = useState('');
+    const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
 
     // Redirect if cart is empty
     useEffect(() => {
@@ -71,6 +72,14 @@ export default function CheckoutPage() {
             if (!cartItems || cartItems.length === 0) throw new Error("Cart is empty");
             if (!shippingData.address || !shippingData.city) throw new Error("Shipping address incomplete");
 
+            // Simulate mobile payment request for non-COD methods
+            if (paymentMethod !== 'Cash on Delivery') {
+                setIsPaymentProcessing(true);
+                // Simulate wait for mobile confirmation - longer delay for realistic feel
+                await new Promise(resolve => setTimeout(resolve, 4000));
+                setIsPaymentProcessing(false);
+            }
+
             const orderData = {
                 orderItems: cartItems.map(item => {
                     if (!item._id) console.error("Item missing _id!", item);
@@ -107,6 +116,7 @@ export default function CheckoutPage() {
             const error = err as { response?: { data?: { message?: string } }; message?: string };
             const errMsg = error.response?.data?.message || error.message || 'Unknown error occurred during order placement';
             setError(errMsg);
+            setIsPaymentProcessing(false);
 
             // Extreme debug for the user since we can't see their console
             if (process.env.NODE_ENV === 'development') {
@@ -442,6 +452,58 @@ export default function CheckoutPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Payment Processing Overlay */}
+            <AnimatePresence>
+                {isPaymentProcessing && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-xl p-4"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="bg-white dark:bg-slate-900 rounded-[40px] p-10 max-w-md w-full shadow-2xl border border-white/20 dark:border-slate-800 text-center space-y-8"
+                        >
+                            <div className="relative mx-auto w-24 h-24">
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                                    className="absolute inset-0 rounded-full border-4 border-t-primary-500 border-r-transparent border-b-primary-500/20 border-l-transparent"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="h-16 w-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center text-primary-600">
+                                        <RefreshCw className="h-8 w-8 animate-spin-slow" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <h2 className="text-2xl font-black uppercase tracking-tight text-slate-950 dark:text-white">
+                                    Payment Pending
+                                </h2>
+                                <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                                    A request for <span className="text-primary-600 font-bold">₹{totalPrice.toLocaleString()}</span> has been sent to your mobile device.
+                                </p>
+                            </div>
+
+                            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-6 border border-slate-100 dark:border-slate-800">
+                                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Instructions</p>
+                                <p className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                                    Open your UPI or Bank app and authorize the transaction to complete your order.
+                                </p>
+                            </div>
+
+                            <p className="text-[10px] font-black uppercase tracking-widest text-primary-600/60 animate-pulse">
+                                Waiting for confirmation...
+                            </p>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
