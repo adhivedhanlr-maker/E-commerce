@@ -46,6 +46,7 @@ export const useAuth = create<AuthStore>()(
             user: null,
             setUser: (user) => {
                 set({ user });
+                setAuthToken(user?.accessToken || null);
             },
             logout: async () => {
                 try {
@@ -54,17 +55,22 @@ export const useAuth = create<AuthStore>()(
                     // Ignore errors
                 }
                 set({ user: null });
+                setAuthToken(null);
             },
             loginAsDev: () => {
                 set({ user: DEMO_USER });
+                setAuthToken(DEMO_USER.accessToken);
             },
         }),
         {
             name: 'auth-storage-v2', // New name to avoid conflicts with old localStorage
             storage: createJSONStorage(() => storage),
             onRehydrateStorage: () => async (state) => {
-                // SWR Style: Instant Load + Background Revalidation
+                // Synchronize token on load
                 if (state?.user) {
+                    setAuthToken(state.user.accessToken);
+
+                    // SWR Style: Background Revalidation
                     api.get('/auth/profile').catch((error: unknown) => {
                         const message = error instanceof Error ? error.message : 'Unknown error';
                         console.warn('[Auth] Background revalidation failed:', message);

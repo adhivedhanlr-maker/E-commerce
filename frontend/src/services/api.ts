@@ -16,16 +16,22 @@ const api = axios.create({
     },
 });
 
+// Local variable to store token and avoid circular dependencies with useAuth
+let authToken: string | null = null;
+
+/**
+ * Synchronize the auth token from the store to the API service.
+ * This avoids circular dependency issues.
+ */
+export const setAuthToken = (token: string | null) => {
+    authToken = token;
+};
+
 // Request interceptor — relies on automatic withCredentials for cookies, but adds header as fallback
 api.interceptors.request.use(
     (config) => {
-        // Use the token from the auth store if available
-        // We import it dynamically to avoid circular dependencies
-        const { useAuth } = require('@/store/useAuth');
-        const token = useAuth.getState().user?.accessToken;
-
-        if (token && token !== 'undefined') {
-            config.headers.Authorization = `Bearer ${token}`;
+        if (authToken && authToken !== 'undefined') {
+            config.headers.Authorization = `Bearer ${authToken}`;
         }
         return config;
     },
@@ -39,9 +45,9 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             console.warn('[Auth] Session expired or invalid — clearing session and redirecting to login.');
             if (typeof window !== 'undefined') {
-                // Clear all auth related storage
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('auth-storage');
+                // Clear state
+                localStorage.removeItem('auth-storage-v2');
+                setAuthToken(null);
 
                 // Do not redirect if already on login page to avoid loops
                 if (!window.location.pathname.includes('/login')) {
