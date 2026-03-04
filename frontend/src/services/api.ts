@@ -16,9 +16,19 @@ const api = axios.create({
     },
 });
 
-// Request interceptor — relies on automatic withCredentials for cookies
+// Request interceptor — relies on automatic withCredentials for cookies, but adds header as fallback
 api.interceptors.request.use(
-    (config) => config,
+    (config) => {
+        // Use the token from the auth store if available
+        // We import it dynamically to avoid circular dependencies
+        const { useAuth } = require('@/store/useAuth');
+        const token = useAuth.getState().user?.accessToken;
+
+        if (token && token !== 'undefined') {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
     (error) => Promise.reject(error)
 );
 
