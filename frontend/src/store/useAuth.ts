@@ -65,9 +65,9 @@ export const useAuth = create<AuthStore>()(
             onRehydrateStorage: () => async (state) => {
                 // SWR Style: Instant Load + Background Revalidation
                 if (state?.user) {
-                    api.get('/auth/profile').catch((error: any) => {
-                        console.warn('[Auth] Background revalidation failed:', error.message);
-                        // Interceptor handles 401, but we can clear state here too if needed
+                    api.get('/auth/profile').catch((error: unknown) => {
+                        const message = error instanceof Error ? error.message : 'Unknown error';
+                        console.warn('[Auth] Background revalidation failed:', message);
                     });
                 }
 

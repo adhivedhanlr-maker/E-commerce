@@ -372,11 +372,12 @@ export default function AdvancedSellerRegister() {
                     setGlobalError(res.message || 'Failed to submit registration');
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Error in handleNext:', err);
             // Let the global interceptor handle 401
-            if (err.response?.status !== 401) {
-                setGlobalError(err.response?.data?.message || err.message || 'An unexpected error occurred');
+            const axiosError = err as { response?: { status: number; data?: { message?: string } }; message?: string };
+            if (axiosError.response?.status !== 401) {
+                setGlobalError(axiosError.response?.data?.message || axiosError.message || 'An unexpected error occurred');
             }
         } finally {
             setSubmitting(false);
