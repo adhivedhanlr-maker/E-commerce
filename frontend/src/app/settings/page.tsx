@@ -92,15 +92,10 @@ export default function SettingsPage() {
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="flex-1 space-y-2">
-                                                <Input
-                                                    value={avatar}
-                                                    onChange={(e) => setAvatar(e.target.value)}
-                                                    placeholder="Enter image URL to override"
-                                                    className="h-12 rounded-xl border-slate-200 bg-slate-50/50 dark:bg-slate-950/50 dark:border-white/5"
-                                                />
-                                                <p className="text-[10px] text-slate-500 ml-1 italic">
-                                                    * We automatically fetch your profile photo from Google or Gravatar based on your email.
+                                            <div className="flex-1">
+                                                <p className="text-sm font-medium text-slate-900 dark:text-white mb-1">Automatic Profile Sync</p>
+                                                <p className="text-xs text-slate-500 italic">
+                                                    Your profile photo is automatically fetched from Google or Gravatar based on your email address.
                                                 </p>
                                             </div>
                                         </div>
