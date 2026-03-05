@@ -583,6 +583,28 @@ export default function AdvancedSellerRegister() {
     return (
         <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] pt-24 pb-20 px-4">
             <div className="max-w-4xl mx-auto">
+                {/* Guest Login Banner */}
+                {!user && (
+                    <div className="mb-8 flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-white/10 rounded-2xl">
+                        <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600">
+                                <Building2 className="w-4 h-4" />
+                            </div>
+                            <div>
+                                <p className="text-xs font-bold text-slate-700 dark:text-slate-200">You are filling as a guest</p>
+                                <p className="text-[10px] text-slate-400">Log in to save your progress to your account</p>
+                            </div>
+                        </div>
+                        <Button
+                            onClick={() => router.push('/login?redirect=/seller/register')}
+                            variant="outline"
+                            className="h-9 px-5 rounded-xl text-xs font-bold border-primary-200 text-primary-600 hover:bg-primary-50 dark:border-primary-800 dark:text-primary-400 dark:hover:bg-primary-900/20 shrink-0 ml-4"
+                        >
+                            Log In
+                        </Button>
+                    </div>
+                )}
+
                 {/* Progress Header */}
                 <div className="mb-12">
                     <div className="flex justify-between items-center mb-8 px-2">
