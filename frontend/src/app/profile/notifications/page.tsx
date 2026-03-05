@@ -56,7 +56,7 @@ export default function NotificationsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-16 pb-24">
             <div className="mx-auto max-w-4xl px-6 lg:px-12">
                 <div className="mb-8">
                     <Link href="/profile" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors mb-6">

@@ -43,7 +43,7 @@ export default function OrderDetailsPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24 flex items-center justify-center">
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-16 pb-24 flex items-center justify-center">
                 <RefreshCw className="h-8 w-8 text-primary-500 animate-spin" />
             </div>
         );
@@ -51,7 +51,7 @@ export default function OrderDetailsPage() {
 
     if (error || !order) {
         return (
-            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24 text-center">
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-16 pb-24 text-center">
                 <h1 className="text-2xl font-bold">{error || 'Order Not Found'}</h1>
                 <Link href="/profile/orders" className="text-primary-600 mt-4 inline-block">Return to Orders</Link>
             </div>
@@ -235,7 +235,7 @@ export default function OrderDetailsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-16 pb-24">
             <div className="mx-auto max-w-5xl px-6 lg:px-12">
                 <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>

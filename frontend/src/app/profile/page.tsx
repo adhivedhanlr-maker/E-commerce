@@ -36,7 +36,7 @@ export default function ProfilePage() {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-16 pb-24">
             <div className="mx-auto max-w-7xl px-6 lg:px-12">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left Column: User Profile Overview */}

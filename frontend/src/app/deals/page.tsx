@@ -39,7 +39,7 @@ const deals = [
 
 export default function DealsPage() {
     return (
-        <div className="bg-white dark:bg-slate-950 pt-32 pb-24 overflow-hidden">
+        <div className="bg-white dark:bg-slate-950 pt-16 pb-24 overflow-hidden">
             <div className="mx-auto max-w-7xl px-6 lg:px-12">
                 {/* Hero Header */}
                 <div className="relative mb-24">

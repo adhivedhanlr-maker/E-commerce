@@ -147,7 +147,7 @@ export default function PaymentsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-16 pb-24">
             <div className="mx-auto max-w-4xl px-6 lg:px-12">
                 <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
