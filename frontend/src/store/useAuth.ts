@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, StateStorage, createJSONStorage } from 'zustand/middleware';
-import api from '@/services/api';
+import api, { setAuthToken } from '@/services/api';
 import { get, set, del } from 'idb-keyval';
 
 // Custom storage using IndexedDB for better "browser cache" persistence
