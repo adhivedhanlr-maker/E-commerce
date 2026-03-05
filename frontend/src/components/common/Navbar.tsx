@@ -138,6 +138,7 @@ const Navbar = () => {
                                             width={36}
                                             height={36}
                                             className="object-contain"
+                                            priority
                                         />
                                     </div>
                                     <span>Nexus<span className="text-primary-600">Store</span></span>
@@ -185,6 +186,7 @@ const Navbar = () => {
                                 width={40}
                                 height={40}
                                 className="object-contain"
+                                priority
                             />
                         </div>
                         <span className="font-accent text-xl lg:text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
