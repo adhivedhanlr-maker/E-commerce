@@ -168,6 +168,8 @@ export default function AdvancedSellerRegister() {
                     // Flatten data for the form reset if a profile exists
                     if (onboardingStatus !== 'none' || Object.keys(profileData).length > 0) {
                         const flatData = {
+                            natureOfBusiness: 'Retailer',
+                            commissionAccepted: false,
                             ...profileData,
                             ...(profileData.bankDetails || {}),
                             ...(profileData.operationalDetails || {}),
@@ -178,12 +180,7 @@ export default function AdvancedSellerRegister() {
                             shopAddress_pincode: profileData.shopAddress?.pincode || '',
                         } as unknown as FlatOnboardingForm;
 
-                        // Use a partial reset to avoid overwriting default natureOfBusiness
-                        reset({
-                            natureOfBusiness: 'Retailer',
-                            commissionAccepted: false,
-                            ...flatData
-                        });
+                        reset(flatData);
                     }
                 } else {
                     setGlobalError(res?.message || 'Failed to fetch registration status.');
