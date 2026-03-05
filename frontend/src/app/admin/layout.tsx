@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Users } from 'lucide-react';
@@ -16,33 +16,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const pathname = usePathname();
     const router = useRouter();
     const { user } = useAuth();
-    const [isAuthorized, setIsAuthorized] = useState(false);
+
+    // Derived state
+    const isLoginPage = pathname === '/admin/login';
+    const isAdmin = user?.role === 'admin';
 
     useEffect(() => {
         // Skip check for login page
-        if (pathname === '/admin/login') {
-            setIsAuthorized(true);
-            return;
-        }
+        if (isLoginPage) return;
 
-        // Check if user is admin
-        if (user && user.role === 'admin') {
-            setIsAuthorized(true);
-        } else if (user) {
-            // Logged in but not admin
-            router.push('/');
+        // Handle redirects
+        if (user) {
+            if (user.role !== 'admin') {
+                router.push('/');
+            }
         } else {
-            // Not logged in
+            // Note: In development, useAuth rehydrates from IndexedDB
+            // If user is genuinely null, redirect to login
             router.push('/login');
         }
-    }, [user, pathname, router]);
+    }, [user, isLoginPage, router]);
 
     // Render login page without the admin sidebar/shell
-    if (pathname === '/admin/login') {
+    if (isLoginPage) {
         return <>{children}</>;
     }
 
-    if (!isAuthorized) {
+    // Show loading/verifying state if not an admin
+    if (!isAdmin) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#020617]">
                 <div className="animate-pulse text-slate-400 font-bold tracking-widest uppercase text-xs">
