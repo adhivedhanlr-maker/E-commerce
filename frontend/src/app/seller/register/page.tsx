@@ -154,35 +154,52 @@ export default function AdvancedSellerRegister() {
             }
             try {
                 const res = await getOnboardingStatus();
-                if (res.success) {
-                    setStatus(res.data.status);
-                    if (res.data.profile) {
-                        setFormData(res.data.profile);
-                        setIsOtpVerified(res.data.profile.isMobileVerified || false);
-                        // Flatten data for the form reset
+                if (res?.success) {
+                    const onboardingStatus = res.data?.status || 'none';
+                    const profileData = res.data?.profile || {};
+
+                    setStatus(onboardingStatus);
+                    setFormData(profileData);
+
+                    // Explicitly sync verified status
+                    const isVerified = Boolean(profileData.isMobileVerified);
+                    setIsOtpVerified(isVerified);
+
+                    // Flatten data for the form reset if a profile exists
+                    if (onboardingStatus !== 'none' || Object.keys(profileData).length > 0) {
                         const flatData = {
-                            ...res.data.profile,
-                            ...res.data.profile.bankDetails,
-                            ...res.data.profile.operationalDetails,
-                            shopAddress_street: res.data.profile.shopAddress?.street || '',
-                            shopAddress_city: res.data.profile.shopAddress?.city || '',
-                            shopAddress_district: res.data.profile.shopAddress?.district || '',
-                            shopAddress_state: res.data.profile.shopAddress?.state || '',
-                            shopAddress_pincode: res.data.profile.shopAddress?.pincode || '',
+                            ...profileData,
+                            ...(profileData.bankDetails || {}),
+                            ...(profileData.operationalDetails || {}),
+                            shopAddress_street: profileData.shopAddress?.street || '',
+                            shopAddress_city: profileData.shopAddress?.city || '',
+                            shopAddress_district: profileData.shopAddress?.district || '',
+                            shopAddress_state: profileData.shopAddress?.state || '',
+                            shopAddress_pincode: profileData.shopAddress?.pincode || '',
                         } as unknown as FlatOnboardingForm;
-                        reset(flatData);
+
+                        // Use a partial reset to avoid overwriting default natureOfBusiness
+                        reset({
+                            natureOfBusiness: 'Retailer',
+                            commissionAccepted: false,
+                            ...flatData
+                        });
                     }
+                } else {
+                    setGlobalError(res?.message || 'Failed to fetch registration status.');
                 }
             } catch (error: unknown) {
                 console.error('Failed to fetch draft/status:', error);
-                if (axios.isAxiosError(error) && error.response?.status === 401) {
-                    // Interceptor handles redirect, we just stop loading
-                    return;
+
+                if (axios.isAxiosError(error)) {
+                    if (error.response?.status === 401) {
+                        // Interceptor handles redirect
+                        return;
+                    }
+                    setGlobalError(error.response?.data?.message || error.message);
+                } else {
+                    setGlobalError(error instanceof Error ? error.message : 'An unexpected error occurred while fetching your registration status.');
                 }
-                const message = axios.isAxiosError(error)
-                    ? error.response?.data?.message || error.message
-                    : (error instanceof Error ? error.message : 'An unexpected error occurred while fetching your registration status.');
-                setGlobalError(message);
             } finally {
                 setIsLoading(false);
             }

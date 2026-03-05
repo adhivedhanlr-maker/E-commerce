@@ -115,8 +115,8 @@ export const getOnboardingStatus = async (req: Request, res: Response) => {
         }
 
         sendResponse(res, 200, true, 'Status fetched', {
-            status: user.onboardingStatus,
-            profile: user.businessProfile
+            status: user.onboardingStatus || 'none',
+            profile: user.businessProfile || {}
         });
     } catch (error: any) {
         console.error('Error in getOnboardingStatus:', error);
