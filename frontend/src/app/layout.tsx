@@ -29,7 +29,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="light" themes={["light", "dark", "dim"]}>
             <CartCleaner />
             <Navbar />
-            <main className="min-h-screen pt-16 md:pb-0">
+            <main className="min-h-screen pt-14 md:pt-16 md:pb-0">
               <PageTransition>
                 {children}
               </PageTransition>

@@ -193,8 +193,8 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="bg-white dark:bg-slate-900 py-32 min-h-screen">
-            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div className="bg-white dark:bg-slate-900 pt-12 md:pt-16 pb-24 min-h-screen">
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-12">
                 <div className="mb-12">
                     <Link href="/cart" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors mb-6">
                         <ArrowLeft className="mr-2 h-4 w-4" />

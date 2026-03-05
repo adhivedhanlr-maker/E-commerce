@@ -314,7 +314,7 @@ export default function Home() {
       </section>
 
       {/* Categories Grid - Visual Curation */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
+      <section className="py-12 md:py-24 bg-slate-50 dark:bg-slate-900/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="text-center mb-10">
             <h2 className="font-accent text-3xl md:text-4xl font-bold tracking-tight text-slate-950 dark:text-white mb-4">

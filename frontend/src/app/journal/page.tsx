@@ -37,8 +37,8 @@ const articles = [
 
 export default function JournalPage() {
     return (
-        <div className="bg-white dark:bg-slate-950 pt-16 pb-24">
-            <div className="mx-auto max-w-7xl px-6 lg:px-12">
+        <div className="bg-white dark:bg-slate-950 pt-12 md:pt-16 pb-24">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
                 {/* Header */}
                 <div className="mb-24 flex flex-col items-center text-center">
                     <motion.div

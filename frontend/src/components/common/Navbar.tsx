@@ -116,7 +116,7 @@ const Navbar = () => {
                 "fixed top-0 z-50 w-full transition-all duration-500 ease-in-out",
                 isScrolled
                     ? "py-3 bg-white/70 backdrop-blur-xl border-b border-secondary-200/50 shadow-premium dark:bg-black/70 dark:border-white/10"
-                    : "py-6 bg-transparent"
+                    : "py-4 md:py-6 bg-transparent"
             )}
         >
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-12 relative">

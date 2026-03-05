@@ -235,8 +235,8 @@ export default function OrderDetailsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-16 pb-24">
-            <div className="mx-auto max-w-5xl px-6 lg:px-12">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-12 md:pt-16 pb-24">
+            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-12">
                 <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
                         <Link href="/profile/orders" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors mb-6">
