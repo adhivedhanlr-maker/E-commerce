@@ -37,6 +37,7 @@ interface AuthStore {
     user: User | null;
     setUser: (user: User | null) => void;
     logout: () => Promise<void>;
+    clearSession: () => void;
     loginAsDev: () => void;
 }
 
@@ -54,6 +55,10 @@ export const useAuth = create<AuthStore>()(
                 } catch {
                     // Ignore errors
                 }
+                set({ user: null });
+                setAuthToken(null);
+            },
+            clearSession: () => {
                 set({ user: null });
                 setAuthToken(null);
             },

@@ -41,22 +41,28 @@ api.interceptors.request.use(
 // Response interceptor — auto-logout and redirect on expired/invalid session
 api.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
         if (error.response?.status === 401) {
             console.warn('[Auth] Session expired or invalid — clearing session and redirecting to login.');
             if (typeof window !== 'undefined') {
-                // Clear state
-                localStorage.removeItem('auth-storage-v2');
-                setAuthToken(null);
+                try {
+                    // Clear the IndexedDB storage used by Zustand
+                    const { del } = await import('idb-keyval');
+                    await del('auth-storage-v2');
+                    setAuthToken(null);
 
-                // Do not redirect if already on login page to avoid loops
-                if (!window.location.pathname.includes('/login')) {
-                    window.location.href = '/login?session_expired=true';
+                    // Do not redirect if already on login page to avoid loops
+                    if (!window.location.pathname.includes('/login')) {
+                        window.location.href = '/login?session_expired=true';
+                    }
+                } catch (err) {
+                    console.error('[Auth] Failed to clear session storage:', err);
                 }
             }
         }
         return Promise.reject(error);
     }
 );
+
 
 export default api;

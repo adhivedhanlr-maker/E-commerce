@@ -176,8 +176,10 @@ export default function AdvancedSellerRegister() {
             } catch (error: unknown) {
                 console.error('Failed to fetch draft/status:', error);
                 if (axios.isAxiosError(error) && error.response?.status === 401) {
-                    setGlobalError('Not authorized. Please login as a demo user to continue.');
+                    // Interceptor handles redirect, we just stop loading
+                    return;
                 }
+                setGlobalError('An unexpected error occurred while fetching your registration status.');
             } finally {
                 setIsLoading(false);
             }
@@ -374,11 +376,13 @@ export default function AdvancedSellerRegister() {
             }
         } catch (err: unknown) {
             console.error('Error in handleNext:', err);
-            // Let the global interceptor handle 401
-            const axiosError = err as { response?: { status: number; data?: { message?: string } }; message?: string };
-            if (axiosError.response?.status !== 401) {
-                setGlobalError(axiosError.response?.data?.message || axiosError.message || 'An unexpected error occurred');
-            }
+            if (axios.isAxiosError(err) && err.response?.status === 401) return;
+
+            const message = axios.isAxiosError(err)
+                ? err.response?.data?.message || err.message
+                : (err instanceof Error ? err.message : 'An unexpected error occurred');
+
+            setGlobalError(message);
         } finally {
             setSubmitting(false);
         }
@@ -423,9 +427,10 @@ export default function AdvancedSellerRegister() {
             } else {
                 setGlobalError(res.message || 'Failed to save draft');
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-            setGlobalError(err.message || 'Error saving draft');
+        } catch (err: unknown) {
+            console.error('Error saving draft:', err);
+            if (axios.isAxiosError(err) && err.response?.status === 401) return;
+            setGlobalError(err instanceof Error ? err.message : 'Error saving draft');
         } finally {
             setSubmitting(false);
         }
