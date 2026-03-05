@@ -1,9 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/store/useAuth';
 
 const NAV_ITEMS = [
     { href: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
@@ -12,10 +14,42 @@ const NAV_ITEMS = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const router = useRouter();
+    const { user } = useAuth();
+    const [isAuthorized, setIsAuthorized] = useState(false);
+
+    useEffect(() => {
+        // Skip check for login page
+        if (pathname === '/admin/login') {
+            setIsAuthorized(true);
+            return;
+        }
+
+        // Check if user is admin
+        if (user && user.role === 'admin') {
+            setIsAuthorized(true);
+        } else if (user) {
+            // Logged in but not admin
+            router.push('/');
+        } else {
+            // Not logged in
+            router.push('/login');
+        }
+    }, [user, pathname, router]);
 
     // Render login page without the admin sidebar/shell
     if (pathname === '/admin/login') {
         return <>{children}</>;
+    }
+
+    if (!isAuthorized) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#020617]">
+                <div className="animate-pulse text-slate-400 font-bold tracking-widest uppercase text-xs">
+                    Verifying Credentials...
+                </div>
+            </div>
+        );
     }
 
     return (
