@@ -146,9 +146,42 @@ export default function AdvancedSellerRegister() {
         }
     });
 
+    // Auto-redirect removed - guests allowed to fill the form
+    /*
+    useEffect(() => {
+        if (!isLoading && !user) {
+            router.push('/login?redirect=/seller/register&reason=unauthorized');
+        }
+    }, [user, isLoading, router]);
+    */
+
     useEffect(() => {
         const fetchStatus = async () => {
             if (!user) {
+                // For guests, try to load draft from localStorage
+                const localDraft = localStorage.getItem('seller_reg_draft');
+                if (localDraft) {
+                    try {
+                        const parsed = JSON.parse(localDraft);
+                        setFormData(parsed);
+
+                        // Sync form fields
+                        const flatData = {
+                            ...parsed,
+                            ...(parsed.bankDetails || {}),
+                            ...(parsed.operationalDetails || {}),
+                            shopAddress_street: parsed.shopAddress?.street || '',
+                            shopAddress_city: parsed.shopAddress?.city || '',
+                            shopAddress_district: parsed.shopAddress?.district || '',
+                            shopAddress_state: parsed.shopAddress?.state || '',
+                            shopAddress_pincode: parsed.shopAddress?.pincode || '',
+                        } as unknown as FlatOnboardingForm;
+
+                        reset(flatData);
+                    } catch (e) {
+                        console.error('Failed to parse local draft:', e);
+                    }
+                }
                 setIsLoading(false);
                 return;
             }
@@ -374,6 +407,15 @@ export default function AdvancedSellerRegister() {
             */
 
             if (currentStep < 6) {
+                if (!user) {
+                    // Guest mode: save to localStorage and move to next step
+                    localStorage.setItem('seller_reg_draft', JSON.stringify(mappedData));
+                    setCurrentStep(prev => prev + 1);
+                    window.scrollTo(0, 0);
+                    setSubmitting(false);
+                    return;
+                }
+
                 const res = await saveOnboardingDraft(mappedData);
                 if (res.success) {
                     setCurrentStep(prev => prev + 1);
@@ -382,6 +424,11 @@ export default function AdvancedSellerRegister() {
                     setGlobalError(res.message || 'Failed to save draft');
                 }
             } else {
+                if (!user) {
+                    setGlobalError('Please log in or create an account to submit your registration.');
+                    router.push('/login?redirect=/seller/register&reason=submit_required');
+                    return;
+                }
                 const res = await submitOnboarding(mappedData as IBusinessProfile);
                 if (res.success) {
                     setFormData(res.data);
@@ -437,10 +484,17 @@ export default function AdvancedSellerRegister() {
 
         setSubmitting(true);
         try {
+            if (!user) {
+                localStorage.setItem('seller_reg_draft', JSON.stringify(mappedData));
+                setFormData(mappedData);
+                showToast('Draft saved locally!');
+                setSubmitting(false);
+                return;
+            }
             const res = await saveOnboardingDraft(mappedData);
             if (res.success) {
                 setFormData(mappedData);
-                showToast('Draft saved successfully!');
+                showToast('Draft saved to server!');
             } else {
                 setGlobalError(res.message || 'Failed to save draft');
             }

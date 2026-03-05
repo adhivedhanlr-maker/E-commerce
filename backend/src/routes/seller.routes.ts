@@ -8,10 +8,9 @@ import { protect } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
-router.use(protect); // All seller onboarding routes require authentication
-
-router.get('/onboarding/status', getOnboardingStatus);
-router.post('/onboarding/draft', saveOnboardingDraft);
-router.post('/onboarding/submit', submitOnboarding);
+// protect only specific routes that strictly require a logged-in user context
+router.get('/onboarding/status', protect, getOnboardingStatus);
+router.post('/onboarding/draft', protect, saveOnboardingDraft);
+router.post('/onboarding/submit', protect, submitOnboarding);
 
 export default router;
