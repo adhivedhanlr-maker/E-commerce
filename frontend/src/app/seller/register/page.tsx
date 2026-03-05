@@ -598,8 +598,8 @@ export default function AdvancedSellerRegister() {
                                                     <AlertCircle className="w-5 h-5 text-red-500" />
                                                     <p className="text-sm font-bold text-red-600 dark:text-red-400">{globalError}</p>
                                                 </div>
-                                                {globalError.includes('Not authorized') && (
-                                                    <div className="mt-4">
+                                                {(globalError.includes('Not authorized') || globalError.toLowerCase().includes('expired') || globalError.toLowerCase().includes('login')) && (
+                                                    <div className="mt-4 flex gap-4">
                                                         <Button
                                                             onClick={() => {
                                                                 loginAsDev();
@@ -609,6 +609,15 @@ export default function AdvancedSellerRegister() {
                                                             className="h-10 px-4 rounded-xl text-xs font-bold bg-white text-slate-900 hover:bg-slate-50 dark:bg-slate-800 dark:text-white"
                                                         >
                                                             Fix: Login as Demo User
+                                                        </Button>
+                                                        <Button
+                                                            onClick={() => {
+                                                                window.location.href = '/login';
+                                                            }}
+                                                            variant="outline"
+                                                            className="h-10 px-4 rounded-xl text-xs font-bold border-white/20 text-slate-900 dark:text-white"
+                                                        >
+                                                            Log In Again
                                                         </Button>
                                                     </div>
                                                 )}
