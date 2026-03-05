@@ -64,6 +64,11 @@ export default function LoginPage() {
         try {
             const response = await loginUser(data);
             if (response.success) {
+                if (response.data.role === 'admin') {
+                    setUser(response.data);
+                    router.push('/admin');
+                    return;
+                }
                 setUser(response.data);
                 router.push('/');
             }
@@ -169,6 +174,12 @@ export default function LoginPage() {
                             Don&apos;t have an account?{' '}
                             <Link href="/register">
                                 <span className="text-primary-600 font-bold hover:underline">Create Account</span>
+                            </Link>
+                        </p>
+                        <p className="text-center mt-3 text-xs text-slate-400">
+                            Are you an admin?{' '}
+                            <Link href="/admin/login">
+                                <span className="text-indigo-500 font-bold hover:underline">Admin Portal →</span>
                             </Link>
                         </p>
                     </CardContent>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, ShoppingBag, Settings } from 'lucide-react';
+import { LayoutDashboard, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
@@ -12,6 +12,11 @@ const NAV_ITEMS = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+
+    // Render login page without the admin sidebar/shell
+    if (pathname === '/admin/login') {
+        return <>{children}</>;
+    }
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-[#020617] pt-20">
