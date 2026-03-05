@@ -179,7 +179,10 @@ export default function AdvancedSellerRegister() {
                     // Interceptor handles redirect, we just stop loading
                     return;
                 }
-                setGlobalError('An unexpected error occurred while fetching your registration status.');
+                const message = axios.isAxiosError(error)
+                    ? error.response?.data?.message || error.message
+                    : (error instanceof Error ? error.message : 'An unexpected error occurred while fetching your registration status.');
+                setGlobalError(message);
             } finally {
                 setIsLoading(false);
             }
