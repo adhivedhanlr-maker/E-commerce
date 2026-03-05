@@ -155,3 +155,49 @@ export const updateUserProfile = async (req: any, res: Response) => {
         sendResponse(res, 500, false, error.message);
     }
 };
+
+export const getProfile = async (req: any, res: Response) => {
+    try {
+        const user = await User.findById(req.user._id).select('-password');
+        if (!user) return sendResponse(res, 404, false, 'User not found');
+        const accessToken = generateAccessToken(user._id.toString(), user.role);
+        sendResponse(res, 200, true, 'Profile fetched', {
+            _id: user._id, name: user.name, email: user.email,
+            role: user.role, avatar: user.avatar, accessToken,
+        });
+    } catch (error: any) {
+        sendResponse(res, 500, false, error.message);
+    }
+};
+
+export const seedAdmin = async (req: Request, res: Response) => {
+    try {
+        const { secretKey } = req.body;
+        const ADMIN_SECRET = process.env.ADMIN_SEED_SECRET || 'nexusadmin2024';
+
+        if (secretKey !== ADMIN_SECRET) {
+            return sendResponse(res, 403, false, 'Invalid secret key');
+        }
+
+        let admin = await User.findOne({ email: 'admin@nexusstore.com' });
+        if (admin) {
+            admin.role = 'admin';
+            await admin.save();
+        } else {
+            admin = await User.create({
+                name: 'NexusStore Admin',
+                email: 'admin@nexusstore.com',
+                password: 'Admin@123',
+                role: 'admin',
+            });
+        }
+
+        sendResponse(res, 200, true, 'Admin account ready', {
+            email: 'admin@nexusstore.com',
+            password: 'Admin@123',
+        });
+    } catch (error: any) {
+        sendResponse(res, 500, false, error.message);
+    }
+};
+
