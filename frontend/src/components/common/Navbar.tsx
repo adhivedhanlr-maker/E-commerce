@@ -131,12 +131,12 @@ const Navbar = () => {
                         <SheetContent side="left" className="w-[300px] p-0 border-r-0 bg-white dark:bg-slate-900 shadow-2xl">
                             <SheetHeader className="p-6 border-b border-secondary-100 dark:border-white/5">
                                 <SheetTitle className="text-left font-accent text-xl font-bold tracking-tight text-slate-950 dark:text-white flex items-center gap-3">
-                                    <div className="relative h-8 w-8 overflow-hidden rounded-lg bg-slate-950 flex items-center justify-center p-1.5 shadow-lg ring-1 ring-white/10">
+                                    <div className="relative h-9 w-9 flex items-center justify-center">
                                         <Image
                                             src="/logo.png"
                                             alt="Nexus Logo"
-                                            width={32}
-                                            height={32}
+                                            width={36}
+                                            height={36}
                                             className="object-contain"
                                         />
                                     </div>
@@ -178,12 +178,12 @@ const Navbar = () => {
                 {/* Logo Section - Centered on Mobile, Left on Desktop */}
                 <div className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0">
                     <Link href="/" className="group flex items-center gap-3">
-                        <div className="relative h-8 w-8 lg:h-9 lg:w-9 overflow-hidden rounded-xl bg-slate-950 flex items-center justify-center p-1.5 shadow-premium ring-1 ring-white/10 transition-transform group-hover:scale-110">
+                        <div className="relative h-9 w-9 lg:h-10 lg:w-10 flex items-center justify-center transition-transform group-hover:scale-110">
                             <Image
                                 src="/logo.png"
                                 alt="Nexus Logo"
-                                width={36}
-                                height={36}
+                                width={40}
+                                height={40}
                                 className="object-contain"
                             />
                         </div>
