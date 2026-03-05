@@ -177,7 +177,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Logo Section - Centered on Mobile, Left on Desktop */}
-                <div className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0">
+                <div className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 pb-1">
                     <Link href="/" className="group flex items-center gap-3">
                         <div className="relative h-9 w-9 lg:h-10 lg:w-10 flex items-center justify-center transition-transform group-hover:scale-110">
                             <Image
