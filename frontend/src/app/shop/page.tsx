@@ -4,7 +4,7 @@ import React, { useState, useMemo, Suspense, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import FilterSidebar from '@/components/shop/FilterSidebar';
 import ProductCard from '@/components/product/ProductCard';
-import { Grid, List, ChevronDown, Loader2, Filter } from 'lucide-react';
+import { Grid, List, ChevronDown, Loader2, ListFilter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { getProducts } from '@/services/productService';
@@ -145,7 +145,7 @@ function ShopContent() {
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button variant="outline" className="h-12 w-12 rounded-xl border-secondary-200 dark:border-white/10 bg-white dark:bg-slate-950 flex items-center justify-center p-0 relative">
-                                <Filter className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                                <ListFilter className="h-5 w-5 text-slate-600 dark:text-slate-400" />
                                 {selectedCategories.length > 0 && (
                                     <span className="absolute -top-1 -right-1 h-5 w-5 bg-primary-600 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white dark:border-slate-900">
                                         {selectedCategories.length}
@@ -156,7 +156,7 @@ function ShopContent() {
                         <SheetContent side="right" className="w-[320px] p-0 border-l-0 bg-white dark:bg-slate-900 overflow-y-auto">
                             <SheetHeader className="p-6 border-b border-secondary-100 dark:border-white/5">
                                 <SheetTitle className="text-left font-accent text-xl font-bold tracking-tight text-slate-950 dark:text-white flex items-center gap-3">
-                                    <Filter className="h-5 w-5 text-primary-600" />
+                                    <ListFilter className="h-5 w-5 text-primary-600" />
                                     Filter Products
                                 </SheetTitle>
                             </SheetHeader>

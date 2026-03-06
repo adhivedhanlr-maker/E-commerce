@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-    CheckCircle2,
     ArrowRight,
     TrendingUp,
     Truck,
@@ -28,7 +27,7 @@ const BENEFITS = [
     },
     {
         title: "₹10,000 worth of FBA Fee Waiver",
-        description: "Save on fulfillment costs. We'll waive your FBA fees for the first few months to help you scale efficiently.",
+        description: "Save on fulfillment costs. We&apos;ll waive your FBA fees for the first few months to help you scale efficiently.",
         icon: Truck,
         color: "text-emerald-500",
         bg: "bg-emerald-500/10",
@@ -189,7 +188,7 @@ export default function SellerLandingPage() {
                                 New Seller Incentives
                             </h2>
                             <p className="text-lg text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto">
-                                We've designed exclusive rewards to help you hit the ground running and maximize your growth from day one.
+                                We&apos;ve designed exclusive rewards to help you hit the ground running and maximize your growth from day one.
                             </p>
                         </div>
 

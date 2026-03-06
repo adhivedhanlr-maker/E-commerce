@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Filter, Star } from 'lucide-react';
+import { ListFilter, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -28,7 +28,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <aside className="w-full md:w-64 space-y-6 md:sticky md:top-24 self-start">
             <div className="flex items-center justify-between pb-4 border-b">
                 <h2 className="text-lg font-bold flex items-center gap-2">
-                    <Filter className="h-4 w-4 text-primary-600" />
+                    <ListFilter className="h-4 w-4 text-primary-600" />
                     Filters
                 </h2>
                 <Button
