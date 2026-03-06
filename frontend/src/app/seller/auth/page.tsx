@@ -1,40 +1,62 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ChevronRight, LogIn, UserPlus, ShieldCheck, Mail, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, LogIn, UserPlus, ShieldCheck, Mail, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/store/useAuth';
+import { loginUser } from '@/services/authService';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const loginSchema = z.object({
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(6, 'Password is required'),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
 
 export default function SellerAuthPage() {
-    const [inputValue, setInputValue] = useState('');
+    const [view, setView] = useState<'initial' | 'login'>('initial');
     const [isLoading, setIsLoading] = useState(false);
-    const { user } = useAuth();
-    const router = useRouter();
 
-    // Auto-redirect if already logged in
-    useEffect(() => {
-        if (user) {
-            if (user.role === 'seller') {
-                router.push('/seller/dashboard');
-            } else {
-                router.push('/seller/register');
-            }
-        }
-    }, [user, router]);
+    const { register, handleSubmit, setValue, formState: { errors, isSubmitting }, setError } = useForm<LoginForm>({
+        resolver: zodResolver(loginSchema),
+    });
+    const [inputValue, setInputValue] = useState('');
+
+    // Auto-redirect if already logged in handled by layout or middleware
 
     const handleContinue = async () => {
         if (!inputValue) return;
         setIsLoading(true);
 
-        // Simulate a check and redirect to registration with the identity pre-filled
+        // Pre-fill email and switch to login view
         setTimeout(() => {
-            router.push(`/seller/register?identity=${encodeURIComponent(inputValue)}`);
-        }, 800);
+            setValue('email', inputValue);
+            setView('login');
+            setIsLoading(false);
+        }, 600);
+    };
+
+    const onLoginSubmit = async (data: LoginForm) => {
+        try {
+            const response = await loginUser(data);
+            if (response.success) {
+                // The rehydration/auth store handles the redirect
+            } else {
+                setError('root', { message: response.message || 'Invalid credentials' });
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError('root', { message: err.message || 'Login failed' });
+            } else {
+                setError('root', { message: 'Login failed' });
+            }
+        }
     };
 
     return (
@@ -70,35 +92,88 @@ export default function SellerAuthPage() {
                         <div className="space-y-8">
                             <div className="space-y-4">
                                 <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
-                                    Email or Mobile Number
+                                    {view === 'login' ? 'Email Address' : 'Email or Mobile Number'}
                                 </label>
                                 <div className="relative">
                                     <Input
                                         value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
+                                        onChange={(e) => {
+                                            setInputValue(e.target.value);
+                                            setValue('email', e.target.value);
+                                        }}
                                         placeholder="alex@example.com"
                                         className="h-16 rounded-2xl border-slate-200 dark:border-white/10 bg-white/50 dark:bg-slate-800/50 pl-14 text-base focus-visible:ring-primary-500 transition-all font-semibold"
+                                        disabled={view === 'login'}
                                     />
                                     <Mail className="absolute left-5 top-6 h-5 w-5 text-slate-400" />
                                 </div>
+                                {errors.email && <p className="text-[10px] text-red-500 font-bold ml-1 uppercase tracking-wider">{errors.email.message}</p>}
                             </div>
 
-                            <Button
-                                onClick={handleContinue}
-                                disabled={!inputValue || isLoading}
-                                className="w-full h-16 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-primary-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 border-none"
-                            >
-                                {isLoading ? (
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                                        Checking...
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center gap-2">
-                                        Continue <ChevronRight className="w-5 h-5" />
-                                    </div>
+                            <AnimatePresence mode="wait">
+                                {view === 'login' && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="space-y-4"
+                                    >
+                                        <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
+                                            Password
+                                        </label>
+                                        <Input
+                                            type="password"
+                                            {...register('password')}
+                                            placeholder="••••••••"
+                                            className="h-16 rounded-2xl border-slate-200 dark:border-white/10 bg-white/50 dark:bg-slate-800/50 px-5 text-base focus-visible:ring-primary-500 transition-all font-semibold"
+                                        />
+                                        {errors.password && <p className="text-[10px] text-red-500 font-bold ml-1 uppercase tracking-wider">{errors.password.message}</p>}
+                                        {errors.root && (
+                                            <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-500 text-xs font-bold rounded-xl flex items-center gap-2">
+                                                <AlertCircle className="w-4 h-4" />
+                                                {errors.root.message}
+                                            </div>
+                                        )}
+                                    </motion.div>
                                 )}
-                            </Button>
+                            </AnimatePresence>
+
+                            {view === 'initial' ? (
+                                <Button
+                                    onClick={handleContinue}
+                                    disabled={!inputValue || isLoading}
+                                    className="w-full h-16 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-primary-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 border-none"
+                                >
+                                    {isLoading ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                                            Checking...
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            Continue <ChevronRight className="w-5 h-5" />
+                                        </div>
+                                    )}
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={handleSubmit(onLoginSubmit)}
+                                    // isSubmitting is handled by RHF
+                                    disabled={isSubmitting}
+                                    className="w-full h-16 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-primary-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 border-none"
+                                >
+                                    {isSubmitting ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                                            Signing In...
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            Sign In <LogIn className="w-5 h-5" />
+                                        </div>
+                                    )}
+                                </Button>
+                            )}
 
                             <div className="relative py-2">
                                 <div className="absolute inset-0 flex items-center">
@@ -112,13 +187,11 @@ export default function SellerAuthPage() {
                             <div className="grid grid-cols-2 gap-4">
                                 <Button
                                     variant="outline"
-                                    asChild
+                                    onClick={() => setView('login')}
                                     className="h-16 rounded-2xl border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-black text-[10px] uppercase tracking-wider flex flex-col items-center justify-center gap-2 group transition-all"
                                 >
-                                    <Link href="/login?redirect=/seller/dashboard">
-                                        <LogIn className="w-5 h-5 text-primary-600 group-hover:scale-110 group-hover:-rotate-3 transition-transform" />
-                                        <span>Sign In</span>
-                                    </Link>
+                                    <LogIn className="w-5 h-5 text-primary-600 group-hover:scale-110 group-hover:-rotate-3 transition-transform" />
+                                    <span>Sign In</span>
                                 </Button>
                                 <Button
                                     variant="outline"
