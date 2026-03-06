@@ -184,15 +184,17 @@ export default function SellerAuthPage() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setView('login')}
-                                    className="h-16 rounded-2xl border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-black text-[10px] uppercase tracking-wider flex flex-col items-center justify-center gap-2 group transition-all"
-                                >
-                                    <LogIn className="w-5 h-5 text-primary-600 group-hover:scale-110 group-hover:-rotate-3 transition-transform" />
-                                    <span>Sign In</span>
-                                </Button>
+                            <div className={`grid gap-4 ${view === 'initial' ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                                {view === 'initial' && (
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setView('login')}
+                                        className="h-16 rounded-2xl border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-black text-[10px] uppercase tracking-wider flex flex-col items-center justify-center gap-2 group transition-all"
+                                    >
+                                        <LogIn className="w-5 h-5 text-primary-600 group-hover:scale-110 group-hover:-rotate-3 transition-transform" />
+                                        <span>Sign In</span>
+                                    </Button>
+                                )}
                                 <Button
                                     variant="outline"
                                     asChild
