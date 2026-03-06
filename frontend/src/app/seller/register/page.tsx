@@ -628,7 +628,7 @@ export default function AdvancedSellerRegister() {
                                     )}>
                                         {step.title}
                                     </p>
-                                    {step.id < 5 && (
+                                    {step.id < STEPS.length && (
                                         <div className="absolute top-6 left-1/2 w-full h-[2px] bg-slate-200 dark:bg-slate-800 -z-0">
                                             <div className={cn(
                                                 "h-full bg-primary-600 transition-all duration-700",
