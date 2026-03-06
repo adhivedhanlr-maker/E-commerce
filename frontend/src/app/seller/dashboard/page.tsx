@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/store/useAuth';
-import { AlertCircle, Clock, ShieldCheck } from 'lucide-react';
+import { AlertCircle, Clock } from 'lucide-react';
 
 export default function SellerDashboardPage() {
     const { user } = useAuth();
