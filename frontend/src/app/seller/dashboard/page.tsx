@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/store/useAuth';
-import { AlertCircle, Clock, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, Clock, ShieldCheck } from 'lucide-react';
 
 export default function SellerDashboardPage() {
     const { user } = useAuth();
@@ -52,7 +52,7 @@ export default function SellerDashboardPage() {
                         <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-4">Application Under Review</h2>
                         <p className="text-slate-500 dark:text-slate-400 text-lg mb-8 leading-relaxed">
                             Thank you for joining NexusStore! Our team is currently reviewing your business details.
-                            We'll verify your documents and notify you via email once approved.
+                            We&apos;ll verify your documents and notify you via email once approved.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-10">
                             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex items-start gap-3">
@@ -90,7 +90,7 @@ export default function SellerDashboardPage() {
                         <AlertCircle className="w-10 h-10" />
                     </div>
                     <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Registration Denied</h2>
-                    <p className="text-slate-500 mb-8">We couldn't verify your business details. Please check your email for more information or contact support.</p>
+                    <p className="text-slate-500 mb-8">We couldn&apos;t verify your business details. Please check your email for more information or contact support.</p>
                     <div className="space-y-4">
                         <Button onClick={() => router.push('/seller/register')} className="w-full h-14 rounded-2xl bg-primary-600 text-white font-bold shadow-xl shadow-primary-600/20">
                             Re-submit Application

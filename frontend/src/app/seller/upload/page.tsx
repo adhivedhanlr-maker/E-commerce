@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Textarea } from '@/components/ui/textarea';
 import api from '@/services/api';
 import { useAuth } from '@/store/useAuth';
-import { Clock, ShieldAlert } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 const productSchema = z.object({
     name: z.string().min(3, 'Name must be at least 3 characters'),
