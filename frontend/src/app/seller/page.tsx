@@ -77,7 +77,7 @@ export default function SellerLandingPage() {
                             Log In
                         </Link>
                         <Button asChild className="rounded-full bg-orange-500 hover:bg-orange-600 text-white font-bold h-11 px-6 shadow-lg shadow-orange-500/20 border-none transition-all hover:scale-105 active:scale-95">
-                            <Link href="/seller/register">Start Selling</Link>
+                            <Link href="/seller/auth">Start Selling</Link>
                         </Button>
                     </div>
                 </div>
@@ -105,7 +105,7 @@ export default function SellerLandingPage() {
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <Button asChild className="h-16 px-10 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white text-lg font-black shadow-2xl shadow-orange-500/30 transition-all hover:scale-105 active:scale-95">
-                                    <Link href="/seller/register">Start Selling</Link>
+                                    <Link href="/seller/auth">Start Selling</Link>
                                 </Button>
                                 <Button variant="outline" className="h-16 px-10 rounded-2xl border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-lg font-black hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
                                     Learn More
@@ -214,7 +214,7 @@ export default function SellerLandingPage() {
                                                 {benefit.description}
                                             </p>
                                             <div className="mt-auto pt-6 border-t border-slate-100 dark:border-white/5">
-                                                <Link href="/seller/register" className={`inline-flex items-center gap-2 font-black text-sm uppercase tracking-widest ${benefit.color} hover:gap-3 transition-all`}>
+                                                <Link href="/seller/auth" className={`inline-flex items-center gap-2 font-black text-sm uppercase tracking-widest ${benefit.color} hover:gap-3 transition-all`}>
                                                     Get Started <ArrowRight className="w-4 h-4" />
                                                 </Link>
                                             </div>
@@ -237,7 +237,7 @@ export default function SellerLandingPage() {
                                 Join thousands of successful sellers who have chosen NexusStore as their home for growth and innovation. Registration takes less than 10 minutes.
                             </p>
                             <Button asChild className="h-16 px-12 rounded-2xl bg-primary-600 hover:bg-primary-700 text-white text-lg font-black shadow-2xl shadow-primary-500/20 transition-all hover:scale-105 active:scale-95 border-none">
-                                <Link href="/seller/register">Join as a Seller</Link>
+                                <Link href="/seller/auth">Join as a Seller</Link>
                             </Button>
                         </div>
                     </div>
