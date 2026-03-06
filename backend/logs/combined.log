@@ -167,3 +167,283 @@
 {"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-04T10:58:08.510Z"}
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-03-04T10:58:08.765Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-04T10:58:09.954Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-05T10:32:48.358Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-05T10:32:50.522Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-05T10:32:50.618Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-05T10:32:51.724Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T10:36:41.860Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:36:41.895Z"}
+{"level":"info","message":"Using development demo token","timestamp":"2026-03-05T10:36:41.897Z"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2026-03-05T10:38:47.221Z"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2026-03-05T10:38:57.204Z"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2026-03-05T10:39:19.272Z"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2026-03-05T10:39:24.900Z"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2026-03-05T10:39:27.516Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T10:39:34.918Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:39:34.954Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:39:55.390Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:39:55.395Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:39:55.406Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:39:55.409Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:39:55.422Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:39:55.425Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:39:55.508Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:39:55.510Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:39:55.560Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:39:55.563Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:39:55.575Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:39:55.577Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:40:29.440Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:29.553Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:40:30.441Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:30.516Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:40:53.352Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:53.363Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:40:53.372Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:53.374Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:40:53.382Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:53.385Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:40:53.489Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:53.501Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:40:53.543Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:53.558Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:40:53.574Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:53.581Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:40:56.403Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:56.406Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:40:56.498Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:56.508Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:40:59.360Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:40:59.365Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:06.976Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:06.988Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:41:07.023Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:07.028Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:41:07.042Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:07.044Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:07.106Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:07.125Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:41:07.170Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:07.184Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:41:07.192Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:07.194Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T10:41:17.965Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:18.022Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:18.281Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:18.311Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:41:18.333Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:18.391Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:41:18.426Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:18.445Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:18.577Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:18.635Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:41:18.716Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:18.776Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:41:18.837Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:18.877Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T10:41:37.283Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:37.347Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:39.284Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:39.297Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:41:39.310Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:39.313Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:41:39.333Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:39.338Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:39.419Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:39.454Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:41:39.468Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:39.478Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:41:39.491Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:39.498Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:46.123Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:46.322Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:41:46.472Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:41:46.496Z"}
+{"level":"info","message":"POST /api/auth/logout","timestamp":"2026-03-05T10:41:48.346Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T10:42:54.566Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:42:54.578Z"}
+{"level":"info","message":"Using development demo token","timestamp":"2026-03-05T10:42:54.582Z"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2026-03-05T10:43:11.008Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:43:12.466Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:12.482Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:43:12.525Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:12.532Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:43:12.575Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:12.601Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:43:12.690Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:12.695Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:43:12.723Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:12.734Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:43:12.748Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:12.765Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:43:15.089Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:15.094Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:43:15.191Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:15.213Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:43:31.475Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:31.491Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:43:31.536Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:31.546Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:43:31.569Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:31.604Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:43:31.745Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:31.753Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:43:31.780Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:31.794Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:43:31.808Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:43:31.820Z"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2026-03-05T10:52:50.035Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:53:07.546Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:53:07.595Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:53:07.729Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:53:07.785Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:53:07.798Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:53:07.811Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:53:07.835Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:53:07.843Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:53:07.897Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:53:07.902Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:53:07.920Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:53:07.926Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:54:01.093Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:01.098Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:54:01.227Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:01.231Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:54:22.638Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:22.655Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:54:22.818Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:22.851Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:54:22.860Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:22.867Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T10:54:23.482Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:23.538Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T10:54:23.611Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:23.614Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T10:54:23.820Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T10:54:23.830Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:04:11.818Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:04:11.868Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:04:11.992Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:04:11.993Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:04:12.007Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:04:12.012Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:04:12.388Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:04:12.408Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:04:12.554Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:04:12.567Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:04:12.810Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:04:12.828Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:10:10.070Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:10:10.546Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:10:11.094Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:10:11.138Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:10:11.174Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:10:11.200Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:10:11.497Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:10:11.540Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:10:11.591Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:10:11.619Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:10:11.655Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:10:11.669Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T11:12:55.466Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:12:55.478Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:12:56.300Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:12:56.464Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:12:56.753Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:12:56.977Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:12:57.118Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:12:57.250Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:12:57.525Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:12:57.603Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:12:57.740Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:12:57.851Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:12:58.011Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:12:58.068Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T11:15:19.407Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:15:19.455Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:15:19.875Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:15:19.883Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:15:19.891Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:15:19.895Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:15:19.915Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:15:19.924Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:15:19.982Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:15:20.029Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:15:20.233Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:15:20.550Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:15:20.680Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:15:20.692Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-05T11:20:02.799Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:20:02.866Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:20:04.479Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:20:04.525Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:20:04.664Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:20:04.765Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:20:04.788Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:20:04.852Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-05T11:20:04.936Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:20:04.940Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-05T11:20:04.948Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:20:04.957Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-05T11:20:04.991Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-05T11:20:05.011Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-06T04:42:56.108Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-06T04:42:58.752Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-06T04:42:58.864Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-06T04:42:59.811Z"}
+{"level":"info","message":"GET /","timestamp":"2026-03-06T04:44:14.261Z"}
+{"level":"info","message":"GET /favicon.ico","timestamp":"2026-03-06T04:44:14.840Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-06T04:49:40.530Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:49:41.243Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-06T04:50:21.426Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:50:21.445Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-06T04:50:25.256Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:50:25.272Z"}
+{"level":"info","message":"GET /","timestamp":"2026-03-06T04:50:27.534Z"}
+{"level":"info","message":"GET /favicon.ico","timestamp":"2026-03-06T04:50:28.337Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:51:03.970Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:51:03.973Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-06T04:51:03.987Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:51:03.989Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-06T04:51:04.002Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:51:04.005Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:51:04.102Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:51:04.107Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-06T04:51:04.148Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:51:04.156Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-06T04:51:04.167Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:51:04.172Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-06T04:51:50.113Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:51:51.492Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-06T04:51:59.705Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:52:00.175Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-06T04:52:01.003Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:52:01.265Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:52:02.104Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:52:02.950Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-06T04:52:04.296Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:52:04.449Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-06T04:52:04.558Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:52:04.647Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:52:04.708Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:52:04.874Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-06T04:56:29.183Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:56:29.221Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:57:01.590Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:57:01.593Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-06T04:57:01.630Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:57:01.652Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-06T04:57:01.682Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:57:01.687Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:57:01.760Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:57:01.766Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=approved","timestamp":"2026-03-06T04:57:02.124Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:57:02.127Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=rejected","timestamp":"2026-03-06T04:57:02.687Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:57:02.691Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:59:50.236Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:59:50.410Z"}
+{"level":"info","message":"GET /api/admin/sellers?status=pending","timestamp":"2026-03-06T04:59:51.217Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T04:59:51.231Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-06T05:11:23.950Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-06T05:11:24.214Z"}

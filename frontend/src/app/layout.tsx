@@ -16,7 +16,10 @@ export const metadata: Metadata = {
   title: "NexusStore | Premium E-commerce Destination",
   description: "Experience the next generation of online shopping with NexusStore. High-quality products, fast delivery, and premium service.",
   icons: {
-    icon: "/logo.png",
+    icon: [
+      { url: "/logo.png" },
+      { url: "/favicon.ico" }
+    ],
   },
 };
 

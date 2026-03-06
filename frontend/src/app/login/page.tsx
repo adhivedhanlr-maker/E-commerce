@@ -65,8 +65,7 @@ export default function LoginPage() {
             const response = await loginUser(data);
             if (response.success) {
                 if (response.data.role === 'admin') {
-                    setUser(response.data);
-                    router.push('/admin');
+                    setError('root', { message: 'This portal is for customers. Please use the Admin Portal to sign in.' });
                     return;
                 }
                 setUser(response.data);

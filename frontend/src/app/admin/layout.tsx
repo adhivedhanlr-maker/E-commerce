@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/store/useAuth';
 
 const NAV_ITEMS = [
-    { href: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
+    { href: '/admin/dashboard', label: 'Overview', icon: LayoutDashboard, exact: true },
     { href: '/admin/sellers', label: 'Seller Applications', icon: Users },
 ];
 
@@ -17,8 +17,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const router = useRouter();
     const { user } = useAuth();
 
-    // Derived state
-    const isLoginPage = pathname === '/admin/login';
+    // Derived state - normalized path check
+    const isLoginPage = pathname?.replace(/\/$/, '') === '/admin/login';
     const isAdmin = user?.role === 'admin';
 
     useEffect(() => {
@@ -75,7 +75,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                             : 'text-slate-500 hover:bg-white dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                                     )}
                                 >
-                                    <Icon className="w-4 h-4" />
+                                    <Icon className="w-5 h-5 stroke-[2px]" />
                                     {label}
                                 </Link>
                             );

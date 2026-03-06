@@ -28,7 +28,8 @@ function cn(...inputs: (string | boolean | undefined)[]) {
 
 export default function AdminLoginPage() {
     const router = useRouter();
-    const { setUser, user } = useAuth((state) => ({ setUser: state.setUser, user: state.user }));
+    const user = useAuth((state) => state.user);
+    const setUser = useAuth((state) => state.setUser);
 
     // If already logged in as admin, redirect to admin panel
     useEffect(() => {
@@ -148,8 +149,8 @@ export default function AdminLoginPage() {
 
                         <p className="text-center mt-8 text-sm text-slate-500">
                             Not an admin?{' '}
-                            <Link href="/login">
-                                <span className="text-indigo-400 font-bold hover:underline">User Login</span>
+                            <Link href="/">
+                                <span className="text-indigo-400 font-bold hover:underline">Main Site</span>
                             </Link>
                         </p>
                     </CardContent>
