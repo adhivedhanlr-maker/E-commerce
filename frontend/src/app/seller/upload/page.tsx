@@ -12,6 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import api from '@/services/api';
+import { useAuth } from '@/store/useAuth';
+import { Clock, ShieldAlert } from 'lucide-react';
 
 const productSchema = z.object({
     name: z.string().min(3, 'Name must be at least 3 characters'),
@@ -34,6 +36,8 @@ type ProductForm = z.infer<typeof productSchema>;
 export default function SellerUploadPage() {
     const router = useRouter();
     const [imageUrl, setImageUrl] = useState('');
+
+    const { user } = useAuth();
 
     const { register, handleSubmit, control, setValue, formState: { errors, isSubmitting } } = useForm<ProductForm>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,6 +83,27 @@ export default function SellerUploadPage() {
             console.error('Upload failed:', error);
         }
     };
+
+    // Protection
+    React.useEffect(() => {
+        if (user && user.onboardingStatus !== 'approved') {
+            router.push('/seller/dashboard'); // Redirect to status page
+        }
+    }, [user, router]);
+
+    if (!user || user.onboardingStatus !== 'approved') {
+        return (
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+                <Card className="max-w-md w-full rounded-[40px] border-none shadow-2xl bg-white dark:bg-slate-900/50 backdrop-blur-xl p-10 text-center">
+                    <div className="w-20 h-20 bg-amber-50 dark:bg-amber-900/20 rounded-3xl flex items-center justify-center mx-auto mb-6 text-amber-600">
+                        <Clock className="w-10 h-10 animate-pulse" />
+                    </div>
+                    <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Access Restricted</h2>
+                    <p className="text-slate-500 mb-8">You need an approved seller account to upload products. Redirecting to your status dashboard...</p>
+                </Card>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-20 px-4">

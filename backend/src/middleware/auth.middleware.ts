@@ -69,3 +69,23 @@ export const authorize = (...roles: string[]) => {
         next();
     };
 };
+
+export const isApprovedSeller = asyncHandler(async (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user) {
+        return next(new AppError('Not authorized, no user found', 401));
+    }
+
+    if (req.user.role === 'admin') {
+        return next(); // Admin bypassed
+    }
+
+    if (req.user.role !== 'seller') {
+        return next(new AppError('Access denied: You are not a registered seller', 403));
+    }
+
+    if (req.user.onboardingStatus !== 'approved') {
+        return next(new AppError('Access denied: Your seller account is pending approval', 403));
+    }
+
+    next();
+});

@@ -23,6 +23,7 @@ interface User {
     role: string;
     avatar?: string;
     accessToken: string;
+    onboardingStatus?: 'none' | 'draft' | 'pending' | 'approved' | 'rejected';
 }
 
 const DEMO_USER: User = {
@@ -30,7 +31,8 @@ const DEMO_USER: User = {
     name: "Demo Developer",
     email: "dev@example.com",
     role: "admin",
-    accessToken: "demo-access-token"
+    accessToken: "demo-access-token",
+    onboardingStatus: "approved"
 };
 
 interface AuthStore {

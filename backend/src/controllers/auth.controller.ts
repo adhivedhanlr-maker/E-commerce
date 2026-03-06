@@ -37,9 +37,9 @@ export const register = async (req: Request, res: Response) => {
             const accessToken = generateAccessToken(user._id.toString(), user.role);
             const refreshToken = generateRefreshToken(user._id.toString());
             setAuthCookie(res, accessToken);
-            sendResponse(res, 201, true, 'User registered successfully', {
+            sendResponse(res, 21, true, 'User registered successfully', {
                 _id: user._id, name: user.name, email: user.email,
-                role: user.role, avatar: user.avatar, accessToken, refreshToken,
+                role: user.role, avatar: user.avatar, onboardingStatus: user.onboardingStatus, accessToken, refreshToken,
             });
         } else {
             sendResponse(res, 400, false, 'Invalid user data');
@@ -67,7 +67,7 @@ export const login = async (req: Request, res: Response) => {
             setAuthCookie(res, accessToken);
             sendResponse(res, 200, true, 'Login successful', {
                 _id: user._id, name: user.name, email: user.email,
-                role: user.role, avatar: user.avatar, accessToken, refreshToken,
+                role: user.role, avatar: user.avatar, onboardingStatus: user.onboardingStatus, accessToken, refreshToken,
             });
         } else {
             sendResponse(res, 401, false, 'Invalid email or password');
@@ -108,7 +108,7 @@ export const googleLogin = async (req: Request, res: Response) => {
         setAuthCookie(res, accessToken);
         sendResponse(res, 200, true, 'Google Login successful', {
             _id: user._id, name: user.name, email: user.email,
-            role: user.role, avatar: user.avatar, accessToken, refreshToken,
+            role: user.role, avatar: user.avatar, onboardingStatus: user.onboardingStatus, accessToken, refreshToken,
         });
     } catch (error: any) {
         console.error('Google Auth Error:', error);
@@ -146,7 +146,7 @@ export const updateUserProfile = async (req: any, res: Response) => {
             setAuthCookie(res, accessToken);
             sendResponse(res, 200, true, 'Profile updated successfully', {
                 _id: updatedUser._id, name: updatedUser.name, email: updatedUser.email,
-                role: updatedUser.role, avatar: updatedUser.avatar, accessToken, refreshToken,
+                role: updatedUser.role, avatar: updatedUser.avatar, onboardingStatus: updatedUser.onboardingStatus, accessToken, refreshToken,
             });
         } else {
             sendResponse(res, 404, false, 'User not found');
@@ -163,7 +163,7 @@ export const getProfile = async (req: any, res: Response) => {
         const accessToken = generateAccessToken(user._id.toString(), user.role);
         sendResponse(res, 200, true, 'Profile fetched', {
             _id: user._id, name: user.name, email: user.email,
-            role: user.role, avatar: user.avatar, accessToken,
+            role: user.role, avatar: user.avatar, onboardingStatus: user.onboardingStatus, accessToken,
         });
     } catch (error: any) {
         sendResponse(res, 500, false, error.message);
