@@ -175,30 +175,11 @@ export default function SellerAuthPage() {
                                 </Button>
                             )}
 
-                            <div className="relative py-2">
-                                <div className="absolute inset-0 flex items-center">
-                                    <span className="w-full border-t border-slate-100 dark:border-white/5" />
-                                </div>
-                                <div className="relative flex justify-center text-[10px] uppercase font-black tracking-[0.3em]">
-                                    <span className="bg-transparent px-6 text-slate-400">Expertise Awaits</span>
-                                </div>
-                            </div>
-
-                            <div className={`grid gap-4 ${view === 'initial' ? 'grid-cols-2' : 'grid-cols-1'}`}>
-                                {view === 'initial' && (
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => setView('login')}
-                                        className="h-16 rounded-2xl border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-black text-[10px] uppercase tracking-wider flex flex-col items-center justify-center gap-2 group transition-all"
-                                    >
-                                        <LogIn className="w-5 h-5 text-primary-600 group-hover:scale-110 group-hover:-rotate-3 transition-transform" />
-                                        <span>Sign In</span>
-                                    </Button>
-                                )}
+                            <div className="flex justify-center">
                                 <Button
                                     variant="outline"
                                     asChild
-                                    className="h-16 rounded-2xl border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-black text-[10px] uppercase tracking-wider flex flex-col items-center justify-center gap-2 group transition-all"
+                                    className="h-16 px-10 rounded-2xl border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-black text-[10px] uppercase tracking-wider flex flex-col items-center justify-center gap-2 group transition-all"
                                 >
                                     <Link href="/seller/register">
                                         <UserPlus className="w-5 h-5 text-emerald-500 group-hover:scale-110 group-hover:rotate-3 transition-transform" />
