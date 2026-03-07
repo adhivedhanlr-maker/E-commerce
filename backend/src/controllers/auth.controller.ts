@@ -62,24 +62,31 @@ export const login = async (req: Request, res: Response) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
-        if (user && (await user.matchPassword(password))) {
-            const accessToken = generateAccessToken(user._id.toString(), user.role);
-            const refreshToken = generateRefreshToken(user._id.toString());
-
-            if (!user.avatar) {
-                const hash = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
-                user.avatar = `https://www.gravatar.com/avatar/${hash}?d=identicon`;
-                await user.save();
-            }
-
-            setAuthCookie(res, accessToken);
-            sendResponse(res, 200, true, 'Login successful', {
-                _id: user._id, name: user.name, email: user.email,
-                role: user.role, avatar: user.avatar, onboardingStatus: user.onboardingStatus, accessToken, refreshToken,
-            });
-        } else {
-            sendResponse(res, 401, false, 'Invalid email or password');
+        if (!user) {
+            console.log(`[Auth] Login failed: User not found for email: ${email}`);
+            return sendResponse(res, 401, false, 'Invalid email or password');
         }
+
+        const isMatch = await user.matchPassword(password);
+        if (!isMatch) {
+            console.log(`[Auth] Login failed: Password mismatch for user: ${email}`);
+            return sendResponse(res, 401, false, 'Invalid email or password');
+        }
+
+        const accessToken = generateAccessToken(user._id.toString(), user.role);
+        const refreshToken = generateRefreshToken(user._id.toString());
+
+        if (!user.avatar) {
+            const hash = crypto.createHash('md5').update(user.email.toLowerCase().trim()).digest('hex');
+            user.avatar = `https://www.gravatar.com/avatar/${hash}?d=identicon`;
+            await user.save();
+        }
+
+        setAuthCookie(res, accessToken);
+        sendResponse(res, 200, true, 'Login successful', {
+            _id: user._id, name: user.name, email: user.email,
+            role: user.role, avatar: user.avatar, onboardingStatus: user.onboardingStatus, accessToken, refreshToken,
+        });
     } catch (error: any) {
         sendResponse(res, 500, false, error.message);
     }
