@@ -34,10 +34,12 @@ export default function AdminLoginPage() {
     // If already logged in as admin, redirect to admin panel
     useEffect(() => {
         if (user?.role === 'admin') {
-            console.log('[AdminLogin] User is admin, redirecting to dashboard');
-            router.push('/admin/dashboard');
+            console.log('[AdminLogin] User is admin, checking cookies before reload');
+            console.log('[AdminLogin] Browser Cookies:', typeof document !== 'undefined' ? document.cookie : 'N/A');
+            // Use full reload to break next.js middleware loops
+            window.location.href = '/admin/dashboard';
         }
-    }, [user, router]);
+    }, [user]);
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginForm>({
         resolver: zodResolver(loginSchema),
@@ -55,7 +57,7 @@ export default function AdminLoginPage() {
                 }
                 console.log('[AdminLogin] Login successful, updating state');
                 setUser(response.data);
-                router.push('/admin/dashboard');
+                // The useEffect above will handle the window.location.href redirect
             }
         } catch (error) {
             const err = error as { response?: { data?: { message?: string } } };
