@@ -21,6 +21,7 @@ import { useForm, UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch, P
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { saveOnboardingDraft, submitOnboarding, getOnboardingStatus } from '@/services/sellerService';
+import { registerUser } from '@/services/authService';
 import { DocumentUpload } from '@/components/seller/DocumentUpload';
 import { cn } from '@/lib/utils';
 import { IBusinessProfile } from '@/types/seller';
@@ -38,6 +39,17 @@ const stepSchemas = [
         email: z.string().email('Invalid email address'),
         natureOfBusiness: z.enum(['Retailer', 'Wholesaler', 'Manufacturer', 'Service Provider', 'E-commerce']),
         category: z.string().min(2, 'Category is required'),
+        password: z.string().min(6, 'Password must be at least 6 characters').optional().or(z.literal('')),
+        confirmPassword: z.string().optional().or(z.literal('')),
+    }).refine((data) => {
+        // If password is provided, confirmPassword must match
+        if (data.password && data.password.length >= 6) {
+            return data.password === data.confirmPassword;
+        }
+        return true;
+    }, {
+        message: "Passwords don't match",
+        path: ["confirmPassword"],
     }),
     // Step 2: Legal Details
     z.object({
@@ -104,6 +116,8 @@ interface FlatOnboardingForm extends Record<string, string | boolean | number | 
     ifscCode: string;
     upiId?: string;
     commissionAccepted: boolean;
+    password?: string;
+    confirmPassword?: string;
 }
 
 import jsPDF from 'jspdf';
@@ -408,7 +422,40 @@ export default function AdvancedSellerRegister() {
 
             if (currentStep < 6) {
                 if (!user) {
-                    // Guest mode: save to localStorage and move to next step
+                    // Step 1 Guest: If password provided, register them first
+                    if (currentStep === 1 && data.password) {
+                        try {
+                            const regRes = await registerUser({
+                                name: data.ownerName,
+                                email: data.email,
+                                password: data.password,
+                                role: 'seller'
+                            });
+
+                            if (regRes.success) {
+                                // Update user in auth store
+                                useAuth.getState().setUser(regRes.data);
+                                showToast('Account created and logged in!');
+
+                                // Now save draft to server instead of local
+                                await saveOnboardingDraft(mappedData);
+                                setCurrentStep(prev => prev + 1);
+                                window.scrollTo(0, 0);
+                                setSubmitting(false);
+                                return;
+                            } else {
+                                setGlobalError(regRes.message || 'Failed to create account');
+                                setSubmitting(false);
+                                return;
+                            }
+                        } catch (regErr: any) {
+                            setGlobalError(regErr.response?.data?.message || regErr.message || 'Registration failed');
+                            setSubmitting(false);
+                            return;
+                        }
+                    }
+
+                    // Standard Guest behavior for other steps or if no password provided
                     localStorage.setItem('seller_reg_draft', JSON.stringify(mappedData));
                     setCurrentStep(prev => prev + 1);
                     window.scrollTo(0, 0);
@@ -730,7 +777,8 @@ export default function AdvancedSellerRegister() {
                                                         [docKey]: fileData || file.name // Store base64 data for download
                                                     }
                                                 }));
-                                            }
+                                            },
+                                            user
                                         )}
                                     </div>
 
@@ -790,7 +838,8 @@ function renderStepContent(
     handleSendOtp: () => void,
     isOtpVerified: boolean,
     handleVerifyOtp: () => void,
-    handleDocUpload: (key: string, file: File, fileData?: string) => void
+    handleDocUpload: (key: string, file: File, fileData?: string) => void,
+    user: any
 ) {
     const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const pincode = e.target.value;
@@ -845,6 +894,21 @@ function renderStepContent(
                         </select>
                     </div>
                     <FormField label="Specific Category" name="category" register={register} errors={errors} placeholder="Electronics, Clothing, etc." />
+
+                    {!user && (
+                        <>
+                            <div className="col-span-1 md:col-span-2 pt-6 border-t border-slate-100 dark:border-white/5 mt-4">
+                                <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Security Setup</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <FormField label="Create Password" name="password" type="password" register={register} errors={errors} placeholder="••••••••" />
+                                    <FormField label="Confirm Password" name="confirmPassword" type="password" register={register} errors={errors} placeholder="••••••••" />
+                                </div>
+                                <p className="text-[10px] text-slate-400 mt-4 leading-relaxed">
+                                    Setting a password now will create your account immediately and allow you to save your progress to our servers.
+                                </p>
+                            </div>
+                        </>
+                    )}
                 </>
             );
         case 2:
