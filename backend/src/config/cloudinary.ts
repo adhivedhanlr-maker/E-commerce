@@ -1,6 +1,6 @@
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const dotenv = require('dotenv');
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -10,12 +10,12 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+export const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'nexus_products',
         allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
-    },
+    } as any,
 });
 
-module.exports = { cloudinary, storage };
+export { cloudinary };
