@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,6 +36,8 @@ type ProductForm = z.infer<typeof productSchema>;
 export default function SellerUploadPage() {
     const router = useRouter();
     const [imageUrl, setImageUrl] = useState('');
+    const [uploading, setUploading] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const { user } = useAuth();
 
@@ -71,6 +73,30 @@ export default function SellerUploadPage() {
 
     const removeImage = (index: number) => {
         setValue('images', images.filter((_, i) => i !== index));
+    };
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const { data } = await api.post('/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            if (data.success) {
+                setValue('images', [...images, data.data.url]);
+            }
+        } catch (error) {
+            console.error('File upload failed:', error);
+            alert('Image upload failed. Please check your connection or try again.');
+        } finally {
+            setUploading(false);
+            if (fileInputRef.current) fileInputRef.current.value = '';
+        }
     };
 
     const onSubmit = async (data: ProductForm) => {
@@ -262,6 +288,28 @@ export default function SellerUploadPage() {
                                             />
                                             <LinkIcon className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
                                         </div>
+                                        <Button
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            disabled={uploading}
+                                            className="rounded-xl border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 shadow-sm transition-all"
+                                        >
+                                            {uploading ? (
+                                                <div className="h-4 w-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                                            ) : (
+                                                <Upload className="h-4 w-4 mr-2" />
+                                            )}
+                                            {uploading ? 'Uploading...' : 'From Media'}
+                                        </Button>
+
+                                        <input
+                                            type="file"
+                                            ref={fileInputRef}
+                                            onChange={handleFileUpload}
+                                            accept="image/*"
+                                            className="hidden"
+                                        />
+
                                         <Button type="button" onClick={addImage} size="icon" className="rounded-xl bg-slate-900">
                                             <Plus className="h-4 w-4" />
                                         </Button>

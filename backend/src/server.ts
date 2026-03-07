@@ -13,6 +13,7 @@ import orderRoutes from './routes/order.routes';
 import adminRoutes from './routes/admin.routes';
 import paymentRoutes from './routes/payment.routes';
 import sellerRoutes from './routes/seller.routes';
+import uploadRoutes from './routes/upload.routes';
 import errorHandler from './middleware/error.middleware';
 
 dotenv.config();
@@ -49,6 +50,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/seller', sellerRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is running...');
