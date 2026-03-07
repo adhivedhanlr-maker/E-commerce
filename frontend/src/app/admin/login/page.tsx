@@ -34,7 +34,8 @@ export default function AdminLoginPage() {
     // If already logged in as admin, redirect to admin panel
     useEffect(() => {
         if (user?.role === 'admin') {
-            router.push('/admin');
+            console.log('[AdminLogin] User is admin, redirecting to dashboard');
+            router.push('/admin/dashboard');
         }
     }, [user, router]);
 
@@ -45,13 +46,16 @@ export default function AdminLoginPage() {
     const onSubmit = async (data: LoginForm) => {
         try {
             const response = await loginUser(data);
+            console.log('[AdminLogin] Response:', response);
             if (response.success) {
                 if (response.data.role !== 'admin') {
+                    console.warn('[AdminLogin] Access denied: User is not an admin');
                     setError('root', { message: 'Access denied. This portal is for administrators only.' });
                     return;
                 }
+                console.log('[AdminLogin] Login successful, updating state');
                 setUser(response.data);
-                router.push('/admin');
+                router.push('/admin/dashboard');
             }
         } catch (error) {
             const err = error as { response?: { data?: { message?: string } } };

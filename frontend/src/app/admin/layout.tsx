@@ -32,8 +32,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             }
         } else {
             // Note: In development, useAuth rehydrates from IndexedDB
-            // If user is genuinely null, redirect to login
-            router.push('/login');
+            // If user is genuinely null, redirect to admin login
+            router.push('/admin/login');
         }
     }, [user, isLoginPage, router]);
 
