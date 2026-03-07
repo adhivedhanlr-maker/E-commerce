@@ -190,6 +190,7 @@ export const seedAdmin = async (req: Request, res: Response) => {
         let admin = await User.findOne({ email: 'admin@nexusstore.com' });
         if (admin) {
             admin.role = 'admin';
+            admin.password = 'Admin@123'; // Explicitly reset password on seed
             await admin.save();
         } else {
             admin = await User.create({
