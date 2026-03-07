@@ -15,39 +15,48 @@ const NAV_ITEMS = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
-    const { user } = useAuth();
+    const { user, _hasHydrated } = useAuth();
 
     // Derived state - normalized path check
     const isLoginPage = pathname?.replace(/\/$/, '') === '/admin/login';
     const isAdmin = user?.role === 'admin';
 
     useEffect(() => {
+        // Wait for store to hydrate from storage
+        if (!_hasHydrated) return;
+
         // Skip check for login page
         if (isLoginPage) return;
+
+        console.log('[AdminLayout] Checking access. User:', user?.email, 'Role:', user?.role);
 
         // Handle redirects
         if (user) {
             if (user.role !== 'admin') {
+                console.warn('[AdminLayout] Not an admin, redirecting to home');
                 router.push('/');
             }
         } else {
-            // Note: In development, useAuth rehydrates from IndexedDB
-            // If user is genuinely null, redirect to admin login
+            // If user is genuinely null after hydration, redirect to admin login
+            console.warn('[AdminLayout] No user found, redirecting to login');
             router.push('/admin/login');
         }
-    }, [user, isLoginPage, router]);
+    }, [user, _hasHydrated, isLoginPage, router]);
 
     // Render login page without the admin sidebar/shell
     if (isLoginPage) {
         return <>{children}</>;
     }
 
-    // Show loading/verifying state if not an admin
-    if (!isAdmin) {
+    // Show loading/verifying state if not hydrated or not an admin
+    if (!_hasHydrated || (!isAdmin && !isLoginPage)) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#020617]">
-                <div className="animate-pulse text-slate-400 font-bold tracking-widest uppercase text-xs">
-                    Verifying Credentials...
+                <div className="flex flex-col items-center gap-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500" />
+                    <div className="text-slate-400 font-bold tracking-widest uppercase text-xs">
+                        {!_hasHydrated ? 'Initializing Session...' : 'Verifying Credentials...'}
+                    </div>
                 </div>
             </div>
         );

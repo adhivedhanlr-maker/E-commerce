@@ -41,12 +41,16 @@ interface AuthStore {
     logout: () => Promise<void>;
     clearSession: () => void;
     loginAsDev: () => void;
+    _hasHydrated: boolean;
+    setHasHydrated: (state: boolean) => void;
 }
 
 export const useAuth = create<AuthStore>()(
     persist(
         (set) => ({
             user: null,
+            _hasHydrated: false,
+            setHasHydrated: (state) => set({ _hasHydrated: state }),
             setUser: (user) => {
                 set({ user });
                 setAuthToken(user?.accessToken || null);
@@ -100,6 +104,9 @@ export const useAuth = create<AuthStore>()(
                 if (process.env.NODE_ENV === 'development' && state && !state.user) {
                     state.loginAsDev();
                 }
+
+                // Mark as hydrated
+                state?.setHasHydrated(true);
             }
         }
     )
