@@ -5,7 +5,7 @@ const data = JSON.stringify({
 });
 
 const options = {
-    hostname: 'localhost',
+    hostname: '127.0.0.1',
     port: 5000,
     path: '/api/auth/seed-admin',
     method: 'POST',
