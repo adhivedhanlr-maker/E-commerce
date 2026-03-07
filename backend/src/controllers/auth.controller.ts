@@ -45,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
             const accessToken = generateAccessToken(user._id.toString(), user.role);
             const refreshToken = generateRefreshToken(user._id.toString());
             setAuthCookie(res, accessToken);
-            sendResponse(res, 21, true, 'User registered successfully', {
+            sendResponse(res, 201, true, 'User registered successfully', {
                 _id: user._id, name: user.name, email: user.email,
                 role: user.role, avatar: user.avatar, onboardingStatus: user.onboardingStatus, accessToken, refreshToken,
             });
