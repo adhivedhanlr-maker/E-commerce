@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Upload, Package, BarChart3, Settings, Plus, LayoutGrid, Zap, ShieldCheck } from 'lucide-react';
+import { Upload, Package, BarChart3, Settings, LayoutGrid, Zap, ShieldCheck } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -110,18 +110,10 @@ export default function SellerDashboardPage() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12"
+                    className="mb-12"
                 >
-                    <div>
-                        <h1 className="text-4xl font-black text-slate-900 dark:text-white mb-2">Seller Dashboard</h1>
-                        <p className="text-slate-500 font-medium">Manage your business account and product listings</p>
-                    </div>
-                    <Link href="/seller/upload">
-                        <Button className="rounded-2xl h-14 px-8 bg-primary-600 hover:bg-primary-700 text-white font-bold shadow-xl shadow-primary-600/20">
-                            <Plus className="h-5 w-5 mr-2" />
-                            Add New Product
-                        </Button>
-                    </Link>
+                    <h1 className="text-4xl font-black text-slate-900 dark:text-white mb-2">Seller Dashboard</h1>
+                    <p className="text-slate-500 font-medium">Manage your business account and product listings</p>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
