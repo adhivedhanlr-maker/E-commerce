@@ -84,15 +84,14 @@ export default function SellerUploadPage() {
         formData.append('image', file);
 
         try {
-            const { data } = await api.post('/upload', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            const { data } = await api.post('/upload', formData);
             if (data.success) {
                 setValue('images', [...images, data.data.url]);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('File upload failed:', error);
-            alert('Image upload failed. Please check your connection or try again.');
+            const message = error.response?.data?.message || error.message || 'Image upload failed. Please try again.';
+            alert(message);
         } finally {
             setUploading(false);
             if (fileInputRef.current) fileInputRef.current.value = '';
