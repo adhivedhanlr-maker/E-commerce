@@ -448,8 +448,9 @@ export default function AdvancedSellerRegister() {
                                 setSubmitting(false);
                                 return;
                             }
-                        } catch (regErr: any) {
-                            setGlobalError(regErr.response?.data?.message || regErr.message || 'Registration failed');
+                        } catch (regErr: unknown) {
+                            const err = regErr as { response?: { data?: { message?: string } }; message?: string };
+                            setGlobalError(err.response?.data?.message || err.message || 'Registration failed');
                             setSubmitting(false);
                             return;
                         }
@@ -839,7 +840,7 @@ function renderStepContent(
     isOtpVerified: boolean,
     handleVerifyOtp: () => void,
     handleDocUpload: (key: string, file: File, fileData?: string) => void,
-    user: any
+    user: { name?: string; email?: string; role?: string } | null
 ) {
     const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const pincode = e.target.value;
