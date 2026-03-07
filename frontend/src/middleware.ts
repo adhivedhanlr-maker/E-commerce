@@ -6,8 +6,8 @@ export function middleware(request: NextRequest) {
     // Normalize path by removing trailing slash for consistent matching
     const pathname = originalPathname.replace(/\/$/, '') || '/';
 
-    // Get token from cookies
-    const token = request.cookies.get('accessToken')?.value;
+    // Get token from cookies (HttpOnly or Fallback)
+    const token = request.cookies.get('accessToken')?.value || request.cookies.get('accessTokenFallback')?.value;
 
     // 1. Protect /admin routes (except /admin/login)
     if (pathname.startsWith('/admin') && pathname !== '/admin/login') {

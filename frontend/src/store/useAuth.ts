@@ -50,6 +50,15 @@ export const useAuth = create<AuthStore>()(
             setUser: (user) => {
                 set({ user });
                 setAuthToken(user?.accessToken || null);
+
+                // Set a non-HttpOnly cookie as a fallback for the middleware
+                if (typeof document !== 'undefined') {
+                    if (user?.accessToken) {
+                        document.cookie = `accessTokenFallback=${user.accessToken}; path=/; max-age=31536000; SameSite=Lax`;
+                    } else {
+                        document.cookie = 'accessTokenFallback=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+                    }
+                }
             },
             logout: async () => {
                 try {
@@ -63,6 +72,9 @@ export const useAuth = create<AuthStore>()(
             clearSession: () => {
                 set({ user: null });
                 setAuthToken(null);
+                if (typeof document !== 'undefined') {
+                    document.cookie = 'accessTokenFallback=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+                }
             },
             loginAsDev: () => {
                 set({ user: DEMO_USER });
