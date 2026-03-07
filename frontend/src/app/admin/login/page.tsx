@@ -27,7 +27,6 @@ function cn(...inputs: (string | boolean | undefined)[]) {
 }
 
 export default function AdminLoginPage() {
-    const router = useRouter();
     const user = useAuth((state) => state.user);
     const setUser = useAuth((state) => state.setUser);
 
@@ -59,9 +58,10 @@ export default function AdminLoginPage() {
                 setUser(response.data);
                 // The useEffect above will handle the window.location.href redirect
             }
-        } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } };
-            setError('root', { message: err.response?.data?.message || 'Login failed' });
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } } };
+            console.error('Login failed:', error);
+            setError('root', { message: error.response?.data?.message || 'Login failed' });
         }
     };
 
