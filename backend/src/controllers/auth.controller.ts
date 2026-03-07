@@ -21,17 +21,25 @@ const setAuthCookie = (res: Response, token: string) => {
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
 
         const userExists = await User.findOne({ email });
         if (userExists) {
             return sendResponse(res, 400, false, 'User already exists');
         }
 
+        // Only allow 'user' or 'seller' roles via public registration. 
+        // 'admin' must be seeded or created by another admin.
+        const finalRole = (role === 'seller' || role === 'user') ? role : 'user';
+
         const hash = crypto.createHash('md5').update(email.toLowerCase().trim()).digest('hex');
         const gravatarUrl = `https://www.gravatar.com/avatar/${hash}?d=identicon`;
 
-        const user = await User.create({ name, email, password, avatar: gravatarUrl });
+        const user = await User.create({
+            name, email, password,
+            avatar: gravatarUrl,
+            role: finalRole
+        });
 
         if (user) {
             const accessToken = generateAccessToken(user._id.toString(), user.role);

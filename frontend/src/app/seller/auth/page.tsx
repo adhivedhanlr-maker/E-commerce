@@ -4,10 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { LogIn, UserPlus, ShieldCheck, Mail, Lock, ArrowLeft, AlertCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { loginUser } from '@/services/authService';
+import { useAuth } from '@/store/useAuth';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +22,9 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 export default function SellerAuthPage() {
+    const router = useRouter();
+    const setUser = useAuth((state) => state.setUser);
+
     const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginForm>({
         resolver: zodResolver(loginSchema),
     });
@@ -29,8 +34,12 @@ export default function SellerAuthPage() {
             const response = await loginUser(data);
             if (!response.success) {
                 setError('root', { message: response.message || 'Invalid credentials' });
+                return;
             }
-            // On success, auth store triggers redirect
+
+            // On success, update auth state and redirect
+            setUser(response.data);
+            router.push('/seller/register');
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError('root', { message: err.message || 'Login failed' });
