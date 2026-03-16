@@ -6,6 +6,7 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
     const statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
 
     logger.error(`${err.message} - ${req.method} ${req.url}`);
+    if (err.stack) logger.error(err.stack);
 
     res.status(statusCode).json({
         success: false,
