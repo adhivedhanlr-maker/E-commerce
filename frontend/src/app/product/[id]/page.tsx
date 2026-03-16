@@ -148,7 +148,7 @@ export default function ProductPage({ params }: PageProps) {
                                 <h1 className="text-3xl font-extrabold text-slate-900 lg:text-4xl dark:text-white uppercase tracking-tight">
                                     {productData.name}
                                 </h1>
-                                {authUser && productData.user === authUser._id && (
+                                {(authUser && (productData.user === authUser._id || !productData.user)) && (
                                     <Button asChild variant="outline" className="rounded-xl h-10 px-4 font-bold border-slate-200">
                                         <Link href={`/seller/products/${productData._id}/edit`}>
                                             <Edit className="w-4 h-4 mr-2" />

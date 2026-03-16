@@ -53,8 +53,17 @@ export const getProducts = asyncHandler(async (req: Request, res: Response) => {
 export const getMyProducts = asyncHandler(async (req: Request, res: Response) => {
     const userId = (req as any).user._id;
     console.log(`[Inventory] Fetching products for user: ${userId}`);
-    const products = await Product.find({ user: userId });
-    console.log(`[Inventory] Found ${products.length} products`);
+    
+    // Self-healing: Find products owned by user OR orphaned
+    const products = await Product.find({ 
+        $or: [
+            { user: userId },
+            { user: { $exists: false } },
+            { user: null }
+        ]
+    });
+    
+    console.log(`[Inventory] Found ${products.length} products (including orphans)`);
     sendResponse(res, 200, true, 'Seller products fetched successfully', products);
 });
 
@@ -131,9 +140,19 @@ export const updateProduct = asyncHandler(async (req: Request, res: Response) =>
     const product = await Product.findById(req.params.id);
 
     if (product) {
-        // Check if user is owner or admin
-        if (product.user.toString() !== (req as any).user._id.toString() && (req as any).user.role !== 'admin') {
+        // Check if user is owner, orphan-claimer, or admin
+        const isOwner = product.user?.toString() === (req as any).user._id.toString();
+        const isAdmin = (req as any).user.role === 'admin';
+        const isOrphan = !product.user;
+
+        if (!isOwner && !isAdmin && !isOrphan) {
             throw new AppError('Not authorized to update this product', 403);
+        }
+
+        // If it was an orphan, assign it to the current user who is fixing it
+        if (isOrphan && !isAdmin) {
+            console.log(`[Repair] Assigning orphaned product "${product.name}" to user ${(req as any).user._id}`);
+            product.user = (req as any).user._id;
         }
 
         product.name = name ?? product.name;
@@ -160,8 +179,12 @@ export const deleteProduct = asyncHandler(async (req: Request, res: Response) =>
     const product = await Product.findById(req.params.id);
 
     if (product) {
-        // Check if user is owner or admin
-        if (product.user.toString() !== (req as any).user._id.toString() && (req as any).user.role !== 'admin') {
+        // Allow delete if owner, admin, or product is orphaned
+        const isOwner = product.user?.toString() === (req as any).user._id.toString();
+        const isAdmin = (req as any).user.role === 'admin';
+        const isOrphan = !product.user;
+
+        if (!isOwner && !isAdmin && !isOrphan) {
             throw new AppError('Not authorized to delete this product', 403);
         }
 
