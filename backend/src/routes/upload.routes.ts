@@ -12,8 +12,10 @@ const upload = multer({ storage });
 router.post('/', protect, (req, res, next) => {
     upload.single('image')(req, res, (err) => {
         if (err) {
-            logger.error(`Upload error: ${err.message}`);
-            return sendResponse(res, 500, false, `Upload error: ${err.message}`);
+            console.error('Upload Error Object:', err);
+            logger.error(`Upload error: ${err.message || JSON.stringify(err)}`);
+            const errorMessage = err.message || (typeof err === 'string' ? err : 'Cloudinary configuration or connection error');
+            return sendResponse(res, 500, false, `Upload error: ${errorMessage}`);
         }
 
         if (req.file) {
