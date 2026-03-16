@@ -11,9 +11,7 @@ const getBaseURL = () => {
 const api = axios.create({
     baseURL: getBaseURL(),
     withCredentials: true, // Send/receive HTTP-only cookies automatically
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    headers: {},
 });
 
 // Local variable to store token and avoid circular dependencies with useAuth

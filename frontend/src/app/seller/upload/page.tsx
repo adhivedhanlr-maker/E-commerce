@@ -64,7 +64,8 @@ export default function SellerUploadPage() {
 
     const images = useWatch({ control, name: 'images' }) || [];
 
-    const addImage = () => {
+    const addImage = (e?: React.MouseEvent | React.KeyboardEvent) => {
+        if (e) e.preventDefault();
         if (imageUrl.trim()) {
             setValue('images', [...images, imageUrl.trim()]);
             setImageUrl('');
@@ -283,6 +284,11 @@ export default function SellerUploadPage() {
                                             <Input
                                                 value={imageUrl}
                                                 onChange={(e) => setImageUrl(e.target.value)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        addImage(e);
+                                                    }
+                                                }}
                                                 placeholder="Paste image URL..."
                                                 className="pl-9 rounded-xl bg-slate-50/50 border-slate-200"
                                             />
