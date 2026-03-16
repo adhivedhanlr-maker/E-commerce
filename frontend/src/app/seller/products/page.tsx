@@ -122,6 +122,7 @@ export default function SellerProductsPage() {
                             >
                                 <Card className="group rounded-3xl border-none shadow-premium hover:shadow-premium-hover transition-all duration-500 overflow-hidden bg-white/70 backdrop-blur-xl dark:bg-white/5">
                                     <div className="aspect-[4/3] overflow-hidden relative">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img 
                                             src={product.images[0] || '/placeholder.png'} 
                                             alt={product.name}

@@ -5,11 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { motion } from 'framer-motion';
-import { Upload, Plus, X, Package, Palette, ImageIcon, Link as LinkIcon, Loader2, Save } from 'lucide-react';
+import { Upload, Plus, X, Package, Link as LinkIcon, Loader2, Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import api from '@/services/api';
 
@@ -98,8 +97,9 @@ export default function EditProductPage({ params }: PageProps) {
             if (data.success) {
                 setValue('images', [...images, data.data.url]);
             }
-        } catch (err: any) {
-            alert(err.response?.data?.message || 'Upload failed');
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } }; message?: string };
+            alert(error.response?.data?.message || error.message || 'Upload failed');
         } finally {
             setUploading(false);
             if (fileInputRef.current) fileInputRef.current.value = '';
@@ -248,6 +248,7 @@ export default function EditProductPage({ params }: PageProps) {
                                     <div className="grid grid-cols-2 gap-4">
                                         {images.map((url, i) => (
                                             <div key={i} className="group relative aspect-square rounded-2xl overflow-hidden shadow-sm">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img src={url} alt="Preview" className="object-cover h-full w-full" />
                                                 <button type="button" onClick={() => removeImage(i)} className="absolute top-2 right-2 h-8 w-8 rounded-full bg-white/90 shadow-md flex items-center justify-center text-red-500 opacity-0 group-hover:opacity-100 transition-all">
                                                     <X className="h-4 w-4" />
