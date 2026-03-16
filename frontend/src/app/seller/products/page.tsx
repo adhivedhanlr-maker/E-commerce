@@ -107,9 +107,6 @@ export default function SellerProductsPage() {
                         </div>
                         <h2 className="text-2xl font-black text-slate-900 mb-2">No products found</h2>
                         <p className="text-slate-500 mb-8">You haven&apos;t added any products to your inventory yet.</p>
-                        <Button asChild className="rounded-2xl h-14 px-8 font-black uppercase tracking-widest text-xs">
-                            <Link href="/seller/upload">Start Selling</Link>
-                        </Button>
                     </Card>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
