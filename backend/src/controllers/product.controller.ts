@@ -51,7 +51,10 @@ export const getProducts = asyncHandler(async (req: Request, res: Response) => {
 // @route   GET /api/products/myproducts
 // @access  Private/Seller
 export const getMyProducts = asyncHandler(async (req: Request, res: Response) => {
-    const products = await Product.find({ user: (req as any).user._id });
+    const userId = (req as any).user._id;
+    console.log(`[Inventory] Fetching products for user: ${userId}`);
+    const products = await Product.find({ user: userId });
+    console.log(`[Inventory] Found ${products.length} products`);
     sendResponse(res, 200, true, 'Seller products fetched successfully', products);
 });
 
@@ -83,11 +86,18 @@ export const createProduct = asyncHandler(async (req: Request, res: Response) =>
         variants
     } = req.body;
 
+    const userId = (req as any).user?._id;
+    console.log(`[Upload] Creating product "${name}" for user: ${userId}`);
+
+    if (!userId) {
+        throw new AppError('User not authenticated for product creation', 401);
+    }
+
     const product = new Product({
         name,
         price,
         originalPrice: price,
-        user: (req as any).user?._id,
+        user: userId,
         images: images && images.length > 0 ? images : ['/images/sample.jpg'],
         brand,
         category,
@@ -98,6 +108,7 @@ export const createProduct = asyncHandler(async (req: Request, res: Response) =>
     });
 
     const createdProduct = await product.save();
+    console.log(`[Upload] Product saved successfully with ID: ${createdProduct._id}`);
     sendResponse(res, 201, true, 'Product created successfully', createdProduct);
 });
 

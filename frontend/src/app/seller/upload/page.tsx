@@ -104,10 +104,11 @@ export default function SellerUploadPage() {
         try {
             const response = await api.post('/products', data);
             if (response.data.success) {
-                router.push('/shop');
+                router.push('/seller/products');
             }
         } catch (error) {
             console.error('Upload failed:', error);
+            alert('Failed to upload product. Please check all fields.');
         }
     };
 

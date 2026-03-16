@@ -156,6 +156,11 @@ export default function ProductPage({ params }: PageProps) {
                                         </Link>
                                     </Button>
                                 )}
+                                {process.env.NODE_ENV === 'development' && (
+                                    <div className="text-[10px] text-slate-100 opacity-10">
+                                        P: {productData.user} | U: {authUser?._id}
+                                    </div>
+                                )}
                             </div>
                             <div className="mt-4 flex items-center gap-4">
                                 <div className="flex items-center text-amber-500">
