@@ -9,8 +9,22 @@ import logger from '../utils/logger';
 const router = express.Router();
 const upload = multer({ storage });
 
-router.post('/', protect, (req, res, next) => {
-    // ... existing upload logic ...
+router.post('/', protect, upload.single('image'), (req: any, res: any) => {
+    try {
+        if (!req.file) {
+            logger.error('Upload attempt with no file');
+            return sendResponse(res, 400, false, 'Please upload a file');
+        }
+
+        logger.info(`File uploaded successfully: ${req.file.path}`);
+        sendResponse(res, 200, true, 'Image uploaded successfully', {
+            url: req.file.path,
+            public_id: req.file.filename
+        });
+    } catch (error: any) {
+        logger.error(`Upload error: ${error.message}`);
+        sendResponse(res, 500, false, error.message || 'Server error during upload');
+    }
 });
 
 router.get('/config-check', (req, res) => {
