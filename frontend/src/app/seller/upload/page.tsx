@@ -279,33 +279,58 @@ export default function SellerUploadPage() {
                                     <CardDescription>Upload via URL (Unsplash, Cloudinary, etc.)</CardDescription>
                                 </CardHeader>
                                 <CardContent className="p-6 space-y-6">
-                                    <div className="flex gap-2">
-                                        <div className="relative flex-1">
-                                            <Input
-                                                value={imageUrl}
-                                                onChange={(e) => setImageUrl(e.target.value)}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter') {
-                                                        addImage(e);
-                                                    }
-                                                }}
-                                                placeholder="Paste image URL..."
-                                                className="pl-9 rounded-xl bg-slate-50/50 border-slate-200"
-                                            />
-                                            <LinkIcon className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <div className="space-y-4">
+                                        <div className="flex gap-2">
+                                            <div className="relative flex-1">
+                                                <Input
+                                                    value={imageUrl}
+                                                    onChange={(e) => setImageUrl(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            addImage(e);
+                                                        }
+                                                    }}
+                                                    placeholder="Paste image URL..."
+                                                    className="pl-10 rounded-xl bg-slate-50/50 border-slate-200"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={addImage}
+                                                    className="absolute left-2 top-2 h-8 w-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-primary-600 hover:bg-primary-50 transition-all"
+                                                >
+                                                    <LinkIcon className="h-4 w-4" />
+                                                </button>
+                                            </div>
+                                            <Button
+                                                type="button"
+                                                onClick={addImage}
+                                                className="rounded-xl bg-slate-900 px-6 shadow-lg shadow-slate-900/20"
+                                            >
+                                                Add
+                                            </Button>
                                         </div>
+
+                                        <div className="relative">
+                                            <div className="absolute inset-0 flex items-center">
+                                                <span className="w-full border-t border-slate-100 dark:border-white/5"></span>
+                                            </div>
+                                            <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold">
+                                                <span className="bg-white dark:bg-slate-900 px-4 text-slate-400">or</span>
+                                            </div>
+                                        </div>
+
                                         <Button
                                             type="button"
                                             onClick={() => fileInputRef.current?.click()}
                                             disabled={uploading}
-                                            className="rounded-xl border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 shadow-sm transition-all"
+                                            className="w-full h-12 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/50 text-slate-600 hover:bg-primary-50 hover:border-primary-200 hover:text-primary-600 transition-all font-bold"
                                         >
                                             {uploading ? (
-                                                <div className="h-4 w-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                                                <div className="h-4 w-4 border-2 border-primary-600 border-t-transparent rounded-full animate-spin mr-2" />
                                             ) : (
                                                 <Upload className="h-4 w-4 mr-2" />
                                             )}
-                                            {uploading ? 'Uploading...' : 'From Media'}
+                                            {uploading ? 'Uploading to Media...' : 'Upload from Media'}
                                         </Button>
 
                                         <input
@@ -315,10 +340,6 @@ export default function SellerUploadPage() {
                                             accept="image/*"
                                             className="hidden"
                                         />
-
-                                        <Button type="button" onClick={addImage} size="icon" className="rounded-xl bg-slate-900">
-                                            <Plus className="h-4 w-4" />
-                                        </Button>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
