@@ -47,6 +47,14 @@ export const getProducts = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+// @desc    Fetch products by the logged-in user (seller)
+// @route   GET /api/products/myproducts
+// @access  Private/Seller
+export const getMyProducts = asyncHandler(async (req: Request, res: Response) => {
+    const products = await Product.find({ user: (req as any).user._id });
+    sendResponse(res, 200, true, 'Seller products fetched successfully', products);
+});
+
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
@@ -112,6 +120,11 @@ export const updateProduct = asyncHandler(async (req: Request, res: Response) =>
     const product = await Product.findById(req.params.id);
 
     if (product) {
+        // Check if user is owner or admin
+        if (product.user.toString() !== (req as any).user._id.toString() && (req as any).user.role !== 'admin') {
+            throw new AppError('Not authorized to update this product', 403);
+        }
+
         product.name = name ?? product.name;
         product.price = price ?? product.price;
         product.description = description ?? product.description;
@@ -136,6 +149,11 @@ export const deleteProduct = asyncHandler(async (req: Request, res: Response) =>
     const product = await Product.findById(req.params.id);
 
     if (product) {
+        // Check if user is owner or admin
+        if (product.user.toString() !== (req as any).user._id.toString() && (req as any).user.role !== 'admin') {
+            throw new AppError('Not authorized to delete this product', 403);
+        }
+
         await Product.deleteOne({ _id: product._id });
         sendResponse(res, 200, true, 'Product removed successfully');
     } else {

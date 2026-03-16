@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IProduct extends Document {
+    user: mongoose.Schema.Types.ObjectId;
     name: string;
     description: string;
     price: number;
@@ -26,6 +27,11 @@ export interface IProduct extends Document {
 
 const productSchema: Schema = new Schema(
     {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User',
+        },
         name: { type: String, required: true },
         description: { type: String, required: true },
         price: { type: Number, required: true, default: 0 },

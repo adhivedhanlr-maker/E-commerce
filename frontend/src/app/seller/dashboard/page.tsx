@@ -30,7 +30,7 @@ export default function SellerDashboardPage() {
 
     const actions = [
         { title: 'Upload Product', description: 'Add new items to your store', icon: Upload, href: '/seller/upload', color: 'bg-primary-50 text-primary-600' },
-        { title: 'Manage Inventory', description: 'Edit existing product details', icon: LayoutGrid, href: '/shop', color: 'bg-slate-50 text-slate-600' },
+        { title: 'Manage Inventory', description: 'Edit existing product details', icon: LayoutGrid, href: '/seller/products', color: 'bg-slate-50 text-slate-600' },
         { title: 'Store Settings', description: 'Update your business profile', icon: Settings, href: '/profile', color: 'bg-purple-50 text-purple-600' },
     ];
 

@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
-import { Star, ShoppingCart, Heart, MapPin, Truck, ShieldCheck, RefreshCw, Loader2, AlertCircle } from 'lucide-react';
+import { Star, ShoppingCart, Heart, MapPin, Truck, ShieldCheck, RefreshCw, Loader2, AlertCircle, Edit } from 'lucide-react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/store/useCart';
 import { useWishlist } from '@/store/useWishlist';
+import { useAuth } from '@/store/useAuth';
 import ImageGallery from '@/components/product/ImageGallery';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +31,7 @@ interface Product {
     category: string;
     brand: string;
     countInStock: number;
+    user: string;
     specifications: Record<string, string>;
 }
 
@@ -41,6 +44,7 @@ export default function ProductPage({ params }: PageProps) {
     const [pincode, setPincode] = useState('');
     const [isCheckSuccess, setIsCheckSuccess] = useState<boolean | null>(null);
 
+    const { user: authUser } = useAuth();
     const { addItem: addToCart } = useCart();
     const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
 
@@ -140,9 +144,19 @@ export default function ProductPage({ params }: PageProps) {
                                     </>
                                 )}
                             </nav>
-                            <h1 className="text-3xl font-extrabold text-slate-900 lg:text-4xl dark:text-white uppercase tracking-tight">
-                                {productData.name}
-                            </h1>
+                            <div className="flex justify-between items-start gap-4">
+                                <h1 className="text-3xl font-extrabold text-slate-900 lg:text-4xl dark:text-white uppercase tracking-tight">
+                                    {productData.name}
+                                </h1>
+                                {authUser && productData.user === authUser._id && (
+                                    <Button asChild variant="outline" className="rounded-xl h-10 px-4 font-bold border-slate-200">
+                                        <Link href={`/seller/products/${productData._id}/edit`}>
+                                            <Edit className="w-4 h-4 mr-2" />
+                                            Edit
+                                        </Link>
+                                    </Button>
+                                )}
+                            </div>
                             <div className="mt-4 flex items-center gap-4">
                                 <div className="flex items-center text-amber-500">
                                     {[...Array(5)].map((_, i) => (
