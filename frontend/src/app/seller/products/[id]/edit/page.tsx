@@ -125,7 +125,8 @@ export default function EditProductPage({ params }: PageProps) {
             if (response.data.success) {
                 router.push('/seller/products');
             }
-        } catch (error: any) {
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } }; message?: string };
             console.error('Update failed:', error);
             const message = error.response?.data?.message || error.message || 'Failed to update product.';
             alert(message);
