@@ -107,14 +107,16 @@ export default function EditProductPage({ params }: PageProps) {
     };
 
     const onSubmit = async (data: ProductForm) => {
+        console.log('Submitting data:', data);
         try {
             const response = await api.put(`/products/${id}`, data);
             if (response.data.success) {
                 router.push('/seller/products');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Update failed:', error);
-            alert('Failed to update product.');
+            const message = error.response?.data?.message || error.message || 'Failed to update product.';
+            alert(message);
         }
     };
 
@@ -171,10 +173,12 @@ export default function EditProductPage({ params }: PageProps) {
                                         <div className="space-y-2">
                                             <label className="text-xs font-black uppercase text-primary-600">Price (₹)</label>
                                             <Input {...register('price')} type="number" className="h-12 rounded-xl bg-slate-50/50 font-bold" />
+                                            {errors.price && <p className="text-xs text-red-500 font-bold">{errors.price.message}</p>}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-xs font-black uppercase text-slate-400">Inventory Stock</label>
                                             <Input {...register('countInStock')} type="number" className="h-12 rounded-xl bg-slate-50/50" />
+                                            {errors.countInStock && <p className="text-xs text-red-500 font-bold">{errors.countInStock.message}</p>}
                                         </div>
                                     </div>
                                 </CardContent>
