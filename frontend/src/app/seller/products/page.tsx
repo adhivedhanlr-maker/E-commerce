@@ -92,11 +92,6 @@ export default function SellerProductsPage() {
                                 className="pl-10 h-12 w-64 rounded-xl border-none shadow-sm"
                             />
                         </div>
-                        <Button asChild className="h-12 rounded-xl bg-primary-600 px-6 font-bold">
-                            <Link href="/seller/upload">
-                                <Plus className="w-5 h-5 mr-2" /> Add Product
-                            </Link>
-                        </Button>
                     </div>
                 </div>
 
