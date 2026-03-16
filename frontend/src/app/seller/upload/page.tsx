@@ -89,7 +89,7 @@ export default function SellerUploadPage() {
                 setValue('images', [...images, data.data.url]);
             }
         } catch (err: unknown) {
-            const error = err as any;
+            const error = err as { response?: { data?: { message?: string } }; message?: string };
             console.error('File upload failed:', error);
             const message = error.response?.data?.message || error.message || 'Image upload failed. Please try again.';
             alert(message);
