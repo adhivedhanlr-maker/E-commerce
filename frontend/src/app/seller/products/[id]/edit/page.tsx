@@ -51,6 +51,13 @@ export default function EditProductPage({ params }: PageProps) {
         name: "variants"
     });
 
+    // Debug validation errors
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            console.log('Form Validation Errors:', errors);
+        }
+    }, [errors]);
+
     const images = watch('images') || [];
 
     useEffect(() => {
@@ -58,7 +65,12 @@ export default function EditProductPage({ params }: PageProps) {
             try {
                 const { data } = await api.get(`/products/${id}`);
                 if (data.success) {
-                    reset(data.data);
+                    // Ensure variants is an array
+                    const productData = {
+                        ...data.data,
+                        variants: data.data.variants || []
+                    };
+                    reset(productData);
                 }
             } catch (error) {
                 console.error('Failed to fetch product:', error);
@@ -268,6 +280,13 @@ export default function EditProductPage({ params }: PageProps) {
                                 type="submit"
                                 disabled={isSubmitting}
                                 className="w-full h-16 rounded-3xl bg-primary-600 hover:bg-primary-700 text-white font-black uppercase tracking-[0.2em] shadow-xl shadow-primary-600/20 transition-all hover:-translate-y-1"
+                                onClick={() => {
+                                    if (Object.keys(errors).length > 0) {
+                                        const errorFields = Object.keys(errors).join(', ');
+                                        console.error('Submit blocked by validation errors:', errors);
+                                        alert(`Please check the following fields: ${errorFields}`);
+                                    }
+                                }}
                             >
                                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
                                 Save Changes
