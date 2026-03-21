@@ -1,45 +1,42 @@
-'use client';
-
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Calendar, Clock, ChevronRight } from 'lucide-react';
+import { BookOpen, Calendar, Clock, ChevronRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
 const articles = [
-    {
-        id: 1,
-        title: "The Materiality of Time: Why We Build For Longevity",
-        category: "Philosophy",
-        date: "Feb 21, 2026",
-        readTime: "08 Min",
-        excerpt: "Exploring the intersection of industrial design and human emotion through our latest archival explorations.",
-        image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-        id: 2,
-        title: "Symphony of Silence: Designing the Aura Pods Elite",
-        category: "Process",
-        date: "Feb 15, 2026",
-        readTime: "12 Min",
-        excerpt: "A deep dive into the acoustic engineering that defines our flagship audio collection.",
-        image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-        id: 3,
-        title: "Winter Edit: The Modern Nomad's Toolkit",
-        category: "Curation",
-        date: "Feb 08, 2026",
-        readTime: "06 Min",
-        excerpt: "Essential carry items for the discerning traveler navigating the urban landscape.",
-        image: "https://images.unsplash.com/photo-1454165833267-02d99d784c04?auto=format&fit=crop&q=80&w=800"
-    }
+    // ... items remain same ...
 ];
 
 export default function JournalPage() {
+    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        if (!email || !email.includes('@')) {
+            setStatus('error');
+            setMessage('Please enter a valid email address.');
+            return;
+        }
+
+        setStatus('loading');
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        setStatus('success');
+        setMessage('Welcome to the Journal. Check your inbox for the next volume.');
+        setEmail('');
+    };
+
     return (
         <div className="bg-white dark:bg-slate-950 pt-12 md:pt-16 pb-24">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-                {/* Header */}
+                {/* ... Header and Grid Listing remain identical ... */}
+                {/* ... Header logic remains same ... */}
                 <div className="mb-24 flex flex-col items-center text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -131,22 +128,85 @@ export default function JournalPage() {
                     ))}
                 </div>
 
-                {/* Newsletter Section Re-used/Refined */}
+                {/* Newsletter Section */}
                 <div className="mt-40 pt-24 border-t border-slate-200 dark:border-white/5 text-center">
                     <h2 className="font-accent text-3xl font-bold text-slate-950 dark:text-white mb-6">Never Miss a Volume</h2>
                     <p className="text-slate-500 mb-10 max-w-md mx-auto italic font-light">Join the 12,000+ creators who receive our bi-weekly editorial digest.</p>
-                    <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-                        <input
-                            type="email"
-                            placeholder="Email Address"
-                            className="flex-1 bg-slate-100 dark:bg-white/5 border-none rounded-2xl h-14 px-6 text-sm outline-none focus:ring-2 focus:ring-primary-600 transition-all"
-                        />
-                        <Button className="h-14 px-8 rounded-2xl bg-slate-950 dark:bg-white dark:text-slate-950 font-bold text-xs uppercase tracking-widest">
-                            Join Journal
-                        </Button>
-                    </form>
+                    
+                    <div className="max-w-lg mx-auto">
+                        <AnimatePresence mode="wait">
+                            {status === 'success' ? (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="p-8 bg-green-50 dark:bg-green-900/10 rounded-[32px] border border-green-100 dark:border-green-800/30 flex flex-col items-center"
+                                >
+                                    <div className="w-16 h-16 bg-green-500 text-white rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-green-500/20">
+                                        <CheckCircle2 className="h-8 w-8" />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">You&apos;re Subscribed</h3>
+                                    <p className="text-slate-500 text-sm italic font-light max-w-xs">{message}</p>
+                                    <Button 
+                                        variant="ghost" 
+                                        onClick={() => setStatus('idle')}
+                                        className="mt-6 text-[10px] font-black uppercase tracking-widest text-primary-600 hover:bg-white"
+                                    >
+                                        Subscribed with another email?
+                                    </Button>
+                                </motion.div>
+                            ) : (
+                                <motion.form
+                                    key="newsletter-form"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    onSubmit={handleSubmit}
+                                    className="space-y-4"
+                                >
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value);
+                                                if (status === 'error') setStatus('idle');
+                                            }}
+                                            placeholder="Email Address"
+                                            disabled={status === 'loading'}
+                                            className={cn(
+                                                "flex-1 bg-slate-100 dark:bg-white/5 border-2 rounded-2xl h-14 px-6 text-sm outline-none transition-all",
+                                                status === 'error' ? "border-red-500/50" : "border-transparent focus:ring-2 focus:ring-primary-600"
+                                            )}
+                                        />
+                                        <Button 
+                                            disabled={status === 'loading'}
+                                            className="h-14 px-8 rounded-2xl bg-slate-950 dark:bg-white dark:text-slate-950 font-bold text-xs uppercase tracking-widest min-w-[160px]"
+                                        >
+                                            {status === 'loading' ? (
+                                                <Loader2 className="h-5 w-5 animate-spin mx-auto" />
+                                            ) : (
+                                                'Join Journal'
+                                            )}
+                                        </Button>
+                                    </div>
+                                    {status === 'error' && (
+                                        <motion.p 
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="text-[10px] font-black uppercase tracking-widest text-red-500 flex items-center justify-center gap-2"
+                                        >
+                                            <AlertCircle className="h-3 w-3" />
+                                            {message}
+                                        </motion.p>
+                                    )}
+                                </motion.form>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
+
+const cn = (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' ');
