@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingCart, User, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag, Menu, LayoutDashboard, ShieldCheck } from 'lucide-react';
+import { Search, ShoppingCart, User, X, Heart, LogOut, Settings, ChevronDown, LayoutGrid, Zap, BookOpen, ShoppingBag, Menu, LayoutDashboard, ShieldCheck, Star } from 'lucide-react';
 
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { cn } from '@/lib/utils';
