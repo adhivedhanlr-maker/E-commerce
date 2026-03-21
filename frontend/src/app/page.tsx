@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useState } from 'react';
 import { motion, cubicBezier, AnimatePresence } from 'framer-motion';
 import ProductCard from "@/components/product/ProductCard";
@@ -7,8 +7,6 @@ import { ArrowRight, Sparkles, Zap, CheckCircle2, AlertCircle, Loader2 } from "l
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import Hero from "@/components/home/Hero";
-import CategoryBar from "@/components/home/CategoryBar";
 
 const featuredProducts = [
   {
@@ -200,11 +198,133 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col bg-background gap-0">
-      <Hero />
-      <CategoryBar />
+    <div className="flex flex-col bg-background gap-8">
+      {/* Premium Hero Header */}
+      <section className="relative pt-12 md:pt-20 pb-12 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12 relative z-10">
+          <div className="text-center max-w-4xl mx-auto mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="inline-flex items-center space-x-2 text-primary-600 mb-6 bg-primary-50 dark:bg-primary-900/20 px-4 py-2 rounded-full border border-primary-100 dark:border-primary-800"
+            >
+              <Zap className="h-4 w-4 fill-current" />
+              <span className="text-[11px] font-black uppercase tracking-[0.3em]">The Equinox Flash Event</span>
+            </motion.div>
 
-      {/* Featured Products Section - Simple Grid */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="font-accent text-6xl md:text-9xl font-bold tracking-tighter text-slate-950 dark:text-white leading-[0.85] mb-8"
+            >
+              Featured <br />
+              <span className="italic font-light text-secondary-300">Opportunity</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 1 }}
+              className="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light"
+            >
+              Exceptional values on our most coveted collections. Available for a limited time as we curate the next chapter.
+            </motion.p>
+          </div>
+
+          {/* Nexus Archival Featured Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative rounded-[48px] bg-slate-950 p-8 md:p-16 lg:p-24 overflow-hidden border border-white/5 shadow-2xl"
+          >
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-primary-600/20 blur-[150px] pointer-events-none" />
+
+            <div className="relative z-10 lg:flex items-center justify-between gap-12">
+              <div className="max-w-xl mb-12 lg:mb-0">
+                <span className="text-primary-600 text-[11px] font-black uppercase tracking-[0.4em] mb-4 block">Limited Release</span>
+                <h2 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-none tracking-tight">Nexus Archival <br /><span className="italic text-slate-500 font-light text-3xl md:text-4xl">Up to 40% Off</span></h2>
+                <p className="text-slate-400 mb-10 text-lg leading-relaxed max-w-md font-light">
+                  Limited release items from previous collections, curated for timeless design and enduring utility.
+                </p>
+                <div className="flex flex-wrap gap-4 mb-10">
+                  {['Audio', 'Visual', 'Wearables', 'Studio'].map((pill) => (
+                    <Link
+                      key={pill}
+                      href={`/shop?cat=${pill.toLowerCase()}`}
+                      className="px-6 py-2 rounded-full border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary-600 hover:border-primary-600 transition-all"
+                    >
+                      {pill}
+                    </Link>
+                  ))}
+                </div>
+                <Button asChild className="h-16 px-12 rounded-full bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xl shadow-primary-900/20">
+                  <Link href="/shop">Search Collections</Link>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 flex-1 max-w-lg">
+                <div className="space-y-4">
+                  <Link href="/shop?cat=audio" className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group transition-all hover:bg-white/10 cursor-pointer overflow-hidden">
+                    <Image
+                      src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800"
+                      alt="Audio"
+                      fill
+                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
+                    />
+                    <div className="relative z-10">
+                      <p className="text-white font-bold text-lg mb-1">Audio</p>
+                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">24 Items</p>
+                    </div>
+                  </Link>
+                  <Link href="/shop?cat=visual" className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
+                    <Image
+                      src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"
+                      alt="Visual"
+                      fill
+                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
+                    />
+                    <div className="relative z-10">
+                      <p className="text-white font-bold text-lg mb-1">Visual</p>
+                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">12 Items</p>
+                    </div>
+                  </Link>
+                </div>
+                <div className="space-y-4 pt-12">
+                  <Link href="/shop?cat=wearables" className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
+                    <Image
+                      src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800"
+                      alt="Wearables"
+                      fill
+                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
+                    />
+                    <div className="relative z-10">
+                      <p className="text-white font-bold text-lg mb-1">Wearables</p>
+                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">08 Items</p>
+                    </div>
+                  </Link>
+                  <Link href="/shop?cat=studio" className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
+                    <Image
+                      src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&q=80&w=800"
+                      alt="Studio"
+                      fill
+                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
+                    />
+                    <div className="relative z-10">
+                      <p className="text-white font-bold text-lg mb-1">Studio</p>
+                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">15 Items</p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Products Section - Editorial Style */}
       <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <motion.div
@@ -214,22 +334,54 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-8"
           >
-            <div>
+            <div className="max-w-xl">
               <div className="flex items-center space-x-2 text-primary-600 mb-4">
                 <Sparkles className="h-4 w-4" />
                 <span className="text-[11px] font-black uppercase tracking-[0.3em]">Season Favorites</span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white uppercase">
-                Featured Products
+              <h2 className="font-accent text-5xl md:text-6xl font-bold tracking-tight text-slate-950 dark:text-white">
+                Featured <span className="italic font-light text-secondary-400">Drops</span>
               </h2>
+              <p className="mt-6 text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                Elevate your daily ritual with pieces that define modern craftsmanship.
+                Our team has curated the season&apos;s most essential technology and lifestyle goods.
+              </p>
             </div>
+            <Link href="/shop" className="group flex items-center space-x-3 text-[12px] font-black uppercase tracking-widest text-slate-950 dark:text-white pb-2 border-b-2 border-primary-600 transition-all hover:border-slate-950">
+              <span>View Full Catalog</span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-y-6"
+          >
+            {featuredProducts.map((product, idx) => (
+              <motion.div
+                key={product._id}
+                variants={item}
+                className={cn(
+                  idx === 0 ? "md:col-span-2 md:row-span-2" :
+                    idx === 1 ? "md:col-span-2" :
+                      "md:col-span-1"
+                )}
+              >
+                <ProductCard
+                  product={product}
+                  isFeatured={product.isFeatured}
+                  aspectRatio={
+                    idx === 0 ? "aspect-square md:aspect-auto md:h-[calc(100%-80px)]" :
+                      idx === 1 ? "aspect-video md:aspect-auto md:h-[240px]" :
+                        "aspect-[4/5]"
+                  }
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
