@@ -205,6 +205,11 @@ export default function AdvancedSellerRegister() {
                     const onboardingStatus = res.data?.status || 'none';
                     const profileData = res.data?.profile || {};
 
+                    if (onboardingStatus === 'approved') {
+                        router.push('/seller/dashboard');
+                        return;
+                    }
+
                     setStatus(onboardingStatus);
                     setFormData(profileData);
 
