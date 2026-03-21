@@ -121,8 +121,8 @@ const Navbar = () => {
             <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 lg:px-12 relative h-16">
                 {/* Left Section: Menu + Logo + Links + Search */}
                 <div className="flex items-center gap-6 lg:gap-8 flex-1">
-                    {/* Hamburger Menu - Left of Logo */}
-                    <div className="lg:block">
+                    {/* Hamburger Menu - Hidden per user request */}
+                    <div className="hidden">
                         <Sheet>
                             <SheetTrigger asChild>
                                 <Button variant="ghost" size="icon" className="group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all scale-110">
