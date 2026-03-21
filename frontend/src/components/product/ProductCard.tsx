@@ -20,7 +20,7 @@ interface ProductCardProps {
         rating: number;
         images: string[];
         brand: string;
-        category: string;
+        category?: string;
         isFeatured?: boolean;
     };
     isFeatured?: boolean;
