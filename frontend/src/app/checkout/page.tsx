@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, CreditCard, CheckCircle2, ChevronRight, AlertCircle, RefreshCw, ShoppingCart, ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,6 @@ export default function CheckoutPage() {
         country: 'India' // Default
     });
     const [paymentMethod, setPaymentMethod] = useState('Credit / Debit Card');
-    const [paymentSubStep, setPaymentSubStep] = useState(0); // 0: Selection, 1: Details
     const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '' });
     const [upiId, setUpiId] = useState('');
     const [upiOption, setUpiOption] = useState<'id' | 'qr'>('id');
@@ -123,7 +123,7 @@ export default function CheckoutPage() {
                         console.error("[Checkout] Payment polling timed out");
                         throw new Error("Payment session timed out. Please check your app or try again.");
                     }
-                } catch (paymentErr: any) {
+                } catch (paymentErr) {
                     setIsPaymentProcessing(false);
                     throw paymentErr;
                 }
@@ -656,11 +656,13 @@ export default function CheckoutPage() {
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center p-8 bg-slate-50 dark:bg-slate-900/50 rounded-[32px] border border-dashed border-slate-200 dark:border-slate-800">
-                                        <div className="relative w-48 h-48 bg-white p-4 rounded-3xl shadow-2xl mb-6">
-                                            <img
+                                        <div className="relative w-48 h-48 bg-white p-4 rounded-3xl shadow-2xl mb-6 flex items-center justify-center">
+                                            <Image
                                                 src="/images/upi-qr.png"
                                                 alt="UPI QR Code"
-                                                className="w-full h-full object-contain"
+                                                width={180}
+                                                height={180}
+                                                className="object-contain"
                                             />
                                         </div>
                                         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600 animate-pulse">Ready for scanning</p>
