@@ -19,7 +19,8 @@ interface ProductCardProps {
         discountPercentage: number;
         rating: number;
         images: string[];
-        brand: string;
+        category?: string;
+        isFeatured?: boolean;
     };
     isFeatured?: boolean;
     aspectRatio?: string;

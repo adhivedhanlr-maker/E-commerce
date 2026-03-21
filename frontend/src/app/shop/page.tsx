@@ -20,6 +20,7 @@ interface Product {
     images: string[];
     brand: string;
     category: string;
+    isFeatured?: boolean;
 }
 
 function ShopContent() {
