@@ -10,8 +10,10 @@ import { AuthRequest } from '../middleware/auth.middleware';
 export const initiatePayment = asyncHandler(async (req: AuthRequest, res: Response) => {
     const { paymentMethod, amount } = req.body;
 
-    if (!paymentMethod || !amount) {
-        throw new AppError('Payment method and amount are required', 400);
+    console.log(`[Payment] Initiating ${paymentMethod} payment for amount: ${amount}`);
+
+    if (!paymentMethod || !amount || amount <= 0) {
+        throw new AppError('Valid payment method and positive amount are required', 400);
     }
 
     const transactionId = `TXN-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
@@ -25,6 +27,7 @@ export const initiatePayment = asyncHandler(async (req: AuthRequest, res: Respon
     });
 
     await transaction.save();
+    console.log(`[Payment] Transaction ${transactionId} saved as PENDING`);
 
     // Start a background process to "approve" the payment after 5 seconds
     setTimeout(async () => {
@@ -33,10 +36,12 @@ export const initiatePayment = asyncHandler(async (req: AuthRequest, res: Respon
             if (txn) {
                 txn.status = 'COMPLETED';
                 await txn.save();
-                console.log(`[MOCK GATEWAY] Transaction ${transactionId} approved.`);
+                console.log(`[MOCK GATEWAY] Transaction ${transactionId} approved successfully.`);
+            } else {
+                console.warn(`[MOCK GATEWAY] Transaction ${transactionId} not found for approval!`);
             }
         } catch (err) {
-            console.error('Error in mock approval timer:', err);
+            console.error('[MOCK GATEWAY] Error in mock approval timer:', err);
         }
     }, 5000);
 

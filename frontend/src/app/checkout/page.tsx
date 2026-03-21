@@ -35,8 +35,12 @@ export default function CheckoutPage() {
         country: 'India' // Default
     });
     const [paymentMethod, setPaymentMethod] = useState('Credit / Debit Card');
+    const [paymentSubStep, setPaymentSubStep] = useState(0); // 0: Selection, 1: Details
     const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '' });
     const [upiId, setUpiId] = useState('');
+    const [upiOption, setUpiOption] = useState<'id' | 'qr'>('id');
+    const [isUpiModalOpen, setIsUpiModalOpen] = useState(false);
+    const [selectedBank, setSelectedBank] = useState('');
     const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
 
     // Redirect if cart is empty
@@ -54,8 +58,11 @@ export default function CheckoutPage() {
         if (paymentMethod === 'Credit / Debit Card') {
             return cardData.number.length === 16 && cardData.expiry.length >= 5 && cardData.cvc.length >= 3;
         }
-        if (paymentMethod === 'UPI / NetBanking') {
-            return upiId.includes('@');
+        if (paymentMethod === 'UPI') {
+            return upiOption === 'qr' || (upiId.length > 5 && upiId.includes('@'));
+        }
+        if (paymentMethod === 'NetBanking') {
+            return selectedBank !== '';
         }
         return true; // Cash on Delivery
     };
@@ -63,8 +70,8 @@ export default function CheckoutPage() {
     const placeOrderHandler = async () => {
         setLoading(true);
         setError(null);
-        console.log("Attempting to place order with data:", {
-            cartItems,
+        console.log("[Checkout] Attempting to place order with data:", {
+            cartItems: cartItems.length,
             shippingData,
             paymentMethod,
             totalPrice
@@ -72,43 +79,64 @@ export default function CheckoutPage() {
 
         try {
             // Validate basic data before sending
-            if (!cartItems || cartItems.length === 0) throw new Error("Cart is empty");
-            if (!shippingData.address || !shippingData.city) throw new Error("Shipping address incomplete");
+            if (!cartItems || cartItems.length === 0) {
+                console.error("[Checkout] Cart is empty");
+                throw new Error("Your cart is empty. Please add items before checking out.");
+            }
+
+            if (!shippingData.firstName || !shippingData.address || !shippingData.city || !shippingData.postalCode) {
+                console.error("[Checkout] Incomplete shipping data:", shippingData);
+                throw new Error("Please complete all shipping address fields.");
+            }
 
             // 1. Backend-driven payment request for non-COD methods
             if (paymentMethod !== 'Cash on Delivery') {
+                console.log(`[Checkout] Initiating ${paymentMethod} payment flow...`);
                 setIsPaymentProcessing(true);
 
-                // Initiate real backend request
-                const { transactionId } = await paymentService.initiatePayment(paymentMethod, totalPrice);
-                console.log("Payment initiated on backend. Transaction ID:", transactionId);
+                try {
+                    // Initiate real backend request
+                    const { transactionId } = await paymentService.initiatePayment(paymentMethod, totalPrice);
+                    console.log("[Checkout] Payment initiated on backend. Transaction ID:", transactionId);
 
-                // Polling for confirmation (Simulates original gateway behavior)
-                let paymentFinished = false;
-                let attempts = 0;
-                const maxAttempts = 15; // ~30 seconds max wait
+                    // Polling for confirmation (Simulates original gateway behavior)
+                    let paymentFinished = false;
+                    let attempts = 0;
+                    const maxAttempts = 20; // Increased to 40 seconds max wait
 
-                while (!paymentFinished && attempts < maxAttempts) {
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    const check = await paymentService.checkPaymentStatus(transactionId);
+                    while (!paymentFinished && attempts < maxAttempts) {
+                        console.log(`[Checkout] Polling payment status (Attempt ${attempts + 1}/${maxAttempts})...`);
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        const check = await paymentService.checkPaymentStatus(transactionId);
 
-                    if (check.status === 'COMPLETED') {
-                        paymentFinished = true;
-                        console.log("Backend confirmed payment success!");
-                    } else if (check.status === 'FAILED') {
-                        throw new Error("Payment was declined or failed on your mobile device.");
+                        if (check.status === 'COMPLETED') {
+                            paymentFinished = true;
+                            console.log("[Checkout] Backend confirmed payment success!");
+                        } else if (check.status === 'FAILED') {
+                            console.error("[Checkout] Payment failed on device");
+                            throw new Error("Payment was declined or failed on your mobile device.");
+                        }
+                        attempts++;
                     }
-                    attempts++;
-                }
 
-                if (!paymentFinished) {
-                    throw new Error("Payment session timed out. Please try again.");
+                    if (!paymentFinished) {
+                        console.error("[Checkout] Payment polling timed out");
+                        throw new Error("Payment session timed out. Please check your app or try again.");
+                    }
+                } catch (paymentErr: any) {
+                    setIsPaymentProcessing(false);
+                    throw paymentErr;
                 }
             }
 
             // 2. Prepare order data
+            console.log("[Checkout] Preparing order payload...");
             const orderItemsPayload = cartItems
-                .filter(item => item._id && /^[0-9a-fA-F]{24}$/.test(item._id))
+                .filter(item => {
+                    const isValid = item._id && /^[0-9a-fA-F]{24}$/.test(item._id);
+                    if (!isValid) console.warn("[Checkout] Filtering out invalid item ID:", item._id);
+                    return isValid;
+                })
                 .map(item => ({
                     name: item.name,
                     qty: item.qty,
@@ -118,7 +146,8 @@ export default function CheckoutPage() {
                 }));
 
             if (orderItemsPayload.length === 0) {
-                throw new Error("No valid items in cart to checkout");
+                console.error("[Checkout] No valid items left after filtering!");
+                throw new Error("There was an issue with the items in your cart. Please try re-adding them.");
             }
 
             const orderData = {
@@ -136,28 +165,31 @@ export default function CheckoutPage() {
                 totalPrice: totalPrice,
             };
 
-            console.log("Creating order after payment confirmation:", orderData);
+            console.log("[Checkout] Creating order in database...", orderData);
 
             // 3. Create the order in the database
             const createdOrder = await orderService.createOrder(orderData);
-            console.log("Order created successfully:", createdOrder);
+            console.log("[Checkout] Order created successfully:", createdOrder._id);
 
             // 4. Mark order as paid in the backend if applicable
             if (paymentMethod !== 'Cash on Delivery') {
                 try {
+                    console.log("[Checkout] Marking order as PAID...");
                     await orderService.payOrder(createdOrder._id, {
                         id: `PAY-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
                         status: 'COMPLETED',
                         update_time: new Date().toISOString(),
                         email_address: 'customer@nexusstore.com'
                     });
-                    console.log("Order status updated to PAID");
+                    console.log("[Checkout] Order status updated to PAID");
                 } catch (payError) {
-                    console.error("Failed to update payment status:", payError);
+                    console.error("[Checkout] Failed to update payment status (Partial Success):", payError);
+                    // We don't throw here as the order was already created
                 }
                 setIsPaymentProcessing(false);
             }
 
+            console.log("[Checkout] Success! Clearing cart and redirecting...");
             clearCart();
             router.push(`/profile/orders/${createdOrder._id}`);
         } catch (err: unknown) {
@@ -166,12 +198,12 @@ export default function CheckoutPage() {
             const errMsg = error.response?.data?.message || error.message || 'Unknown error occurred during order placement';
             setError(errMsg);
             setIsPaymentProcessing(false);
-
-            // Extreme debug for the user since we can't see their console
-            if (process.env.NODE_ENV === 'development') {
-                alert(`Placement Failed: ${errMsg}`);
-            }
             setLoading(false);
+
+            // Extreme debug for developers
+            if (process.env.NODE_ENV === 'development') {
+                console.error("[DEBUG ONLY] Failure Detail:", errMsg);
+            }
         }
     };
 
@@ -378,16 +410,25 @@ export default function CheckoutPage() {
                                             <CreditCard className="h-6 w-6" />
                                         </div>
                                         <div>
-                                            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Payment Method</h2>
-                                            <p className="text-sm text-slate-500">Select your preferred method to complete payment.</p>
+                                            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
+                                                {paymentSubStep === 0 ? 'Payment Method' : `${paymentMethod} Details`}
+                                            </h2>
+                                            <p className="text-sm text-slate-500">
+                                                {paymentSubStep === 0 ? 'Select your preferred method to complete payment.' : 'Please provide the required information below.'}
+                                            </p>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 gap-4">
-                                        {['Credit / Debit Card', 'UPI / NetBanking', 'Cash on Delivery'].map((method) => (
-                                            <div key={method} className="space-y-4">
+                                    {paymentSubStep === 0 ? (
+                                        /* Selection Phase */
+                                        <div className="grid grid-cols-1 gap-4">
+                                            {['Credit / Debit Card', 'UPI', 'NetBanking', 'Cash on Delivery'].map((method) => (
                                                 <div
-                                                    onClick={() => setPaymentMethod(method)}
+                                                    key={method}
+                                                    onClick={() => {
+                                                        setPaymentMethod(method);
+                                                        if (method === 'UPI') setIsUpiModalOpen(true);
+                                                    }}
                                                     className={cn(
                                                         "flex items-center justify-between p-6 border-2 rounded-2xl cursor-pointer transition-all",
                                                         paymentMethod === method
@@ -405,74 +446,77 @@ export default function CheckoutPage() {
                                                         <span className="font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">{method}</span>
                                                     </div>
                                                 </div>
-
-                                                {/* Detail Forms */}
-                                                <AnimatePresence>
-                                                    {paymentMethod === method && method === 'Credit / Debit Card' && (
-                                                        <motion.div
-                                                            initial={{ height: 0, opacity: 0 }}
-                                                            animate={{ height: 'auto', opacity: 1 }}
-                                                            exit={{ height: 0, opacity: 0 }}
-                                                            className="overflow-hidden px-2 pb-4 space-y-4"
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        /* Details Phase */
+                                        <div className="space-y-6">
+                                            {paymentMethod === 'NetBanking' ? (
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                                    {['HDFC Bank', 'SBI', 'ICICI Bank', 'Axis Bank', 'Kotak', 'Others'].map((bank) => (
+                                                        <Button
+                                                            key={bank}
+                                                            variant={selectedBank === bank ? 'default' : 'outline'}
+                                                            onClick={() => setSelectedBank(bank)}
+                                                            className={cn(
+                                                                "h-16 rounded-2xl font-bold transition-all",
+                                                                selectedBank === bank ? "border-primary-500 bg-primary-500" : "border-slate-100"
+                                                            )}
                                                         >
-                                                            <div className="space-y-1.5">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Card Number</label>
-                                                                <Input
-                                                                    placeholder="0000 0000 0000 0000"
-                                                                    value={cardData.number}
-                                                                    onChange={(e) => setCardData({ ...cardData, number: e.target.value.replace(/\D/g, '').slice(0, 16) })}
-                                                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
-                                                                />
-                                                            </div>
-                                                            <div className="flex gap-4">
-                                                                <div className="flex-1 space-y-1.5">
-                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Expiry</label>
-                                                                    <Input
-                                                                        placeholder="MM/YY"
-                                                                        value={cardData.expiry}
-                                                                        onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
-                                                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
-                                                                    />
-                                                                </div>
-                                                                <div className="flex-1 space-y-1.5">
-                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">CVC</label>
-                                                                    <Input
-                                                                        placeholder="123"
-                                                                        type="password"
-                                                                        value={cardData.cvc}
-                                                                        onChange={(e) => setCardData({ ...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 4) })}
-                                                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </motion.div>
-                                                    )}
-
-                                                    {paymentMethod === method && method === 'UPI / NetBanking' && (
-                                                        <motion.div
-                                                            initial={{ height: 0, opacity: 0 }}
-                                                            animate={{ height: 'auto', opacity: 1 }}
-                                                            exit={{ height: 0, opacity: 0 }}
-                                                            className="overflow-hidden px-2 pb-4 space-y-4"
-                                                        >
-                                                            <div className="space-y-1.5">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">UPI ID</label>
-                                                                <Input
-                                                                    placeholder="username@bank"
-                                                                    value={upiId}
-                                                                    onChange={(e) => setUpiId(e.target.value)}
-                                                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono h-14 rounded-2xl focus:ring-primary-500/20"
-                                                                />
-                                                            </div>
-                                                        </motion.div>
-                                                    )}
-                                                </AnimatePresence>
-                                            </div>
-                                        ))}
-                                    </div>
+                                                            {bank}
+                                                        </Button>
+                                                    ))}
+                                                </div>
+                                            ) : paymentMethod === 'Credit / Debit Card' ? (
+                                                <div className="space-y-4">
+                                                    <div className="space-y-1.5">
+                                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Card Number</label>
+                                                        <Input
+                                                            placeholder="0000 0000 0000 0000"
+                                                            value={cardData.number}
+                                                            onChange={(e) => setCardData({ ...cardData, number: e.target.value.replace(/\D/g, '').slice(0, 16) })}
+                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                        />
+                                                    </div>
+                                                    <div className="flex gap-4">
+                                                        <div className="flex-1 space-y-1.5">
+                                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Expiry</label>
+                                                            <Input
+                                                                placeholder="MM/YY"
+                                                                value={cardData.expiry}
+                                                                onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
+                                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1 space-y-1.5">
+                                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">CVC</label>
+                                                            <Input
+                                                                placeholder="123"
+                                                                type="password"
+                                                                value={cardData.cvc}
+                                                                onChange={(e) => setCardData({ ...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 4) })}
+                                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="p-8 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl flex items-center justify-center">
+                                                    <p className="text-sm font-bold text-slate-500">No additional details needed for Cash on Delivery.</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
 
                                     <div className="pt-8 border-t dark:border-slate-800 flex justify-between gap-4">
-                                        <Button variant="ghost" onClick={() => setCurrentStep(1)} className="text-slate-500 font-bold px-6 h-14 rounded-2xl">Back</Button>
+                                        <Button
+                                            variant="ghost"
+                                            onClick={() => setCurrentStep(1)}
+                                            className="text-slate-500 font-bold px-6 h-14 rounded-2xl"
+                                        >
+                                            Back
+                                        </Button>
+
                                         <Button
                                             onClick={placeOrderHandler}
                                             disabled={loading || !isPaymentValid()}
@@ -543,6 +587,94 @@ export default function CheckoutPage() {
                             <p className="text-[10px] font-black uppercase tracking-widest text-primary-600/60 animate-pulse">
                                 Waiting for confirmation...
                             </p>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* UPI Modal Pop-up */}
+            <AnimatePresence>
+                {isUpiModalOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 40 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 40 }}
+                            className="bg-white dark:bg-slate-950 rounded-[40px] p-8 md:p-12 max-w-lg w-full shadow-[0_32px_80px_-16px_rgba(0,0,0,0.3)] border border-slate-200 dark:border-slate-800 relative"
+                        >
+                            <button
+                                onClick={() => setIsUpiModalOpen(false)}
+                                className="absolute top-8 right-8 h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-500 hover:text-red-500 transition-colors"
+                            >
+                                <AlertCircle className="rotate-45 h-5 w-5" />
+                            </button>
+
+                            <div className="space-y-8">
+                                <div className="text-center">
+                                    <div className="h-20 w-20 rounded-3xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600 mx-auto mb-6">
+                                        <CreditCard className="h-10 w-10" />
+                                    </div>
+                                    <h2 className="text-3xl font-black uppercase tracking-tight text-slate-950 dark:text-white">UPI Details</h2>
+                                    <p className="text-slate-500 mt-2">Choose how you want to pay</p>
+                                </div>
+
+                                <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl">
+                                    <button
+                                        onClick={() => setUpiOption('id')}
+                                        className={cn(
+                                            "flex-1 h-12 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                                            upiOption === 'id' ? "bg-white dark:bg-slate-800 shadow-sm text-primary-600" : "text-slate-500"
+                                        )}
+                                    >
+                                        UPI ID
+                                    </button>
+                                    <button
+                                        onClick={() => setUpiOption('qr')}
+                                        className={cn(
+                                            "flex-1 h-12 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                                            upiOption === 'qr' ? "bg-white dark:bg-slate-800 shadow-sm text-primary-600" : "text-slate-500"
+                                        )}
+                                    >
+                                        QR Scanner
+                                    </button>
+                                </div>
+
+                                {upiOption === 'id' ? (
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Enter UPI ID</label>
+                                        <Input
+                                            placeholder="username@bank"
+                                            value={upiId}
+                                            onChange={(e) => setUpiId(e.target.value)}
+                                            className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 h-16 rounded-2xl font-mono text-center text-lg focus:ring-primary-500"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center p-8 bg-slate-50 dark:bg-slate-900/50 rounded-[32px] border border-dashed border-slate-200 dark:border-slate-800">
+                                        <div className="relative w-48 h-48 bg-white p-4 rounded-3xl shadow-2xl mb-6">
+                                            <img
+                                                src="/images/upi-qr.png"
+                                                alt="UPI QR Code"
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600 animate-pulse">Ready for scanning</p>
+                                    </div>
+                                )}
+
+                                <Button
+                                    disabled={!isPaymentValid()}
+                                    onClick={() => setIsUpiModalOpen(false)}
+                                    className="w-full h-16 rounded-2xl bg-slate-950 dark:bg-white dark:text-slate-950 text-white font-black text-lg shadow-xl hover:bg-primary-600 hover:text-white transition-all"
+                                >
+                                    Confirm Details
+                                </Button>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}
