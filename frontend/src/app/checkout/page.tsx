@@ -410,21 +410,15 @@ export default function CheckoutPage() {
                                             <CreditCard className="h-6 w-6" />
                                         </div>
                                         <div>
-                                            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
-                                                {paymentSubStep === 0 ? 'Payment Method' : `${paymentMethod} Details`}
-                                            </h2>
-                                            <p className="text-sm text-slate-500">
-                                                {paymentSubStep === 0 ? 'Select your preferred method to complete payment.' : 'Please provide the required information below.'}
-                                            </p>
+                                            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Payment Method</h2>
+                                            <p className="text-sm text-slate-500">Select your preferred method to complete payment.</p>
                                         </div>
                                     </div>
 
-                                    {paymentSubStep === 0 ? (
-                                        /* Selection Phase */
-                                        <div className="grid grid-cols-1 gap-4">
-                                            {['Credit / Debit Card', 'UPI', 'NetBanking', 'Cash on Delivery'].map((method) => (
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {['Credit / Debit Card', 'UPI', 'NetBanking', 'Cash on Delivery'].map((method) => (
+                                            <div key={method} className="space-y-4">
                                                 <div
-                                                    key={method}
                                                     onClick={() => {
                                                         setPaymentMethod(method);
                                                         if (method === 'UPI') setIsUpiModalOpen(true);
@@ -446,67 +440,77 @@ export default function CheckoutPage() {
                                                         <span className="font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">{method}</span>
                                                     </div>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        /* Details Phase */
-                                        <div className="space-y-6">
-                                            {paymentMethod === 'NetBanking' ? (
-                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                                    {['HDFC Bank', 'SBI', 'ICICI Bank', 'Axis Bank', 'Kotak', 'Others'].map((bank) => (
-                                                        <Button
-                                                            key={bank}
-                                                            variant={selectedBank === bank ? 'default' : 'outline'}
-                                                            onClick={() => setSelectedBank(bank)}
-                                                            className={cn(
-                                                                "h-16 rounded-2xl font-bold transition-all",
-                                                                selectedBank === bank ? "border-primary-500 bg-primary-500" : "border-slate-100"
-                                                            )}
+
+                                                {/* Inline Detail Forms for non-modal methods */}
+                                                <AnimatePresence>
+                                                    {paymentMethod === method && method === 'Credit / Debit Card' && (
+                                                        <motion.div
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: 'auto', opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            className="overflow-hidden px-2 pb-4 space-y-4"
                                                         >
-                                                            {bank}
-                                                        </Button>
-                                                    ))}
-                                                </div>
-                                            ) : paymentMethod === 'Credit / Debit Card' ? (
-                                                <div className="space-y-4">
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Card Number</label>
-                                                        <Input
-                                                            placeholder="0000 0000 0000 0000"
-                                                            value={cardData.number}
-                                                            onChange={(e) => setCardData({ ...cardData, number: e.target.value.replace(/\D/g, '').slice(0, 16) })}
-                                                            className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
-                                                        />
-                                                    </div>
-                                                    <div className="flex gap-4">
-                                                        <div className="flex-1 space-y-1.5">
-                                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Expiry</label>
-                                                            <Input
-                                                                placeholder="MM/YY"
-                                                                value={cardData.expiry}
-                                                                onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
-                                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
-                                                            />
-                                                        </div>
-                                                        <div className="flex-1 space-y-1.5">
-                                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">CVC</label>
-                                                            <Input
-                                                                placeholder="123"
-                                                                type="password"
-                                                                value={cardData.cvc}
-                                                                onChange={(e) => setCardData({ ...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 4) })}
-                                                                className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <div className="p-8 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl flex items-center justify-center">
-                                                    <p className="text-sm font-bold text-slate-500">No additional details needed for Cash on Delivery.</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
+                                                            <div className="space-y-1.5">
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Card Number</label>
+                                                                <Input
+                                                                    placeholder="0000 0000 0000 0000"
+                                                                    value={cardData.number}
+                                                                    onChange={(e) => setCardData({ ...cardData, number: e.target.value.replace(/\D/g, '').slice(0, 16) })}
+                                                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                />
+                                                            </div>
+                                                            <div className="flex gap-4">
+                                                                <div className="flex-1 space-y-1.5">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Expiry</label>
+                                                                    <Input
+                                                                        placeholder="MM/YY"
+                                                                        value={cardData.expiry}
+                                                                        onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
+                                                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex-1 space-y-1.5">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">CVC</label>
+                                                                    <Input
+                                                                        placeholder="123"
+                                                                        type="password"
+                                                                        value={cardData.cvc}
+                                                                        onChange={(e) => setCardData({ ...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 4) })}
+                                                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono tracking-widest h-14 rounded-2xl focus:ring-primary-500/20"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+
+                                                    {paymentMethod === method && method === 'NetBanking' && (
+                                                        <motion.div
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: 'auto', opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            className="overflow-hidden px-2 pb-4"
+                                                        >
+                                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                                                {['HDFC Bank', 'SBI', 'ICICI Bank', 'Axis Bank', 'Kotak', 'Others'].map((bank) => (
+                                                                    <Button
+                                                                        key={bank}
+                                                                        variant={selectedBank === bank ? 'default' : 'outline'}
+                                                                        onClick={() => setSelectedBank(bank)}
+                                                                        className={cn(
+                                                                            "h-16 rounded-2xl font-bold transition-all",
+                                                                            selectedBank === bank ? "border-primary-500 bg-primary-500" : "border-slate-100"
+                                                                        )}
+                                                                    >
+                                                                        {bank}
+                                                                    </Button>
+                                                                ))}
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                            </div>
+                                        ))}
+                                    </div>
 
                                     <div className="pt-8 border-t dark:border-slate-800 flex justify-between gap-4">
                                         <Button
