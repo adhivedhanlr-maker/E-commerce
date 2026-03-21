@@ -102,7 +102,7 @@ function ShopContent() {
 
             const allowedBackendCategories = selectedCategories.flatMap(cat => uiToBackend[cat] || [cat]);
 
-            const categoryMatch = selectedCategories.length === 0 || allowedBackendCategories.includes(product.category);
+            const categoryMatch = selectedCategories.length === 0 || allowedBackendCategories.includes(product.category || '');
             const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
             const ratingMatch = product.rating >= minRating;
             return categoryMatch && priceMatch && ratingMatch;
