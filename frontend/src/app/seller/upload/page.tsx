@@ -305,7 +305,7 @@ export default function SellerUploadPage() {
                                             <Button
                                                 type="button"
                                                 onClick={addImage}
-                                                className="rounded-xl bg-slate-900 px-6 shadow-lg shadow-slate-900/20"
+                                                className="rounded-xl bg-primary-600 hover:bg-primary-700 px-6 shadow-lg shadow-primary-600/20"
                                             >
                                                 Add
                                             </Button>
