@@ -1,11 +1,49 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Calendar, Clock, ChevronRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
-const articles = [
-    // ... items remain same ...
+interface Article {
+    id: number;
+    title: string;
+    category: string;
+    date: string;
+    readTime: string;
+    excerpt: string;
+    image: string;
+}
+
+const articles: Article[] = [
+    {
+        id: 1,
+        title: "The Materiality of Time: Why We Build For Longevity",
+        category: "Philosophy",
+        date: "Feb 21, 2026",
+        readTime: "08 Min",
+        excerpt: "Exploring the intersection of industrial design and human emotion through our latest archival explorations.",
+        image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        id: 2,
+        title: "Symphony of Silence: Designing the Aura Pods Elite",
+        category: "Process",
+        date: "Feb 15, 2026",
+        readTime: "12 Min",
+        excerpt: "A deep dive into the acoustic engineering that defines our flagship audio collection.",
+        image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        id: 3,
+        title: "Winter Edit: The Modern Nomad's Toolkit",
+        category: "Curation",
+        date: "Feb 08, 2026",
+        readTime: "06 Min",
+        excerpt: "Essential carry items for the discerning traveler navigating the urban landscape.",
+        image: "https://images.unsplash.com/photo-1454165833267-02d99d784c04?auto=format&fit=crop&q=80&w=800"
+    }
 ];
 
 export default function JournalPage() {
