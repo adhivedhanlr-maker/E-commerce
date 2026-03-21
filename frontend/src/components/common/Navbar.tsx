@@ -120,8 +120,8 @@ const Navbar = () => {
             )}
         >
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-12 relative">
-                {/* Mobile Hamburger Menu - Left on Mobile */}
-                <div className="lg:hidden">
+                {/* Hamburger Menu - Left of Logo */}
+                <div className="lg:block">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button variant="ghost" size="icon-lg" className="group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all">
@@ -166,10 +166,29 @@ const Navbar = () => {
                                 <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">Categories</p>
                                     <div className="space-y-4">
-                                        <Link href="/shop?cat=studio" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Studio</Link>
-                                        <Link href="/shop?cat=optics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Optics</Link>
-                                        <Link href="/shop?cat=wear" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Wear</Link>
-                                        <Link href="/shop?cat=lifestyle" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Lifestyle</Link>
+                                        <Link href="/shop?cat=studio" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Studio</Link>
+                                        <Link href="/shop?cat=optics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Optics</Link>
+                                        <Link href="/shop?cat=wear" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Wear</Link>
+                                        <Link href="/shop?cat=lifestyle" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Lifestyle</Link>
+                                    </div>
+                                </div>
+                                <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">Customer Rating</p>
+                                    <div className="space-y-4">
+                                        {[4, 3, 2, 1].map((rating) => (
+                                            <Link
+                                                key={rating}
+                                                href={`/shop?rating=${rating}`}
+                                                className="flex items-center space-x-2 group/rating translate-x-0 hover:translate-x-2 transition-transform"
+                                            >
+                                                <div className="flex space-x-0.5 text-amber-500">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <Star key={i} className={cn("h-3 w-3 fill-current", i >= rating && "text-slate-200 dark:text-slate-800 fill-none")} />
+                                                    ))}
+                                                </div>
+                                                <span className="text-xs font-bold text-slate-500 group-hover/rating:text-primary-600">& up</span>
+                                            </Link>
+                                        ))}
                                     </div>
                                 </div>
                             </div>

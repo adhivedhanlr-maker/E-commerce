@@ -31,6 +31,7 @@ function ShopContent() {
 
     const catParam = searchParams.get('cat');
     const keywordParam = searchParams.get('keyword');
+    const ratingParam = searchParams.get('rating');
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000]);
@@ -62,6 +63,16 @@ function ShopContent() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [catParam]);
+    
+    // Handle rating param
+    useEffect(() => {
+        if (ratingParam) {
+            const rating = parseInt(ratingParam);
+            if (!isNaN(rating)) {
+                setMinRating(rating);
+            }
+        }
+    }, [ratingParam]);
 
 
     // Fetch products from backend
