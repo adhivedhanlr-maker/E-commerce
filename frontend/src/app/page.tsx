@@ -1,46 +1,23 @@
 ﻿'use client';
-import React, { useState } from 'react';
-import { motion, cubicBezier, AnimatePresence } from 'framer-motion';
+
+import { motion, cubicBezier } from 'framer-motion';
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Zap, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const featuredProducts = [
   {
-    _id: "65d1f1e1f1e1f1e1f1e1f110",
-    name: "Zen Watch Pro",
-    price: 499.00,
-    originalPrice: 549.00,
-    discountPercentage: 9,
-    rating: 4.8,
-    images: ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800"],
-    brand: "Temporal",
-    isFeatured: true,
-  },
-  {
     _id: "65d1f1e1f1e1f1e1f1e1f1e1",
     name: "Aura Pods Elite",
     price: 349.00,
-    originalPrice: 415.00,
-    discountPercentage: 16,
+    originalPrice: 429.00,
+    discountPercentage: 20,
     rating: 4.9,
     images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800"],
     brand: "Nexus Audio",
-    isFeatured: true,
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f113",
-    name: "Zenith Keyboard",
-    price: 159.99,
-    originalPrice: 159.99,
-    discountPercentage: 0,
-    rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=800"],
-    brand: "KeyClick",
-    isFeatured: true,
   },
   {
     _id: "65d1f1e1f1e1f1e1f1e1f1e2",
@@ -52,8 +29,74 @@ const featuredProducts = [
     images: ["https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800"],
     brand: "Titan Tech",
   },
+  {
+    _id: "65d1f1e1f1e1f1e1f1e1f1e3",
+    name: "Lumina Vision Pro",
+    price: 2499.00,
+    originalPrice: 2799.00,
+    discountPercentage: 10,
+    rating: 5.0,
+    images: ["https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=800"],
+    brand: "Visionary",
+  },
+  {
+    _id: "65d1f1e1f1e1f1e1f1e1f1e5",
+    name: "Eames Silhouette Lounge",
+    price: 1250.00,
+    originalPrice: 1500.00,
+    discountPercentage: 16,
+    rating: 4.9,
+    images: ["https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=800"],
+    brand: "Heritage Home",
+  },
+  {
+    _id: "65d1f1e1f1e1f1e1f1e1f1e6",
+    name: "Zenith Minimalist Desk",
+    price: 850.00,
+    originalPrice: 950.00,
+    discountPercentage: 10,
+    rating: 4.8,
+    images: ["https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&q=80&w=800"],
+    brand: "Heritage Home",
+  },
+  {
+    _id: "65d1f1e1f1e1f1e1f1e1f1e8",
+    name: "Obsidian Tech Jacket",
+    price: 549.00,
+    originalPrice: 650.00,
+    discountPercentage: 15,
+    rating: 4.9,
+    images: ["https://images.unsplash.com/photo-1551488831-00ddcb6c6ec3?auto=format&fit=crop&q=80&w=800"],
+    brand: "Apex Outdoor",
+  },
+  {
+    _id: "65d1f1e1f1e1f1e1f1e1f110",
+    name: "Equinox Chrono X",
+    price: 890.00,
+    originalPrice: 1100.00,
+    discountPercentage: 19,
+    rating: 4.8,
+    images: ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800"],
+    brand: "Temporal",
+  },
+  {
+    _id: "65d1f1e1f1e1f1e1f1e1f118",
+    name: "Cashmere Overcoat",
+    price: 750.00,
+    originalPrice: 850.00,
+    discountPercentage: 11,
+    rating: 5.0,
+    images: ["https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&q=80&w=800"],
+    brand: "Apex Outdoor",
+  },
 ];
 
+const categories = [
+  { name: 'Electronics', count: '1,240+', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=electronics' },
+  { name: 'Fashion', count: '3,500+', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=fashion' },
+  { name: 'Home & Living', count: '850+', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=home' },
+  { name: 'Lifestyle', count: '420+', image: 'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?auto=format&fit=crop&q=80&w=800', link: '/shop' },
+];
 
 const newArrivals = [
   {
@@ -179,148 +222,142 @@ const item = {
 };
 
 export default function Home() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 3000);
-      return;
-    }
-
-    setStatus('loading');
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setStatus('success');
-    setEmail('');
-  };
-
   return (
     <div className="flex flex-col bg-background gap-8">
-      {/* Premium Hero Header */}
-      <section className="relative pt-12 md:pt-20 pb-12 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12 relative z-10">
-          <div className="text-center max-w-4xl mx-auto mb-16">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="inline-flex items-center space-x-2 text-primary-600 mb-6 bg-primary-50 dark:bg-primary-900/20 px-4 py-2 rounded-full border border-primary-100 dark:border-primary-800"
-            >
-              <Zap className="h-4 w-4 fill-current" />
-              <span className="text-[11px] font-black uppercase tracking-[0.3em]">The Equinox Flash Event</span>
-            </motion.div>
+      {/* Top Bento Grid - Hero & Featured */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 h-auto md:h-[700px]">
 
-            <motion.h1
+          {/* Main Card: Equinox Flash Event (2/3 width, spans 2 rows) */}
+          <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
+            <div className="absolute top-0 right-0 w-full h-full bg-primary-600/10 blur-[100px]" />
+            <Image
+              src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
+              alt="Equinox Archival Product"
+              fill
+              priority
+              className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="font-accent text-6xl md:text-9xl font-bold tracking-tighter text-slate-950 dark:text-white leading-[0.85] mb-8"
+              className="relative z-10"
             >
-              Featured <br />
-              <span className="italic font-light text-secondary-300">Opportunity</span>
-            </motion.h1>
+              <span className="text-secondary-400 text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">Limited Opportunity</span>
+              <h2 className="font-accent text-5xl md:text-7xl font-bold text-white leading-[0.9] mb-8">
+                The <span className="italic text-primary-600">Equinox</span> <br />
+                Flash Event
+              </h2>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 1 }}
-              className="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light"
-            >
-              Exceptional values on our most coveted collections. Available for a limited time as we curate the next chapter.
-            </motion.p>
-          </div>
-
-          {/* Nexus Archival Featured Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="relative rounded-[48px] bg-slate-950 p-8 md:p-16 lg:p-24 overflow-hidden border border-white/5 shadow-2xl"
-          >
-            <div className="absolute top-0 right-0 w-1/2 h-full bg-primary-600/20 blur-[150px] pointer-events-none" />
-
-            <div className="relative z-10 lg:flex items-center justify-between gap-12">
-              <div className="max-w-xl mb-12 lg:mb-0">
-                <span className="text-primary-600 text-[11px] font-black uppercase tracking-[0.4em] mb-4 block">Limited Release</span>
-                <h2 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-none tracking-tight">Nexus Archival <br /><span className="italic text-slate-500 font-light text-3xl md:text-4xl">Up to 40% Off</span></h2>
-                <p className="text-slate-400 mb-10 text-lg leading-relaxed max-w-md font-light">
-                  Limited release items from previous collections, curated for timeless design and enduring utility.
-                </p>
-                <div className="flex flex-wrap gap-4 mb-10">
-                  {['Audio', 'Visual', 'Wearables', 'Studio'].map((pill) => (
-                    <Link
-                      key={pill}
-                      href={`/shop?cat=${pill.toLowerCase()}`}
-                      className="px-6 py-2 rounded-full border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary-600 hover:border-primary-600 transition-all"
-                    >
-                      {pill}
-                    </Link>
+              <div className="flex flex-wrap items-end gap-12">
+                <div className="grid grid-cols-4 gap-4 max-w-xs">
+                  {[
+                    { label: 'Days', value: '01' },
+                    { label: 'Hours', value: '12' },
+                    { label: 'Mins', value: '34' },
+                    { label: 'Secs', value: '59' },
+                  ].map((t) => (
+                    <div key={t.label} className="text-center">
+                      <div className="text-2xl font-bold text-white mb-1">{t.value}</div>
+                      <div className="text-[7px] font-black uppercase tracking-widest text-slate-500">{t.label}</div>
+                    </div>
                   ))}
                 </div>
-                <Button asChild className="h-16 px-12 rounded-full bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xl shadow-primary-900/20">
-                  <Link href="/shop">Search Collections</Link>
+                <Button asChild size="lg" className="rounded-full bg-white text-slate-950 hover:bg-slate-200 px-8 h-14 font-bold text-sm">
+                  <Link href="/deals">Enter Event</Link>
                 </Button>
               </div>
+            </motion.div>
+          </div>
 
-              <div className="grid grid-cols-2 gap-4 flex-1 max-w-lg">
-                <div className="space-y-4">
-                  <Link href="/shop?cat=audio" className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group transition-all hover:bg-white/10 cursor-pointer overflow-hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800"
-                      alt="Audio"
-                      fill
-                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
-                    />
-                    <div className="relative z-10">
-                      <p className="text-white font-bold text-lg mb-1">Audio</p>
-                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">24 Items</p>
-                    </div>
-                  </Link>
-                  <Link href="/shop?cat=visual" className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"
-                      alt="Visual"
-                      fill
-                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
-                    />
-                    <div className="relative z-10">
-                      <p className="text-white font-bold text-lg mb-1">Visual</p>
-                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">12 Items</p>
-                    </div>
-                  </Link>
-                </div>
-                <div className="space-y-4 pt-12">
-                  <Link href="/shop?cat=wearables" className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800"
-                      alt="Wearables"
-                      fill
-                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
-                    />
-                    <div className="relative z-10">
-                      <p className="text-white font-bold text-lg mb-1">Wearables</p>
-                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">08 Items</p>
-                    </div>
-                  </Link>
-                  <Link href="/shop?cat=studio" className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&q=80&w=800"
-                      alt="Studio"
-                      fill
-                      className="object-cover opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110"
-                    />
-                    <div className="relative z-10">
-                      <p className="text-white font-bold text-lg mb-1">Studio</p>
-                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black">15 Items</p>
-                    </div>
-                  </Link>
-                </div>
+          {/* Secondary Card: Brand Message (1x1) */}
+          <div className="relative overflow-hidden rounded-[40px] bg-secondary-100 p-8 flex flex-col justify-center dark:bg-white/5 border border-slate-200 dark:border-white/10">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+            >
+              <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-4">Nexus Standard</p>
+              <h3 className="font-accent text-3xl font-bold text-slate-950 dark:text-white leading-tight mb-4">
+                Refined <span className="italic font-light text-secondary-400 italic">Everyday</span> <br /> Essentials
+              </h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">Discovery of artisanal craftsmanship merged with contemporary innovation.</p>
+              <Link href="/about" className="text-xs font-black uppercase tracking-widest text-primary-600 flex items-center gap-2 hover:gap-3 transition-all">
+                The Philosophy <ArrowRight className="h-4 w-4" />
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Tertiary Card: High-Impact Visual (1x1) */}
+          <div className="relative overflow-hidden rounded-[40px] bg-slate-200 shadow-xl border border-white/10 group/card">
+            <Image
+              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800"
+              alt="Seasonal Edit"
+              fill
+              className="object-cover transition-transform duration-700 group-hover/card:scale-110"
+            />
+            <div className="absolute inset-0 bg-black/20 group-hover/card:bg-black/40 transition-colors" />
+            <div className="absolute inset-x-8 bottom-8 flex items-center justify-between">
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-white/70 mb-1">Archival Edit</p>
+                <h4 className="text-lg font-bold text-white uppercase tracking-tighter italic">Winter &apos;26</h4>
               </div>
+              <Link href="/shop" className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-all">
+                <ArrowRight className="h-5 w-5" />
+              </Link>
             </div>
-          </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Grid - Visual Curation */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="text-center mb-10">
+            <h2 className="font-accent text-3xl md:text-4xl font-bold tracking-tight text-slate-950 dark:text-white mb-4">
+              Curated <span className="italic font-light text-secondary-400">Collections</span>
+            </h2>
+            <p className="text-slate-500 max-w-2xl mx-auto">Explore our range of meticulously selected items across different archetypes of modern living.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[700px]">
+            {categories.map((category, idx) => (
+              <Link
+                key={category.name}
+                href={category.link}
+                className={`group relative overflow-hidden rounded-[40px] bg-slate-200 min-h-[400px] md:min-h-0 ${idx === 0 ? 'md:col-span-2 md:row-span-1' :
+                  idx === 1 ? 'md:col-span-1 md:row-span-2' :
+                    'md:col-span-1'
+                  }`}
+              >
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-10 left-10 right-10">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 * idx }}
+                  >
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-400 mb-2">{category.count} Items</p>
+                    <h3 className="text-3xl font-bold text-white tracking-tight uppercase italic">{category.name}</h3>
+                  </motion.div>
+                </div>
+                <div className="absolute top-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="h-12 w-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
+                    <ArrowRight className="h-5 w-5" />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -372,7 +409,6 @@ export default function Home() {
               >
                 <ProductCard
                   product={product}
-                  isFeatured={product.isFeatured}
                   aspectRatio={
                     idx === 0 ? "aspect-square md:aspect-auto md:h-[calc(100%-80px)]" :
                       idx === 1 ? "aspect-video md:aspect-auto md:h-[240px]" :
@@ -470,57 +506,20 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-accent text-4xl md:text-5xl font-bold text-slate-950 dark:text-white mb-6">Never Miss a Volume</h2>
+            <h2 className="font-accent text-4xl md:text-5xl font-bold text-slate-950 dark:text-white mb-6">Join the Journal</h2>
             <p className="text-slate-600 dark:text-slate-400 text-lg mb-10">
               Insights on craft, early access to collections, and invitations to private events.
             </p>
-            <form onSubmit={handleSubscribe} className="relative max-w-md mx-auto">
+            <form className="relative max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={status === 'loading' || status === 'success'}
-                className="w-full bg-secondary-100 dark:bg-white/5 border-none rounded-full h-16 px-8 text-md font-medium focus:ring-2 focus:ring-primary-600 transition-all placeholder:text-slate-400 disabled:opacity-50"
+                className="w-full bg-secondary-100 dark:bg-white/5 border-none rounded-full h-16 px-8 text-md font-medium focus:ring-2 focus:ring-primary-600 transition-all placeholder:text-slate-400"
               />
-              <button
-                type="submit"
-                disabled={status === 'loading' || status === 'success'}
-                className="absolute right-2 top-2 h-12 px-6 rounded-full bg-slate-950 text-white font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition-all dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 disabled:bg-slate-400 flex items-center justify-center gap-2"
-              >
-                {status === 'loading' ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : status === 'success' ? (
-                  <CheckCircle2 className="h-4 w-4" />
-                ) : (
-                  'Subscribe'
-                )}
+              <button className="absolute right-2 top-2 h-12 px-6 rounded-full bg-slate-950 text-white font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition-all dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+                Subscribe
               </button>
             </form>
-
-            <AnimatePresence>
-              {status === 'success' && (
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="mt-4 text-green-600 font-bold text-sm"
-                >
-                  Welcome to the Journal. Check your inbox soon.
-                </motion.p>
-              )}
-              {status === 'error' && (
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="mt-4 text-red-500 font-bold text-sm flex items-center justify-center gap-2"
-                >
-                  <AlertCircle className="h-4 w-4" />
-                  Please enter a valid email address.
-                </motion.p>
-              )}
-            </AnimatePresence>
           </motion.div>
         </div>
       </section>
