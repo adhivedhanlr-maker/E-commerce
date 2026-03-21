@@ -116,8 +116,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     <AccordionContent className="pt-2 pb-4">
                         <div className="space-y-3">
                             {[4, 3, 2, 1].map((rating) => (
-                                <div key={rating} className="flex items-center space-x-3 group cursor-pointer" onClick={() => onFilterChange('rating', rating)}>
-                                    <div className="flex items-center justify-center p-1 rounded hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors w-full">
+                                <div key={rating} className="flex items-center space-x-3 group py-1">
+                                    <label
+                                        htmlFor={`rating-${rating}`}
+                                        className="flex items-center justify-between p-1 rounded hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors w-full cursor-pointer"
+                                    >
                                         <div className="flex items-center flex-1 space-x-2">
                                             <div className="flex space-x-0.5 text-amber-500">
                                                 {[...Array(5)].map((_, i) => (
@@ -132,7 +135,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                             onCheckedChange={() => onFilterChange('rating', rating)}
                                             className="data-[state=checked]:bg-primary-600 data-[state=checked]:border-primary-600"
                                         />
-                                    </div>
+                                    </label>
                                 </div>
                             ))}
                         </div>
