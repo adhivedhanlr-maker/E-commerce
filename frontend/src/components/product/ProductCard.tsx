@@ -21,6 +21,7 @@ interface ProductCardProps {
         images: string[];
         brand: string;
     };
+    isFeatured?: boolean;
     aspectRatio?: string;
 }
 
@@ -87,13 +88,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspec
                     </div>
 
                     {/* Badge */}
-                    {product.discountPercentage > 0 && (
-                        <div className="absolute top-6 left-6 z-20">
+                    <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
+                        {product.isFeatured && (
+                            <span className="bg-green-600/90 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-premium backdrop-blur-md">
+                                Featured
+                            </span>
+                        )}
+                        {product.discountPercentage > 0 && (
                             <span className="bg-primary-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-premium">
                                 {product.discountPercentage}% OFF
                             </span>
-                        </div>
-                    )}
+                        )}
+                    </div>
 
                     {/* Image with zoom */}
                     <div className="h-full w-full bg-gradient-to-br from-secondary-100 to-secondary-200 transition-transform duration-1000 group-hover:scale-105 dark:from-white/5 dark:to-white/10 flex items-center justify-center relative">

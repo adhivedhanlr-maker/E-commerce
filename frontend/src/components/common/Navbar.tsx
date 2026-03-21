@@ -166,9 +166,10 @@ const Navbar = () => {
                                 <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">Categories</p>
                                     <div className="space-y-4">
-                                        <Link href="/shop?cat=electronics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Electronics</Link>
-                                        <Link href="/shop?cat=fashion" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Apparel</Link>
-                                        <Link href="/shop?cat=home" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Furniture</Link>
+                                        <Link href="/shop?cat=studio" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Studio</Link>
+                                        <Link href="/shop?cat=optics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Optics</Link>
+                                        <Link href="/shop?cat=wear" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Wear</Link>
+                                        <Link href="/shop?cat=lifestyle" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Lifestyle</Link>
                                     </div>
                                 </div>
                             </div>
@@ -241,13 +242,16 @@ const Navbar = () => {
                                         <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Categories</p>
                                         <div className="space-y-1 flex flex-col">
                                             <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=electronics" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Electronics</Link>
+                                                <Link href="/shop?cat=studio" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Studio</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=fashion" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Apparel</Link>
+                                                <Link href="/shop?cat=optics" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Optics</Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=home" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Furniture</Link>
+                                                <Link href="/shop?cat=wear" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Wear</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/shop?cat=lifestyle" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Lifestyle</Link>
                                             </DropdownMenuItem>
                                         </div>
                                     </div>

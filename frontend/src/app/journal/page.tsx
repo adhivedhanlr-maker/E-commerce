@@ -81,16 +81,15 @@ export default function JournalPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <div className="inline-flex items-center space-x-2 text-primary-600 mb-6 font-black uppercase tracking-[0.4em] text-[10px]">
+                        <div className="inline-flex items-center space-x-2 text-primary-600 mb-6 font-black uppercase tracking-[0.4em] text-[10px] bg-primary-50 dark:bg-primary-900/20 px-4 py-2 rounded-full border border-primary-100 dark:border-primary-800">
                             <BookOpen className="h-3.5 w-3.5" />
-                            <span>Editorial Journal</span>
+                            <span>Journal. Volume 01</span>
                         </div>
                         <h1 className="font-accent text-6xl md:text-8xl font-bold tracking-tight text-slate-950 dark:text-white mb-8">
                             Volume <span className="italic font-light text-secondary-400">01</span>
                         </h1>
                         <p className="max-w-2xl text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-light">
-                            Thoughtful explorations in design, technology, and the modern lifestyle. <br />
-                            A space for the curious and the discerning.
+                            The digital home of Nexus. Insight into the process, philosophy, and curation behind our collections.
                         </p>
                     </motion.div>
                 </div>
@@ -120,7 +119,7 @@ export default function JournalPage() {
                             &quot;True craftsmanship requires the elimination of distraction. We explore how environment affects the creative output of the modern architect.&quot;
                         </p>
                         <div className="flex items-center gap-8 mb-10 text-[11px] font-black uppercase tracking-widest text-slate-400">
-                            <span className="flex items-center gap-2"><Clock className="h-3 w-3" /> 15 Min</span>
+                            <span className="flex items-center gap-2"><Clock className="h-3 w-3" /> 5 Min</span>
                             <span className="flex items-center gap-2"><Calendar className="h-3 w-3" /> Architecture</span>
                         </div>
                         <Button variant="ghost" className="p-0 text-slate-950 dark:text-white hover:text-primary-600 dark:hover:text-primary-600 group flex items-center gap-3 font-black uppercase tracking-widest text-xs h-auto">
@@ -166,10 +165,9 @@ export default function JournalPage() {
                     ))}
                 </div>
 
-                {/* Newsletter Section */}
                 <div className="mt-40 pt-24 border-t border-slate-200 dark:border-white/5 text-center">
                     <h2 className="font-accent text-3xl font-bold text-slate-950 dark:text-white mb-6">Never Miss a Volume</h2>
-                    <p className="text-slate-500 mb-10 max-w-md mx-auto italic font-light">Join the 12,000+ creators who receive our bi-weekly editorial digest.</p>
+                    <p className="text-slate-500 mb-10 max-w-md mx-auto italic font-light px-4">Subscribe to our bi-weekly editorial digest for early access to collections and invites to our private events.</p>
                     
                     <div className="max-w-lg mx-auto">
                         <AnimatePresence mode="wait">

@@ -9,7 +9,7 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const categories = ['Electronics', 'Furniture', 'Apparel', 'Lifestyle'];
+const categories = ['Studio', 'Optics', 'Wear', 'Lifestyle'];
 
 interface FilterSidebarProps {
     selectedCategories: string[];

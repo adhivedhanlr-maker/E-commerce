@@ -43,10 +43,16 @@ function ShopContent() {
     useEffect(() => {
         if (catParam) {
             const mapping: Record<string, string> = {
-                'electronics': 'Electronics',
-                'fashion': 'Apparel',
-                'home': 'Furniture',
+                'electronics': 'Studio',
+                'audio': 'Studio',
+                'optics': 'Optics',
+                'visual': 'Optics',
+                'fashion': 'Wear',
+                'wear': 'Wear',
+                'wearables': 'Wear',
                 'lifestyle': 'Lifestyle',
+                'furniture': 'Furniture',
+                'studio': 'Studio',
             };
             const category = mapping[catParam.toLowerCase()];
             if (category && !selectedCategories.includes(category)) {
@@ -84,7 +90,18 @@ function ShopContent() {
 
     const filteredAndSortedProducts = useMemo(() => {
         return fetchedProducts.filter(product => {
-            const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+            // Map UI category labels back to backend categories
+            const uiToBackend: Record<string, string[]> = {
+                'Studio': ['Electronics'],
+                'Optics': ['Electronics'], // Or special flag if available
+                'Wear': ['Apparel'],
+                'Lifestyle': ['Lifestyle'],
+                'Furniture': ['Furniture']
+            };
+
+            const allowedBackendCategories = selectedCategories.flatMap(cat => uiToBackend[cat] || [cat]);
+
+            const categoryMatch = selectedCategories.length === 0 || allowedBackendCategories.includes(product.category);
             const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
             const ratingMatch = product.rating >= minRating;
             return categoryMatch && priceMatch && ratingMatch;

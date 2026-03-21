@@ -35,12 +35,13 @@ const Footer = () => {
 
                     {/* Quick Links - Grouped for Mobile */}
                     <div className="space-y-8 md:space-y-8 border-t md:border-t-0 border-secondary-100 pt-8 md:pt-0">
-                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-600 text-center md:text-left">Collections</h3>
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-600 text-center md:text-left">Categories</h3>
                         <ul className="grid grid-cols-2 md:grid-cols-1 gap-4 text-center md:text-left">
-                            <li><Link href="/shop" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">New Arrivals</Link></li>
-                            <li><Link href="/shop" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Best Sellers</Link></li>
-                            <li><Link href="/deals" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Archival Pieces</Link></li>
-                            <li><Link href="/deals" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Featured Deals</Link></li>
+                            <li><Link href="/shop?cat=studio" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Studio</Link></li>
+                            <li><Link href="/shop?cat=optics" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Optics</Link></li>
+                            <li><Link href="/shop?cat=wear" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Wear</Link></li>
+                            <li><Link href="/deals" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Archive</Link></li>
+                            <li><Link href="/journal" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">Journal</Link></li>
                         </ul>
                     </div>
 
@@ -48,9 +49,9 @@ const Footer = () => {
                     <div className="space-y-8 border-t md:border-t-0 border-secondary-100 pt-8 md:pt-0">
                         <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-600 text-center md:text-left">Service</h3>
                         <ul className="grid grid-cols-2 md:grid-cols-1 gap-4 text-center md:text-left">
-                            {['Help Center', 'Shipping Policy', 'Returns', 'Track Order'].map((link) => (
+                            {['About', 'FAQ', 'Shipping', 'Terms'].map((link) => (
                                 <li key={link}>
-                                    <Link href="#" className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">
+                                    <Link href={link === 'About' ? '/about' : '#'} className="text-[13px] font-bold text-slate-600 transition-all hover:text-primary-600 dark:text-slate-400 dark:hover:text-white">
                                         {link}
                                     </Link>
                                 </li>
