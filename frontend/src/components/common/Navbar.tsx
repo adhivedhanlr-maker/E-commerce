@@ -58,7 +58,6 @@ const Navbar = () => {
             setIsLoadingSuggestions(true);
             try {
                 const response = await getProducts({ keyword: searchQuery, pageSize: 6 });
-                // Robust response handling for the deeper nested API shape
                 const products = response?.data?.data?.products || response?.data?.products || response?.products || response || [];
                 setSuggestions(Array.isArray(products) ? products : []);
                 setIsSuggestionsOpen(true);
@@ -119,86 +118,87 @@ const Navbar = () => {
                     : "py-4 md:py-6 bg-transparent"
             )}
         >
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-12 relative">
-                {/* Hamburger Menu - Left of Logo */}
-                <div className="lg:block">
-                    <Sheet>
-                        <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon-lg" className="group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all">
-                                <Menu className="h-[24px] w-[24px]" />
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="left" className="w-[300px] p-0 border-r-0 bg-white dark:bg-slate-900 shadow-2xl">
-                            <SheetHeader className="p-6 border-b border-secondary-100 dark:border-white/5">
-                                <SheetTitle className="text-left font-accent text-xl font-bold tracking-tight text-slate-950 dark:text-white flex items-center gap-3">
-                                    <div className="relative h-9 w-9 flex items-center justify-center">
-                                        <Image
-                                            src="/logo.png"
-                                            alt="Nexus Logo"
-                                            width={36}
-                                            height={36}
-                                            className="object-contain"
-                                            priority
-                                        />
-                                    </div>
-                                    <span>Nexus<span className="text-primary-600">Store</span></span>
-                                </SheetTitle>
-                            </SheetHeader>
-                            <div className="flex flex-col py-6">
-                                {[...navLinks, { name: 'Shop', href: '/shop', icon: ShoppingBag }].map((link) => {
-                                    const isActive = pathname === link.href || (link.name === 'Shop' && pathname.startsWith('/shop') && pathname !== '/shop');
-                                    return (
-                                        <Link
-                                            key={link.name}
-                                            href={link.href}
-                                            className={cn(
-                                                "flex items-center space-x-4 px-6 py-4 text-xs font-black uppercase tracking-[0.2em] transition-all",
-                                                isActive
-                                                    ? "bg-primary-50 text-primary-600 dark:bg-primary-600/10"
-                                                    : "text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white"
-                                            )}
-                                        >
-                                            <link.icon className={cn("h-4 w-4", isActive ? "text-primary-600" : "text-slate-400")} />
-                                            <span>{link.name}</span>
-                                        </Link>
-                                    );
-                                })}
-                                <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">CATEGORIES</p>
-                                    <div className="space-y-4">
-                                        <Link href="/shop?cat=studio" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Studio</Link>
-                                        <Link href="/shop?cat=optics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Optics</Link>
-                                        <Link href="/shop?cat=wear" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Wear</Link>
-                                        <Link href="/shop?cat=lifestyle" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Lifestyle</Link>
-                                    </div>
-                                </div>
-                                <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">CUSTOMER RATING</p>
-                                    <div className="space-y-4">
-                                        {[4, 3, 2, 1].map((rating) => (
+            <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 lg:px-12 relative h-16">
+                {/* Left Section: Menu + Logo + Links + Search */}
+                <div className="flex items-center gap-6 lg:gap-8 flex-1">
+                    {/* Hamburger Menu - Left of Logo */}
+                    <div className="lg:block">
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <Button variant="ghost" size="icon" className="group rounded-full text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white transition-all scale-110">
+                                    <Menu className="h-[22px] w-[22px]" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-[300px] p-0 border-r-0 bg-white dark:bg-slate-900 shadow-2xl">
+                                <SheetHeader className="p-6 border-b border-secondary-100 dark:border-white/5">
+                                    <SheetTitle className="text-left font-accent text-xl font-bold tracking-tight text-slate-950 dark:text-white flex items-center gap-3">
+                                        <div className="relative h-9 w-9 flex items-center justify-center">
+                                            <Image
+                                                src="/logo.png"
+                                                alt="Nexus Logo"
+                                                width={36}
+                                                height={36}
+                                                className="object-contain"
+                                                priority
+                                            />
+                                        </div>
+                                        <span>Nexus<span className="text-primary-600">Store</span></span>
+                                    </SheetTitle>
+                                </SheetHeader>
+                                <div className="flex flex-col py-6">
+                                    {[...navLinks, { name: 'Shop', href: '/shop', icon: ShoppingBag }].map((link) => {
+                                        const isActive = pathname === link.href || (link.name === 'Shop' && pathname.startsWith('/shop') && pathname !== '/shop');
+                                        return (
                                             <Link
-                                                key={rating}
-                                                href={`/shop?rating=${rating}`}
-                                                className="flex items-center space-x-2 group/rating translate-x-0 hover:translate-x-2 transition-transform"
+                                                key={link.name}
+                                                href={link.href}
+                                                className={cn(
+                                                    "flex items-center space-x-4 px-6 py-4 text-xs font-black uppercase tracking-[0.2em] transition-all",
+                                                    isActive
+                                                        ? "bg-primary-50 text-primary-600 dark:bg-primary-600/10"
+                                                        : "text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white"
+                                                )}
                                             >
-                                                <div className="flex space-x-0.5 text-amber-500">
-                                                    {[...Array(5)].map((_, i) => (
-                                                        <Star key={i} className={cn("h-3 w-3 fill-current", i >= rating && "text-slate-200 dark:text-slate-800 fill-none")} />
-                                                    ))}
-                                                </div>
-                                                <span className="text-xs font-bold text-slate-500 group-hover/rating:text-primary-600">& up</span>
+                                                <link.icon className={cn("h-4 w-4", isActive ? "text-primary-600" : "text-slate-400")} />
+                                                <span>{link.name}</span>
                                             </Link>
-                                        ))}
+                                        );
+                                    })}
+                                    <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">CATEGORIES</p>
+                                        <div className="space-y-4">
+                                            <Link href="/shop?cat=studio" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Studio</Link>
+                                            <Link href="/shop?cat=optics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Optics</Link>
+                                            <Link href="/shop?cat=wear" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Wear</Link>
+                                            <Link href="/shop?cat=lifestyle" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Lifestyle</Link>
+                                        </div>
+                                    </div>
+                                    <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">CUSTOMER RATING</p>
+                                        <div className="space-y-4">
+                                            {[4, 3, 2, 1].map((rating) => (
+                                                <Link
+                                                    key={rating}
+                                                    href={`/shop?rating=${rating}`}
+                                                    className="flex items-center space-x-2 group/rating translate-x-0 hover:translate-x-2 transition-transform"
+                                                >
+                                                    <div className="flex space-x-0.5 text-amber-500">
+                                                        {[...Array(5)].map((_, i) => (
+                                                            <Star key={i} className={cn("h-3 w-3 fill-current", i >= rating && "text-slate-200 dark:text-slate-800 fill-none")} />
+                                                        ))}
+                                                    </div>
+                                                    <span className="text-xs font-bold text-slate-500 group-hover/rating:text-primary-600">& up</span>
+                                                </Link>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </SheetContent>
-                    </Sheet>
-                </div>
+                            </SheetContent>
+                        </Sheet>
+                    </div>
 
-                {/* Logo Section - Centered on Mobile, Left on Desktop */}
-                <div className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 pb-1">
-                    <Link href="/" className="group flex items-center gap-3">
+                    {/* Logo Section */}
+                    <Link href="/" className="group flex items-center gap-3 shrink-0">
                         <div className="relative h-9 w-9 lg:h-10 lg:w-10 flex items-center justify-center transition-transform group-hover:scale-110">
                             <Image
                                 src="/logo.png"
@@ -213,96 +213,92 @@ const Navbar = () => {
                             Nexus<span className="text-primary-600 transition-colors group-hover:text-primary-700">Store</span>
                         </span>
                     </Link>
-                </div>
 
-                {/* Hidden Navigation Links for Desktop */}
-                <div className="hidden lg:flex items-center space-x-12">
-                    {navLinks.map((link) => {
-                        const isActive = pathname === link.href;
-                        return (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className={cn(
-                                    "group relative flex items-center space-x-2 text-[11px] font-black uppercase tracking-[0.2em] transition-colors",
-                                    isActive ? "text-slate-950 dark:text-white" : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                                )}
-                            >
-                                <link.icon className={cn(
-                                    "h-3.5 w-3.5 transition-colors",
-                                    isActive ? "text-primary-600" : "text-primary-600/60 group-hover:text-primary-600"
-                                )} />
-                                <span>{link.name}</span>
-                                <span className={cn(
-                                    "absolute -bottom-2 left-1/2 h-[1px] -translate-x-1/2 bg-primary-600 transition-all duration-300",
-                                    isActive ? "w-full" : "w-0 group-hover:w-full"
-                                )} />
-                            </Link>
-                        );
-                    })}
-                    {hasMounted && (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <button className={cn(
-                                    "group flex items-center space-x-2 text-[11px] font-black uppercase tracking-[0.2em] outline-none transition-colors",
-                                    pathname.startsWith('/shop') ? "text-slate-950 dark:text-white" : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                                )}>
-                                    <ShoppingBag className={cn(
+                    {/* Desktop Navigation Links */}
+                    <div className="hidden lg:flex items-center space-x-8 xl:space-x-12">
+                        {navLinks.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    className={cn(
+                                        "group relative flex items-center space-x-2 text-[11px] font-black uppercase tracking-[0.15em] transition-colors whitespace-nowrap",
+                                        isActive ? "text-slate-950 dark:text-white" : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                                    )}
+                                >
+                                    <link.icon className={cn(
                                         "h-3.5 w-3.5 transition-colors",
-                                        pathname.startsWith('/shop') ? "text-primary-600" : "text-primary-600/60 group-hover:text-primary-600"
+                                        isActive ? "text-primary-600" : "text-primary-600/60 group-hover:text-primary-600"
                                     )} />
-                                    <span>Shop</span>
-                                    <ChevronDown className="h-3 w-3 transition-transform group-data-[state=open]:rotate-180" />
-                                </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="center" className="w-[400px] p-6 rounded-2xl shadow-premium border-secondary-200/50 bg-white/95 backdrop-blur-lg dark:bg-slate-900/95 dark:border-white/10">
-                                <div className="grid grid-cols-2 gap-8">
-                                    <div className="space-y-4">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Categories</p>
-                                        <div className="space-y-1 flex flex-col">
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=studio" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Studio</Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=optics" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Optics</Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=wear" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Wear</Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/shop?cat=lifestyle" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Lifestyle</Link>
-                                            </DropdownMenuItem>
+                                    <span>{link.name}</span>
+                                    <span className={cn(
+                                        "absolute -bottom-2 left-1/2 h-[1px] -translate-x-1/2 bg-primary-600 transition-all duration-300",
+                                        isActive ? "w-full" : "w-0 group-hover:w-full"
+                                    )} />
+                                </Link>
+                            );
+                        })}
+                        {hasMounted && (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <button className={cn(
+                                        "group flex items-center space-x-2 text-[11px] font-black uppercase tracking-[0.15em] outline-none transition-colors whitespace-nowrap",
+                                        pathname.startsWith('/shop') ? "text-slate-950 dark:text-white" : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                                    )}>
+                                        <ShoppingBag className={cn(
+                                            "h-3.5 w-3.5 transition-colors",
+                                            pathname.startsWith('/shop') ? "text-primary-600" : "text-primary-600/60 group-hover:text-primary-600"
+                                        )} />
+                                        <span>Shop</span>
+                                        <ChevronDown className="h-3 w-3 transition-transform group-data-[state=open]:rotate-180" />
+                                    </button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="center" className="w-[400px] p-6 rounded-2xl shadow-premium border-secondary-200/50 bg-white/95 backdrop-blur-lg dark:bg-slate-900/95 dark:border-white/10">
+                                    <div className="grid grid-cols-2 gap-8">
+                                        <div className="space-y-4">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Categories</p>
+                                            <div className="flex flex-col space-y-3">
+                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                    <Link href="/shop?cat=studio" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Studio</Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                    <Link href="/shop?cat=optics" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Optics</Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                    <Link href="/shop?cat=wear" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Wear</Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                    <Link href="/shop?cat=lifestyle" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Lifestyle</Link>
+                                                </DropdownMenuItem>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Shop by Rating</p>
+                                            <div className="flex flex-col space-y-3">
+                                                {[4, 3, 2, 1].map((rating) => (
+                                                    <DropdownMenuItem key={rating} asChild className="p-0 focus:bg-transparent">
+                                                        <Link href={`/shop?rating=${rating}`} className="flex items-center space-x-2 group/drop-rating">
+                                                            <div className="flex space-x-0.5 text-amber-500">
+                                                                {[...Array(5)].map((_, i) => (
+                                                                    <Star key={i} className={cn("h-2.5 w-2.5 fill-current", i >= rating && "text-slate-200 dark:text-slate-800 fill-none")} />
+                                                                ))}
+                                                            </div>
+                                                            <span className="text-[10px] font-bold text-slate-500 group-hover/drop-rating:text-primary-600">& up</span>
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="space-y-4">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Featured</p>
-                                        <div className="space-y-1 flex flex-col">
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">New Arrivals</Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Bestsellers</Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/shop" className="text-sm text-slate-600 hover:text-primary-600 dark:text-slate-400 py-1.5 transition-colors">Summer Sale</Link>
-                                            </DropdownMenuItem>
-                                        </div>
-                                    </div>
-                                </div>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    )}
-                </div>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )}
+                    </div>
 
-                {/* Right Utilities */}
-                <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
-
-                    {/* Search - Expandable on Mobile */}
-                    <div className="flex items-center" ref={searchRef}>
-                        <div className={cn(
-                            "group relative flex items-center h-10 px-3 transition-all",
-                            "hidden lg:flex" // Keep desktop behavior
-                        )}>
+                    {/* Desktop Search */}
+                    <div className="hidden lg:flex items-center" ref={searchRef}>
+                        <div className="group relative flex items-center h-10 px-3 transition-all">
                             <button
                                 onClick={() => handleSearchSubmit()}
                                 className="focus:outline-none transition-transform hover:scale-110 active:scale-95"
@@ -327,7 +323,7 @@ const Navbar = () => {
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 10, scale: 0.98 }}
                                         transition={{ duration: 0.2, ease: "easeOut" }}
-                                        className="absolute top-12 left-1/2 -translate-x-1/2 w-[450px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl shadow-premium border border-slate-100 dark:border-white/5 overflow-hidden z-50 p-4"
+                                        className="absolute top-12 left-0 w-[450px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl shadow-premium border border-slate-100 dark:border-white/5 overflow-hidden z-50 p-4"
                                     >
                                         {isLoadingSuggestions ? (
                                             <div className="py-12 flex flex-col items-center justify-center space-y-4">
@@ -397,93 +393,45 @@ const Navbar = () => {
                                 )}
                             </AnimatePresence>
                         </div>
+                    </div>
+                </div>
 
-                        {/* Mobile Search Button */}
-                        <div className="lg:hidden flex items-center">
-                            <AnimatePresence>
-                                {isSearchOpen && (
-                                    <motion.div
-                                        initial={{ width: 0, opacity: 0 }}
-                                        animate={{ width: "calc(100vw - 32px)", opacity: 1 }}
-                                        exit={{ width: 0, opacity: 0 }}
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-lg rounded-full h-12 flex items-center dark:bg-slate-900/80 border border-slate-100 dark:border-white/5 z-[60]"
+                {/* Right Utilities */}
+                <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
+                    {/* Mobile Search Button */}
+                    <div className="lg:hidden flex items-center">
+                        <AnimatePresence>
+                            {isSearchOpen && (
+                                <motion.div
+                                    initial={{ width: 0, opacity: 0 }}
+                                    animate={{ width: "calc(100vw - 32px)", opacity: 1 }}
+                                    exit={{ width: 0, opacity: 0 }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-lg rounded-full h-12 flex items-center dark:bg-slate-900/80 border border-slate-100 dark:border-white/5 z-[60]"
+                                >
+                                    <div className="pl-4 pr-2">
+                                        <Search className="h-4 w-4 text-slate-400" />
+                                    </div>
+                                    <input
+                                        autoFocus
+                                        type="text"
+                                        placeholder="Search products..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        onFocus={() => searchQuery.length >= 1 && setIsSuggestionsOpen(true)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
+                                        className="bg-transparent border-none focus:ring-0 text-sm w-full dark:text-white"
+                                    />
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => { setIsSearchOpen(false); setSearchQuery(''); setIsSuggestionsOpen(false); }}
+                                        className="mr-2 rounded-full hover:bg-secondary-100 dark:hover:bg-white/5"
                                     >
-                                        <div className="pl-4 pr-2">
-                                            <Search className="h-4 w-4 text-slate-400" />
-                                        </div>
-                                        <input
-                                            autoFocus
-                                            type="text"
-                                            placeholder="Search products..."
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            onFocus={() => searchQuery.length >= 1 && setIsSuggestionsOpen(true)}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
-                                            className="bg-transparent border-none focus:ring-0 text-sm w-full dark:text-white"
-                                        />
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={() => { setIsSearchOpen(false); setSearchQuery(''); setIsSuggestionsOpen(false); }}
-                                            className="mr-2 rounded-full hover:bg-secondary-100 dark:hover:bg-white/5"
-                                        >
-                                            <X className="h-4 w-4 text-slate-500" />
-                                        </Button>
-
-                                        {/* Suggestions Dropdown (Mobile) */}
-                                        <AnimatePresence>
-                                            {isSuggestionsOpen && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 10 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    exit={{ opacity: 0, y: 10 }}
-                                                    className="absolute top-14 left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-secondary-200/50 dark:border-white/10 overflow-hidden z-50 p-2"
-                                                >
-                                                    {isLoadingSuggestions ? (
-                                                        <div className="py-8 text-center text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                                            Searching...
-                                                        </div>
-                                                    ) : suggestions.length > 0 ? (
-                                                        <div className="space-y-1">
-                                                            {suggestions.map((product) => (
-                                                                <button
-                                                                    key={product._id}
-                                                                    onClick={() => handleSuggestionClick(product._id)}
-                                                                    className="w-full flex items-center p-3 hover:bg-secondary-50 dark:hover:bg-white/5 rounded-xl transition-colors text-left"
-                                                                >
-                                                                    <div className="h-12 w-12 rounded-lg overflow-hidden bg-secondary-100 dark:bg-white/5 flex-shrink-0">
-                                                                        {product.images?.[0] ? <Image src={product.images[0]} alt={product.name} width={48} height={48} className="object-cover h-full w-full" /> : <div className="h-full w-full bg-secondary-200 dark:bg-white/10" />}
-                                                                    </div>
-                                                                    <div className="ml-3 overflow-hidden">
-                                                                        <p className="text-xs font-bold text-slate-950 dark:text-white truncate">{product.name}</p>
-                                                                        <p className="text-[10px] text-primary-600 font-medium">₹{product.price}</p>
-                                                                    </div>
-                                                                </button>
-                                                            ))}
-                                                            <button
-                                                                onClick={() => handleSearchSubmit()}
-                                                                className="block w-full text-center py-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors border-t border-secondary-100 dark:border-white/5 mt-1"
-                                                            >
-                                                                View All Results
-                                                            </button>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="py-8 text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
-                                                            No products found
-                                                        </div>
-                                                    )}
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                            {!isSearchOpen && (
-                                <Button variant="ghost" size="icon-lg" onClick={() => setIsSearchOpen(true)} className="rounded-full">
-                                    <Search className="h-[20px] w-[20px] stroke-[1.5px]" />
-                                </Button>
+                                        <X className="h-4 w-4 text-slate-500" />
+                                    </Button>
+                                </motion.div>
                             )}
-                        </div>
+                        </AnimatePresence>
                     </div>
 
                     <div className="flex items-center space-x-1">
