@@ -145,26 +145,26 @@ const Navbar = () => {
                                 </SheetTitle>
                             </SheetHeader>
                             <div className="flex flex-col py-6">
-                                {navLinks.map((link) => {
-                                    const isActive = pathname === link.href;
+                                {[...navLinks, { name: 'Shop', href: '/shop', icon: ShoppingBag }].map((link) => {
+                                    const isActive = pathname === link.href || (link.name === 'Shop' && pathname.startsWith('/shop') && pathname !== '/shop');
                                     return (
                                         <Link
                                             key={link.name}
                                             href={link.href}
                                             className={cn(
-                                                "flex items-center space-x-4 px-6 py-4 text-sm font-bold uppercase tracking-[0.1em] transition-all",
+                                                "flex items-center space-x-4 px-6 py-4 text-xs font-black uppercase tracking-[0.2em] transition-all",
                                                 isActive
                                                     ? "bg-primary-50 text-primary-600 dark:bg-primary-600/10"
                                                     : "text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-white"
                                             )}
                                         >
-                                            <link.icon className={cn("h-5 w-5", isActive ? "text-primary-600" : "text-slate-400")} />
+                                            <link.icon className={cn("h-4 w-4", isActive ? "text-primary-600" : "text-slate-400")} />
                                             <span>{link.name}</span>
                                         </Link>
                                     );
                                 })}
                                 <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">Categories</p>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">CATEGORIES</p>
                                     <div className="space-y-4">
                                         <Link href="/shop?cat=studio" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Studio</Link>
                                         <Link href="/shop?cat=optics" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Optics</Link>
@@ -173,7 +173,7 @@ const Navbar = () => {
                                     </div>
                                 </div>
                                 <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">Customer Rating</p>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">CUSTOMER RATING</p>
                                     <div className="space-y-4">
                                         {[4, 3, 2, 1].map((rating) => (
                                             <Link
