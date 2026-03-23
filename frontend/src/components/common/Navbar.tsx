@@ -476,7 +476,7 @@ const Navbar = () => {
                                             </div>
                                         </button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-premium border-secondary-200/50">
+                                    <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-premium border-secondary-200/50 bg-white/95 backdrop-blur-lg dark:bg-slate-900/95 dark:border-white/10 z-50">
                                         <DropdownMenuLabel className="font-accent">My Account</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
