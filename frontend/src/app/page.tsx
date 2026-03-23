@@ -226,10 +226,10 @@ export default function Home() {
     <div className="flex flex-col bg-background gap-8">
       {/* Top Bento Grid - Hero & Featured */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-auto md:h-[600px] w-full">
+        <div className="flex flex-col gap-8 w-full">
 
-          {/* Main Card: Equinox Flash Event */}
-          <div className="lg:col-span-2 w-full h-full relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
+          {/* Main Card: Equinox Flash Event (Small Banner) */}
+          <div className="w-full relative overflow-hidden rounded-[32px] bg-slate-950 p-6 lg:px-10 lg:py-8 shadow-2xl border border-white/5 flex flex-col lg:flex-row items-center justify-between gap-6 md:h-[200px]">
             <div className="absolute top-0 right-0 w-full h-full bg-primary-600/10 blur-[100px]" />
             <Image
               src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
@@ -238,47 +238,50 @@ export default function Home() {
               priority
               className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent lg:bg-gradient-to-r lg:from-slate-950 lg:via-slate-950/50 lg:to-transparent" />
 
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10"
+              className="relative z-10 w-full md:w-auto text-center md:text-left shrink-0"
             >
-              <span className="text-secondary-400 text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">Limited Opportunity</span>
-              <h2 className="font-accent text-5xl md:text-7xl font-bold text-white leading-[0.9] mb-8">
-                The <span className="italic text-primary-600">Equinox</span> <br />
+              <span className="text-secondary-400 text-[9px] font-black uppercase tracking-[0.4em] mb-3 block">Limited Opportunity</span>
+              <h2 className="font-accent text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1]">
+                The <span className="italic text-primary-600">Equinox</span> <br className="hidden md:block lg:hidden" />
                 Flash Event
               </h2>
+            </motion.div>
 
-              <div className="flex flex-wrap items-end gap-12">
-                <div className="grid grid-cols-4 gap-4 max-w-xs">
-                  {[
-                    { label: 'Days', value: '01' },
-                    { label: 'Hours', value: '12' },
-                    { label: 'Mins', value: '34' },
-                    { label: 'Secs', value: '59' },
-                  ].map((t) => (
-                    <div key={t.label} className="text-center">
-                      <div className="text-2xl font-bold text-white mb-1">{t.value}</div>
-                      <div className="text-[7px] font-black uppercase tracking-widest text-slate-500">{t.label}</div>
-                    </div>
-                  ))}
-                </div>
-                <Button asChild size="lg" className="rounded-full bg-white text-slate-950 hover:bg-slate-200 px-8 h-14 font-bold text-sm">
-                  <Link href="/deals">Enter Event</Link>
-                </Button>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              className="relative z-10 flex flex-wrap md:flex-nowrap items-center justify-center md:justify-end gap-6 md:gap-10 w-full lg:w-auto"
+            >
+              <div className="flex items-center gap-4">
+                {[
+                  { label: 'Days', value: '01' },
+                  { label: 'Hrs', value: '12' },
+                  { label: 'Min', value: '34' },
+                  { label: 'Sec', value: '59' },
+                ].map((t) => (
+                  <div key={t.label} className="text-center bg-white/5 backdrop-blur-md rounded-xl p-2 md:p-3 shadow-inner border border-white/10 w-12 md:w-16">
+                    <div className="text-xl md:text-2xl font-bold text-white mb-0.5">{t.value}</div>
+                    <div className="text-[6px] md:text-[8px] font-black uppercase tracking-widest text-slate-400">{t.label}</div>
+                  </div>
+                ))}
               </div>
+              <Button asChild size="lg" className="rounded-full bg-white text-slate-950 hover:bg-slate-200 px-6 md:px-8 h-12 md:h-14 font-bold text-xs md:text-sm shrink-0">
+                <Link href="/deals">Enter Event</Link>
+              </Button>
             </motion.div>
           </div>
 
-          {/* Side Products */}
-          <div className="flex flex-col gap-4 h-full">
-            {featuredProducts.slice(0, 2).map((product) => (
-              <div key={product._id} className="flex-1 overflow-hidden">
-                <ProductCard product={product} aspectRatio="aspect-video md:aspect-auto md:h-[285px]" />
-              </div>
+          {/* Balance side products */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+            {featuredProducts.slice(0, 4).map((product) => (
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         </div>
