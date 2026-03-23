@@ -226,10 +226,10 @@ export default function Home() {
     <div className="flex flex-col bg-background gap-8">
       {/* Top Bento Grid - Hero & Featured */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
-        <div className="flex flex-col gap-4 h-auto md:h-[600px] w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-auto md:h-[600px] w-full">
 
           {/* Main Card: Equinox Flash Event */}
-          <div className="w-full h-full relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
+          <div className="lg:col-span-2 w-full h-full relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
             <div className="absolute top-0 right-0 w-full h-full bg-primary-600/10 blur-[100px]" />
             <Image
               src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
@@ -271,6 +271,15 @@ export default function Home() {
                 </Button>
               </div>
             </motion.div>
+          </div>
+
+          {/* Side Products */}
+          <div className="flex flex-col gap-4 h-full">
+            {featuredProducts.slice(0, 2).map((product) => (
+              <div key={product._id} className="flex-1 overflow-hidden">
+                <ProductCard product={product} aspectRatio="aspect-video md:aspect-auto md:h-[285px]" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
