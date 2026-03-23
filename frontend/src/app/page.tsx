@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { motion, cubicBezier } from 'framer-motion';
 import ProductCard from "@/components/product/ProductCard";
@@ -226,10 +226,10 @@ export default function Home() {
     <div className="flex flex-col bg-background gap-8">
       {/* Top Bento Grid - Hero & Featured */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 h-auto md:h-[700px]">
+        <div className="flex flex-col gap-4 h-auto md:h-[600px] w-full">
 
-          {/* Main Card: Equinox Flash Event (2/3 width, spans 2 rows) */}
-          <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
+          {/* Main Card: Equinox Flash Event */}
+          <div className="w-full h-full relative overflow-hidden rounded-[48px] bg-slate-950 p-8 lg:p-12 shadow-2xl border border-white/5 flex flex-col justify-end">
             <div className="absolute top-0 right-0 w-full h-full bg-primary-600/10 blur-[100px]" />
             <Image
               src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1200"
@@ -271,44 +271,6 @@ export default function Home() {
                 </Button>
               </div>
             </motion.div>
-          </div>
-
-          {/* Secondary Card: Brand Message (1x1) */}
-          <div className="relative overflow-hidden rounded-[40px] bg-secondary-100 p-8 flex flex-col justify-center dark:bg-white/5 border border-slate-200 dark:border-white/10">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-            >
-              <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-4">Nexus Standard</p>
-              <h3 className="font-accent text-3xl font-bold text-slate-950 dark:text-white leading-tight mb-4">
-                Refined <span className="italic font-light text-secondary-400 italic">Everyday</span> <br /> Essentials
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Discovery of artisanal craftsmanship merged with contemporary innovation.</p>
-              <Link href="/about" className="text-xs font-black uppercase tracking-widest text-primary-600 flex items-center gap-2 hover:gap-3 transition-all">
-                The Philosophy <ArrowRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* Tertiary Card: High-Impact Visual (1x1) */}
-          <div className="relative overflow-hidden rounded-[40px] bg-slate-200 shadow-xl border border-white/10 group/card">
-            <Image
-              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800"
-              alt="Seasonal Edit"
-              fill
-              className="object-cover transition-transform duration-700 group-hover/card:scale-110"
-            />
-            <div className="absolute inset-0 bg-black/20 group-hover/card:bg-black/40 transition-colors" />
-            <div className="absolute inset-x-8 bottom-8 flex items-center justify-between">
-              <div>
-                <p className="text-[9px] font-black uppercase tracking-widest text-white/70 mb-1">Archival Edit</p>
-                <h4 className="text-lg font-bold text-white uppercase tracking-tighter italic">Winter &apos;26</h4>
-              </div>
-              <Link href="/shop" className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-all">
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
           </div>
         </div>
       </section>
