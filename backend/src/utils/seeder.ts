@@ -19,7 +19,7 @@ const importData = async () => {
         await Category.deleteMany();
 
         // Create Default Users
-        await User.create([
+        const createdUsers = await User.create([
             {
                 name: 'Admin User',
                 email: 'admin@example.com',
@@ -46,13 +46,16 @@ const importData = async () => {
             { name: 'Furniture', slug: 'furniture', description: 'Premium home and office furniture.' },
             { name: 'Apparel', slug: 'apparel', description: 'Designer clothing and exterior gear.' },
             { name: 'Lifestyle', slug: 'lifestyle', description: 'Curated goods for the modern life.' },
+            { name: 'Optics', slug: 'optics', description: 'Precision lenses and visual equipment.' },
         ];
         await Category.insertMany(categoriesData);
 
         // Prepare Products
+        const adminUserId = (createdUsers as any)[0]._id;
         const sampleProducts = products.map((product) => {
             return {
                 ...product,
+                user: adminUserId,
                 images: [product.image],
                 numReviews: product.numReviews || 0,
                 rating: product.rating || 0,

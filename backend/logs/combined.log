@@ -472,3 +472,22 @@
 {"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-07T07:31:42.730Z"}
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-03-07T07:31:42.875Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-03-07T07:31:43.655Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-23T06:59:06.180Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-23T06:59:12.351Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-23T06:59:12.507Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-23T06:59:13.560Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-23T07:03:07.922Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-23T07:03:08.036Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-23T07:04:48.207Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-23T07:04:50.121Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-23T07:12:59.171Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-23T07:12:59.207Z"}
+{"level":"info","message":"POST /api/auth/logout","timestamp":"2026-03-23T07:13:06.750Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-23T07:52:05.958Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-23T07:52:06.097Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-03-23T07:52:08.691Z"}
+{"level":"error","message":"Error importing data: Product validation failed: user: Path `user` is required.","timestamp":"2026-03-23T07:52:12.180Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-23T07:56:39.869Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-23T07:56:39.887Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-23T07:56:41.240Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-23T07:56:43.192Z"}

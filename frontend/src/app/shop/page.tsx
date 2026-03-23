@@ -105,7 +105,7 @@ function ShopContent() {
             // Map UI category labels back to backend categories
             const uiToBackend: Record<string, string[]> = {
                 'Studio': ['Electronics'],
-                'Optics': ['Electronics'], // Or special flag if available
+                'Optics': ['Optics'],
                 'Wear': ['Apparel'],
                 'Lifestyle': ['Lifestyle'],
                 'Furniture': ['Furniture']
