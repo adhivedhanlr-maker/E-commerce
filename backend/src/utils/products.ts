@@ -740,4 +740,35 @@ const products = [
     }
 ];
 
+const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle'];
+const brands = ['Nexus Audio', 'Visionary', 'Apex Outdoor', 'Lumina Design', 'Heritage Home', 'SoundShape', 'Metro Craft', 'Temporal'];
+
+const images = [
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800'
+];
+
+for (let i = 1; i <= 200; i++) {
+    const category = targetCategories[i % targetCategories.length];
+    const brand = brands[i % brands.length];
+    const image = images[i % images.length];
+    products.push({
+        name: `${category} Premium Model ${i}`,
+        image,
+        description: `This is a high-quality, premium batch generated ${category.toLowerCase()} product designed for performance and reliability.`,
+        brand,
+        category,
+        price: 50 + (i % 300) + 0.99,
+        originalPrice: 70 + (i % 300) + 0.99,
+        discountPercentage: 10 + (i % 15),
+        countInStock: 20 + (i % 80),
+        rating: 4.0 + ((i % 10) / 10),
+        numReviews: 15 + (i % 200),
+        specifications: { 'Quality': 'Premium Grade', 'Edition': `Batch ${i}` }
+    } as any);
+}
+
 export default products;
