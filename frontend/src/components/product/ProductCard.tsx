@@ -27,7 +27,7 @@ interface ProductCardProps {
     aspectRatio?: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspect-[3.6/4]" }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspect-[3/4]" }) => {
     const { addItem: addToCart } = useCart();
     const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
 
@@ -54,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspec
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: cubicBezier(0.16, 1, 0.3, 1) }}
-            className="group relative h-full"
+            className="group relative h-full max-w-xs mx-auto"
         >
             <Link href={`/product/${product._id}`} className="flex flex-col h-full">
                 {/* Image Container */}

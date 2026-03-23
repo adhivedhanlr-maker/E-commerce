@@ -258,10 +258,10 @@ function ShopContent() {
                                 <p className="font-medium animate-pulse">Curating your collection...</p>
                             </div>
                         ) : paginatedProducts.length > 0 ? (
-                            <div className={cn(
-                                "grid gap-4 sm:gap-x-6 sm:gap-y-6",
-                                view === 'grid' ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
-                            )}>
+                                <div className={cn(
+                                    "grid gap-4 sm:gap-x-6 sm:gap-y-6",
+                                    view === 'grid' ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5" : "grid-cols-1"
+                                )}>
                                 {paginatedProducts.map((product) => (
                                     <ProductCard key={product._id} product={product} />
                                 ))}
