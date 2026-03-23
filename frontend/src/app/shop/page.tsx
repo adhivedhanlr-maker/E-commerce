@@ -82,6 +82,7 @@ function ShopContent() {
             try {
                 const params: Record<string, string> = {};
                 if (keywordParam) params.keyword = keywordParam;
+                params.pageSize = '1000';
 
                 // Fetch all and filter client-side for now to maintain existing filter UI behavior
                 // or fetch with all params. For this implementation, we'll fetch based on search/category.
