@@ -260,10 +260,10 @@ function ShopContent() {
                         ) : paginatedProducts.length > 0 ? (
                                 <div className={cn(
                                     "grid gap-4 sm:gap-x-6 sm:gap-y-6",
-                                    view === 'grid' ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+                                    view === 'grid' ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
                                 )}>
                                 {paginatedProducts.map((product) => (
-                                    <ProductCard key={product._id} product={product} />
+                                    <ProductCard key={product._id} product={product} aspectRatio="aspect-[4/5]" />
                                 ))}
                             </div>
                         ) : (
