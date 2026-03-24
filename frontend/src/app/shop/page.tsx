@@ -214,7 +214,7 @@ function ShopContent() {
                     </div>
 
                     {/* Product Feed */}
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-6 border-b border-secondary-200/50 pb-8">
                             <div>
                                 <h1 className="font-accent text-4xl font-bold text-slate-950 dark:text-white mb-2">
@@ -258,7 +258,7 @@ function ShopContent() {
                                 <p className="font-medium animate-pulse">Curating your collection...</p>
                             </div>
                         ) : paginatedProducts.length > 0 ? (
-                                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                                 {paginatedProducts.map((product) => (
                                     <div key={product._id} className="col-span-1 w-full">
                                         <ProductCard product={product} aspectRatio="aspect-[4/5]" />
