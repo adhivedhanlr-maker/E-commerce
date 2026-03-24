@@ -276,17 +276,62 @@ function ShopContent() {
                         {totalPages > 1 && (
                             <div className="mt-16">
                                 <div className="hidden sm:flex items-center justify-center gap-2">
-                                    <button onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} disabled={currentPage === 1} className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <button 
+                                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} 
+                                        disabled={currentPage === 1} 
+                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
                                         <ChevronDown className="h-4 w-4 rotate-90" />
                                     </button>
+                                    
                                     <div className="flex items-center gap-2">
-                                        {[...Array(totalPages)].map((_, i) => (
-                                            <button key={i + 1} onClick={() => setCurrentPage(i + 1)} className={cn("h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border transition-all font-bold", currentPage === i + 1 ? "bg-primary-600 border-primary-600 text-white" : "border-slate-200 text-slate-600 hover:border-primary-500 hover:text-primary-600")}>
-                                                {i + 1}
-                                            </button>
-                                        ))}
+                                        {(() => {
+                                            const pages = [];
+                                            const showEllipsis = totalPages > 7;
+                                            
+                                            if (!showEllipsis) {
+                                                for (let i = 1; i <= totalPages; i++) pages.push(i);
+                                            } else {
+                                                pages.push(1);
+                                                
+                                                const start = Math.max(2, currentPage - 1);
+                                                const end = Math.min(totalPages - 1, currentPage + 1);
+                                                
+                                                if (start > 2) pages.push('...');
+                                                
+                                                for (let i = start; i <= end; i++) {
+                                                    pages.push(i);
+                                                }
+                                                
+                                                if (end < totalPages - 1) pages.push('...');
+                                                
+                                                pages.push(totalPages);
+                                            }
+                                            
+                                            return pages.map((p, i) => (
+                                                typeof p === 'number' ? (
+                                                    <button 
+                                                        key={i} 
+                                                        onClick={() => setCurrentPage(p)} 
+                                                        className={cn(
+                                                            "h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border transition-all font-bold", 
+                                                            currentPage === p ? "bg-primary-600 border-primary-600 text-white" : "border-slate-200 text-slate-600 hover:border-primary-500 hover:text-primary-600"
+                                                        )}
+                                                    >
+                                                        {p}
+                                                    </button>
+                                                ) : (
+                                                    <span key={i} className="px-2 text-slate-400 font-bold">...</span>
+                                                )
+                                            ));
+                                        })()}
                                     </div>
-                                    <button onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} disabled={currentPage === totalPages} className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                                    
+                                    <button 
+                                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} 
+                                        disabled={currentPage === totalPages} 
+                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
                                         <ChevronDown className="h-4 w-4 -rotate-90" />
                                     </button>
                                 </div>
