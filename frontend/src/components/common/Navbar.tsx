@@ -104,9 +104,9 @@ const Navbar = () => {
     const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
     const navLinks = [
-        { name: 'Collections', href: '/shop', icon: LayoutGrid },
-        { name: 'Featured', href: '/deals', icon: Zap },
-        { name: 'Journal', href: '/journal', icon: BookOpen },
+        { name: 'COLLECTIONS', href: '/shop', icon: LayoutGrid },
+        { name: 'FEATURED', href: '/deals', icon: Zap },
+        { name: 'JOURNAL', href: '/journal', icon: BookOpen },
     ];
 
     return (
@@ -173,25 +173,6 @@ const Navbar = () => {
                                             <Link href="/shop?cat=lifestyle" className="block text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400 translate-x-0 hover:translate-x-2 transition-transform">Lifestyle</Link>
                                         </div>
                                     </div>
-                                    <div className="mt-8 px-6 pt-8 border-t border-secondary-100 dark:border-white/5">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-600 mb-6">CUSTOMER RATING</p>
-                                        <div className="space-y-4">
-                                            {[4, 3, 2, 1].map((rating) => (
-                                                <Link
-                                                    key={rating}
-                                                    href={`/shop?rating=${rating}`}
-                                                    className="flex items-center space-x-2 group/rating translate-x-0 hover:translate-x-2 transition-transform"
-                                                >
-                                                    <div className="flex space-x-0.5 text-amber-500">
-                                                        {[...Array(5)].map((_, i) => (
-                                                            <Star key={i} className={cn("h-3 w-3 fill-current", i >= rating && "text-slate-200 dark:text-slate-800 fill-none")} />
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-xs font-bold text-slate-500 group-hover/rating:text-primary-600">& up</span>
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </div>
                                 </div>
                             </SheetContent>
                         </Sheet>
@@ -250,45 +231,26 @@ const Navbar = () => {
                                             "h-3.5 w-3.5 transition-colors",
                                             pathname.startsWith('/shop') ? "text-primary-600" : "text-primary-600/60 group-hover:text-primary-600"
                                         )} />
-                                        <span>Shop</span>
+                                        <span>SHOP</span>
                                         <ChevronDown className="h-3 w-3 transition-transform group-data-[state=open]:rotate-180" />
                                     </button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="center" className="w-[400px] p-6 rounded-2xl shadow-premium border-secondary-200/50 bg-white/95 backdrop-blur-lg dark:bg-slate-900/95 dark:border-white/10">
-                                    <div className="grid grid-cols-2 gap-8">
-                                        <div className="space-y-4">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Categories</p>
-                                            <div className="flex flex-col space-y-3">
-                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
-                                                    <Link href="/shop?cat=studio" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Studio</Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
-                                                    <Link href="/shop?cat=optics" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Optics</Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
-                                                    <Link href="/shop?cat=wear" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Wear</Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
-                                                    <Link href="/shop?cat=lifestyle" className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-400">Lifestyle</Link>
-                                                </DropdownMenuItem>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-4">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-primary-600">Shop by Rating</p>
-                                            <div className="flex flex-col space-y-3">
-                                                {[4, 3, 2, 1].map((rating) => (
-                                                    <DropdownMenuItem key={rating} asChild className="p-0 focus:bg-transparent">
-                                                        <Link href={`/shop?rating=${rating}`} className="flex items-center space-x-2 group/drop-rating">
-                                                            <div className="flex space-x-0.5 text-amber-500">
-                                                                {[...Array(5)].map((_, i) => (
-                                                                    <Star key={i} className={cn("h-2.5 w-2.5 fill-current", i >= rating && "text-slate-200 dark:text-slate-800 fill-none")} />
-                                                                ))}
-                                                            </div>
-                                                            <span className="text-[10px] font-bold text-slate-500 group-hover/drop-rating:text-primary-600">& up</span>
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                ))}
-                                            </div>
+                                <DropdownMenuContent align="center" className="w-[280px] p-6 rounded-3xl shadow-premium border-secondary-200/50 bg-white/95 backdrop-blur-lg dark:bg-slate-900/95 dark:border-white/10">
+                                    <div className="space-y-5">
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary-600">Categories</p>
+                                        <div className="flex flex-col space-y-4">
+                                            <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                <Link href="/shop?cat=studio" className="text-[15px] font-semibold text-slate-700 hover:text-primary-600 dark:text-slate-400 transition-colors">Studio</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                <Link href="/shop?cat=optics" className="text-[15px] font-semibold text-slate-700 hover:text-primary-600 dark:text-slate-400 transition-colors">Optics</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                <Link href="/shop?cat=wear" className="text-[15px] font-semibold text-slate-700 hover:text-primary-600 dark:text-slate-400 transition-colors">Wear</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+                                                <Link href="/shop?cat=lifestyle" className="text-[15px] font-semibold text-slate-700 hover:text-primary-600 dark:text-slate-400 transition-colors">Lifestyle</Link>
+                                            </DropdownMenuItem>
                                         </div>
                                     </div>
                                 </DropdownMenuContent>
