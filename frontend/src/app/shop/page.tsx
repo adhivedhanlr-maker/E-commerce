@@ -263,7 +263,9 @@ function ShopContent() {
                                     view === 'grid' ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
                                 )}>
                                 {paginatedProducts.map((product) => (
-                                    <ProductCard key={product._id} product={product} aspectRatio="aspect-[4/5]" />
+                                    <div key={product._id} className="col-span-1">
+                                        <ProductCard product={product} aspectRatio="aspect-[4/5]" />
+                                    </div>
                                 ))}
                             </div>
                         ) : (
