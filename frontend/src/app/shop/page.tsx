@@ -121,7 +121,11 @@ function ShopContent() {
             if (sortBy === 'price-high') return b.price - a.price;
             if (sortBy === 'rating') return b.rating - a.rating;
             return 0; // featured/default
-        });
+        }).filter((product, index, self) => 
+            index === self.findIndex((t) => (
+                t.name === product.name && t.brand === product.brand
+            ))
+        );
     }, [fetchedProducts, selectedCategories, priceRange, minRating, sortBy]);
 
 

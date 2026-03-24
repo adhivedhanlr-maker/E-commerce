@@ -740,22 +740,47 @@ const products = [
     }
 ];
 
-const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle'];
-const brands = ['Nexus Audio', 'Visionary', 'Apex Outdoor', 'Lumina Design', 'Heritage Home', 'SoundShape', 'Metro Craft', 'Temporal'];
+const categoryImages: Record<string, string[]> = {
+    'Studio': [
+        'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1583333232824-01766244bc61?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800'
+    ],
+    'Optics': [
+        'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1509100104048-73c89471e796?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1604785846291-7f88a9aacc4a?auto=format&fit=crop&q=80&w=800'
+    ],
+    'Wear': [
+        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1618354691373-d851c5c3a991?auto=format&fit=crop&q=80&w=800'
+    ],
+    'Lifestyle': [
+        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1524678606372-0b441f346e30?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800',
+        'https://images.unsplash.com/photo-1600080972464-8e5f3583228a?auto=format&fit=crop&q=80&w=800'
+    ]
+};
 
-const images = [
-    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800'
-];
-
-for (let i = 1; i <= 200; i++) {
+const generatedProducts = Array.from({ length: 200 }, (_, index) => {
+    const i = index + 1;
     const category = targetCategories[i % targetCategories.length];
     const brand = brands[i % brands.length];
-    const image = images[i % images.length];
-    products.push({
+    
+    // Select image from category pool
+    const pool = categoryImages[category] || categoryImages['Lifestyle'];
+    const image = pool[Math.floor(index / targetCategories.length) % pool.length];
+
+    return {
         name: `${category} Premium Model ${i}`,
         image,
         description: `This is a high-quality, premium batch generated ${category.toLowerCase()} product designed for performance and reliability.`,
@@ -768,7 +793,9 @@ for (let i = 1; i <= 200; i++) {
         rating: 4.0 + ((i % 10) / 10),
         numReviews: 15 + (i % 200),
         specifications: { 'Quality': 'Premium Grade', 'Edition': `Batch ${i}` }
-    } as any);
-}
+    };
+});
 
-export default products;
+const finalProducts = [...products, ...generatedProducts];
+
+export default finalProducts;
