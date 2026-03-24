@@ -258,12 +258,9 @@ function ShopContent() {
                                 <p className="font-medium animate-pulse">Curating your collection...</p>
                             </div>
                         ) : paginatedProducts.length > 0 ? (
-                                <div className={cn(
-                                    "grid gap-4 sm:gap-6",
-                                    view === 'grid' ? "grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
-                                )}>
+                                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                                 {paginatedProducts.map((product) => (
-                                    <div key={product._id} className="col-span-1">
+                                    <div key={product._id} className="col-span-1 w-full">
                                         <ProductCard product={product} aspectRatio="aspect-[4/5]" />
                                     </div>
                                 ))}
