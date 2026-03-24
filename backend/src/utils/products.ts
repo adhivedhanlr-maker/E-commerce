@@ -740,6 +740,9 @@ const products = [
     }
 ];
 
+const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle'];
+const brands = ['Nexus Audio', 'Visionary', 'Apex Outdoor', 'Lumina Design', 'Heritage Home', 'SoundShape', 'Metro Craft', 'Temporal'];
+
 const categoryImages: Record<string, string[]> = {
     "Studio": [
         "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=800",
