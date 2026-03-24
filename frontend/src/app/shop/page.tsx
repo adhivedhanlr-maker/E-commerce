@@ -38,8 +38,6 @@ function ShopContent() {
     const [minRating, setMinRating] = useState<number>(0);
     const [view, setView] = useState<'grid' | 'list'>('grid');
     const [sortBy, setSortBy] = useState<string>('featured');
-    const [currentPage, setCurrentPage] = useState(1);
-    const PRODUCTS_PER_PAGE = 6;
 
     // Map URL param to category name
     useEffect(() => {
@@ -126,15 +124,8 @@ function ShopContent() {
         });
     }, [fetchedProducts, selectedCategories, priceRange, minRating, sortBy]);
 
-    const totalPages = Math.ceil(filteredAndSortedProducts.length / PRODUCTS_PER_PAGE);
-
-    const paginatedProducts = useMemo(() => {
-        const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
-        return filteredAndSortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
-    }, [filteredAndSortedProducts, currentPage]);
 
     const handleFilterChange = (type: string, value: string | number | number[] | null) => {
-        setCurrentPage(1);
         if (type === 'category' && typeof value === 'string') {
             setSelectedCategories(prev =>
                 prev.includes(value) ? prev.filter(c => c !== value) : [...prev, value]
@@ -221,7 +212,7 @@ function ShopContent() {
                                     {keywordParam ? `Search: "${keywordParam}"` : 'Shop All'} <span className="italic font-light text-secondary-400">Products</span>
                                 </h1>
                                 <p className="text-sm text-slate-500 tracking-tight">
-                                    {isLoading ? 'Loading collections...' : `Showing ${paginatedProducts.length} of ${filteredAndSortedProducts.length} items`}
+                                    {isLoading ? 'Loading collections...' : `Showing All ${filteredAndSortedProducts.length} Products`}
                                 </p>
                             </div>
                             <div className="hidden md:flex items-center gap-6">
@@ -257,9 +248,9 @@ function ShopContent() {
                                 <Loader2 className="h-10 w-10 animate-spin text-primary-600 mb-4" />
                                 <p className="font-medium animate-pulse">Curating your collection...</p>
                             </div>
-                        ) : paginatedProducts.length > 0 ? (
+                        ) : filteredAndSortedProducts.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                                {paginatedProducts.map((product) => (
+                                {filteredAndSortedProducts.map((product) => (
                                     <div key={product._id} className="col-span-1 w-full">
                                         <ProductCard product={product} aspectRatio="aspect-[4/5]" />
                                     </div>
@@ -272,79 +263,6 @@ function ShopContent() {
                             </div>
                         )}
 
-                        {/* Pagination */}
-                        {totalPages > 1 && (
-                            <div className="mt-16">
-                                <div className="hidden sm:flex items-center justify-center gap-2">
-                                    <button 
-                                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} 
-                                        disabled={currentPage === 1} 
-                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        <ChevronDown className="h-4 w-4 rotate-90" />
-                                    </button>
-                                    
-                                    <div className="flex items-center gap-2">
-                                        {(() => {
-                                            const pages = [];
-                                            const showEllipsis = totalPages > 7;
-                                            
-                                            if (!showEllipsis) {
-                                                for (let i = 1; i <= totalPages; i++) pages.push(i);
-                                            } else {
-                                                pages.push(1);
-                                                
-                                                const start = Math.max(2, currentPage - 1);
-                                                const end = Math.min(totalPages - 1, currentPage + 1);
-                                                
-                                                if (start > 2) pages.push('...');
-                                                
-                                                for (let i = start; i <= end; i++) {
-                                                    pages.push(i);
-                                                }
-                                                
-                                                if (end < totalPages - 1) pages.push('...');
-                                                
-                                                pages.push(totalPages);
-                                            }
-                                            
-                                            return pages.map((p, i) => (
-                                                typeof p === 'number' ? (
-                                                    <button 
-                                                        key={i} 
-                                                        onClick={() => setCurrentPage(p)} 
-                                                        className={cn(
-                                                            "h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border transition-all font-bold", 
-                                                            currentPage === p ? "bg-primary-600 border-primary-600 text-white" : "border-slate-200 text-slate-600 hover:border-primary-500 hover:text-primary-600"
-                                                        )}
-                                                    >
-                                                        {p}
-                                                    </button>
-                                                ) : (
-                                                    <span key={i} className="px-2 text-slate-400 font-bold">...</span>
-                                                )
-                                            ));
-                                        })()}
-                                    </div>
-                                    
-                                    <button 
-                                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} 
-                                        disabled={currentPage === totalPages} 
-                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-primary-500 hover:text-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        <ChevronDown className="h-4 w-4 -rotate-90" />
-                                    </button>
-                                </div>
-                                <div className="flex sm:hidden flex-col items-center gap-4">
-                                    {currentPage < totalPages && (
-                                        <Button size="lg" className="w-full rounded-xl bg-slate-900 text-white font-bold h-14 tracking-widest uppercase text-xs" onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}>
-                                            Next Page
-                                        </Button>
-                                    )}
-                                    <span className="text-xs font-bold text-slate-500">Page {currentPage} of {totalPages}</span>
-                                </div>
-                            </div>
-                        )}
 
                     </div>
                 </div>
