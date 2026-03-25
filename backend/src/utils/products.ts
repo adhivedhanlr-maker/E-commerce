@@ -234,7 +234,7 @@ const products = [
     },
     {
         name: 'Silk Drapery Set',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&q=80&w=800',
         description: 'Elegant window treatments. 100% pure silk with black-out lining.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -318,7 +318,7 @@ const products = [
     },
     {
         name: 'Eclipse Smart Lenses',
-        image: 'https://images.unsplash.com/photo-1509919084289-0d54506a8e44?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&q=80&w=800',
         description: 'Augmented reality meets everyday eyewear. Seamless HUD integration.',
         brand: 'Visionary',
         category: 'Optics',
@@ -530,7 +530,7 @@ const products = [
     },
     {
         name: 'Acoustic Foam Panels',
-        image: 'https://images.unsplash.com/photo-1519683109079-d5f539e1542f?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800',
         description: 'Premium sound absorption panels for your home studio setup.',
         brand: 'SoundShape',
         category: 'Studio',
@@ -544,7 +544,7 @@ const products = [
     },
     {
         name: 'Stellar Binoculars',
-        image: 'https://images.unsplash.com/photo-1478827387698-1527781a4887?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1610395219791-21b0353e43d3?auto=format&fit=crop&q=80&w=800',
         description: 'High-magnification binoculars for bird watching and celestial observation.',
         brand: 'Visionary',
         category: 'Optics',
@@ -642,7 +642,7 @@ const products = [
     },
     {
         name: 'Desk Boom Arm',
-        image: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=800',
         description: 'Professional articulated mic boom arm with hidden cable management.',
         brand: 'SoundShape',
         category: 'Studio',
@@ -684,7 +684,7 @@ const products = [
     },
     {
         name: 'All-Weather Tech Jacket',
-        image: 'https://images.unsplash.com/photo-1580657018950-c7f7d99d2e2f?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800',
         description: 'Waterproof and breathable smart jacket for extreme conditions.',
         brand: 'Apex Outdoor',
         category: 'Wear',
@@ -698,7 +698,7 @@ const products = [
     },
     {
         name: 'Compression Tights',
-        image: 'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=800',
         description: 'Performance tights for faster recovery and enhanced muscle support.',
         brand: 'Apex Outdoor',
         category: 'Wear',
@@ -712,7 +712,7 @@ const products = [
     },
     {
         name: 'Sunrise Alarm Clock',
-        image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800',
         description: 'Wake up naturally with a simulated sunrise and relaxing sounds.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -859,8 +859,8 @@ const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     const i = index + 1;
     const category = targetCategories[i % targetCategories.length];
     const brand = brands[i % brands.length];
-    const pool = categoryImages[category] || categoryImages['Lifestyle'];
-    const image = pool[Math.floor(index / targetCategories.length) % pool.length];
+    // Each product gets a globally unique picsum seed — guarantees no duplicates, never broken
+    const image = `https://picsum.photos/seed/product-${i}-${category}/800/600`;
 
     return {
         name: `${category} Premium Model ${i}`,
