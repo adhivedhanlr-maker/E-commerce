@@ -2,7 +2,7 @@ const products = [
     // --- ELECTRONICS ---
     {
         name: 'Aura Pods Elite',
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/aura-pods-elite/800/600',
         description: 'Bespoke audio engineering meets cinematic soundstage. Features 40dB active noise cancellation and 48-hour endurance.',
         brand: 'Nexus Audio',
         category: 'Electronics',
@@ -16,7 +16,7 @@ const products = [
     },
     {
         name: 'Titan Phone 15',
-        image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/titan-phone-15/800/600',
         description: 'The pinnacle of mobile innovation. Aerospacial titanium chassis with the world\'s most advanced 3nm processor.',
         brand: 'Titan Tech',
         category: 'Electronics',
@@ -30,7 +30,7 @@ const products = [
     },
     {
         name: 'Lumina Vision Pro',
-        image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/lumina-vision-pro/800/600',
         description: 'Cinematic clarity in every frame. 8K resolution with deep-learning HDR enhancement for the ultimate theater experience.',
         brand: 'Visionary',
         category: 'Optics',
@@ -44,7 +44,7 @@ const products = [
     },
     {
         name: 'Zenith Game Console',
-        image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/zenith-game-console/800/600',
         description: 'Next-generation performance. Liquid-cooled architecture capable of 120fps gaming at 4K resolution.',
         brand: 'Zenith Interactive',
         category: 'Electronics',
@@ -60,7 +60,7 @@ const products = [
     // --- FURNITURE ---
     {
         name: 'Eames Silhouette Lounge',
-        image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/eames-silhouette-lounge/800/600',
         description: 'An icon of mid-century design. Hand-assembled with premium Italian leather and walnut veneers.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -74,7 +74,7 @@ const products = [
     },
     {
         name: 'Zenith Minimalist Desk',
-        image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/zenith-minimalist-desk/800/600',
         description: 'The foundation of your productivity. Crafted from a single slab of sustainable Nordic oak with hidden cable management.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -88,7 +88,7 @@ const products = [
     },
     {
         name: 'Lunar Orbital Lamp',
-        image: 'https://images.unsplash.com/photo-1513506003901-1e6a35703a11?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/lunar-orbital-lamp/800/600',
         description: 'Sculptural lighting inspired by celestial bodies. Warm ambient glow through hand-blown frosted glass.',
         brand: 'Lumina Design',
         category: 'Furniture',
@@ -104,7 +104,7 @@ const products = [
     // --- APPAREL ---
     {
         name: 'Obsidian Tech Jacket',
-        image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/obsidian-tech-jacket/800/600',
         description: 'The future of utility. Triple-layered Gore-Tex Pro shell with internal thermal regulation and magnetic security pockets.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -118,7 +118,7 @@ const products = [
     },
     {
         name: 'Merino Precision Knit',
-        image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/merino-precision-knit/800/600',
         description: 'Engineered comfort. Sourced from the finest New Zealand Merino wool for unparalleled breathability and softness.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -134,7 +134,7 @@ const products = [
     // --- LIFESTYLE ---
     {
         name: 'Equinox Chrono X',
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/equinox-chrono-x/800/600',
         description: 'Precision timing for the modern explorer. Automatic movement with sapphire crystal and 100m water resistance.',
         brand: 'Temporal',
         category: 'Lifestyle',
@@ -148,7 +148,7 @@ const products = [
     },
     {
         name: 'Metropolis Weekender',
-        image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/metropolis-weekender/800/600',
         description: 'The ultimate travel companion. Full-grain leather with brass hardware and a dedicated compartment for essentials.',
         brand: 'Metro Craft',
         category: 'Lifestyle',
@@ -164,7 +164,7 @@ const products = [
     // --- ADDITIONAL MASS DATA ---
     {
         name: 'Titan Watch Pro',
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/titan-watch-pro/800/600',
         description: 'The ultimate smartwatch for athletes. High-precision GPS and biometric sensors.',
         brand: 'Titan Tech',
         category: 'Electronics',
@@ -178,7 +178,7 @@ const products = [
     },
     {
         name: 'Zenith Keyboard',
-        image: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/zenith-keyboard/800/600',
         description: 'Mechanical precision. Customizable RGB and ultra-responsive switches.',
         brand: 'KeyClick',
         category: 'Electronics',
@@ -192,7 +192,7 @@ const products = [
     },
     {
         name: 'SlimBook Ultra 14',
-        image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/slimbook-ultra-14/800/600',
         description: 'Ultra-thin, ultra-powerful. The perfect laptop for creative professionals.',
         brand: 'SlimBook',
         category: 'Electronics',
@@ -206,7 +206,7 @@ const products = [
     },
     {
         name: 'Velvet Cloud Sofa',
-        image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/velvet-cloud-sofa/800/600',
         description: 'Sink into pure luxury. High-density foam wrapped in premium velvet.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -220,7 +220,7 @@ const products = [
     },
     {
         name: 'Onyx Coffee Table',
-        image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/onyx-coffee-table/800/600',
         description: 'A statement piece for your living room. Hand-polished onyx stone.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -234,7 +234,7 @@ const products = [
     },
     {
         name: 'Silk Drapery Set',
-        image: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/silk-drapery-set/800/600',
         description: 'Elegant window treatments. 100% pure silk with black-out lining.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -248,7 +248,7 @@ const products = [
     },
     {
         name: 'Cashmere Overcoat',
-        image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/cashmere-overcoat/800/600',
         description: 'Timeless sophistication. Italian cashmere with a modern slim fit.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -262,7 +262,7 @@ const products = [
     },
     {
         name: 'Urban Cargo Joggers',
-        image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/urban-cargo-joggers/800/600',
         description: 'Functional streetwear. Water-resistant stretch fabric with utility pockets.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -276,7 +276,7 @@ const products = [
     },
     {
         name: 'Nomad Canvas Backpack',
-        image: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/nomad-canvas-backpack/800/600',
         description: 'Rugged durability for every journey. Waxed canvas with leather reinforcements.',
         brand: 'Metro Craft',
         category: 'Lifestyle',
@@ -290,7 +290,7 @@ const products = [
     },
     {
         name: 'Nordic Scent Set',
-        image: 'https://images.unsplash.com/photo-1608554284627-e4352dc0a373?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/nordic-scent-set/800/600',
         description: 'A sensory journey through the arctic. Hand-poured soy candles with essential oils.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -304,7 +304,7 @@ const products = [
     },
     {
         name: 'Aerospace Aviators',
-        image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/aerospace-aviators/800/600',
         description: 'Classic frame, modern lens technology. Polarized protection for the urban sky.',
         brand: 'Visionary',
         category: 'Optics',
@@ -318,7 +318,7 @@ const products = [
     },
     {
         name: 'Eclipse Smart Lenses',
-        image: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/eclipse-smart-lenses/800/600',
         description: 'Augmented reality meets everyday eyewear. Seamless HUD integration.',
         brand: 'Visionary',
         category: 'Optics',
@@ -332,7 +332,7 @@ const products = [
     },
     {
         name: 'Nexus Studio Condenser Mic',
-        image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/nexus-studio-mic/800/600',
         description: 'Broadcast-quality audio capture. Features a large-diaphragm gold-sputtered capsule.',
         brand: 'Nexus Audio',
         category: 'Electronics',
@@ -346,7 +346,7 @@ const products = [
     },
     {
         name: 'Aero Dynamic T-Shirt',
-        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/aero-dynamic-t-shirt/800/600',
         description: 'Ultra-lightweight moisture-wicking fabric for peak performance.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -360,7 +360,7 @@ const products = [
     },
     {
         name: 'Minimalist Aluminum Pen',
-        image: 'https://images.unsplash.com/photo-1585336261022-680e29497554?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/minimalist-aluminum-pen/800/600',
         description: 'Precision-machined from aerospace-grade aluminum. A writer\'s essential.',
         brand: 'Metro Craft',
         category: 'Lifestyle',
@@ -374,7 +374,7 @@ const products = [
     },
     {
         name: 'Nordic Ergo Chair',
-        image: 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/nordic-ergo-chair/800/600',
         description: 'Ergonomic perfection meets Scandinavian minimalism. Breathable mesh back.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -388,7 +388,7 @@ const products = [
     },
     {
         name: 'Quantum Noise-Cancelling Headphones',
-        image: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/quantum-noise-cancelling-headphones/800/600',
         description: 'Immersive audio experience with active noise cancellation and ergonomic fit.',
         brand: 'Nexus Audio',
         category: 'Electronics',
@@ -402,7 +402,7 @@ const products = [
     },
     {
         name: 'Horizon Drone Camera',
-        image: 'https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/horizon-drone-camera/800/600',
         description: 'Capture sweeping landscapes from the sky in stunning 4K resolution.',
         brand: 'Visionary',
         category: 'Optics',
@@ -416,7 +416,7 @@ const products = [
     },
     {
         name: 'Apex Trekking Boots',
-        image: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/apex-trekking-boots/800/600',
         description: 'Built for the toughest trails. Waterproof, breathable, and incredibly durable.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -430,7 +430,7 @@ const products = [
     },
     {
         name: 'Chronos Minimalist Watch',
-        image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/chronos-minimalist-watch/800/600',
         description: 'Less is more. A beautiful everyday watch featuring an ultra-slim profile.',
         brand: 'Temporal',
         category: 'Lifestyle',
@@ -444,7 +444,7 @@ const products = [
     },
     {
         name: 'Lumina Smart LED Strip',
-        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/lumina-smart-led-strip/800/600',
         description: 'Transform your space with customizable 16 million colors and app control.',
         brand: 'Lumina Design',
         category: 'Electronics',
@@ -458,7 +458,7 @@ const products = [
     },
     {
         name: 'AURA Home Scent Diffuser',
-        image: 'https://images.unsplash.com/photo-1608554284627-e4352dc0a373?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/aura-home-scent-diffuser/800/600',
         description: 'Elevate your environment. Ultrasonic diffusion of essential oils for a calming atmosphere.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -472,7 +472,7 @@ const products = [
     },
     {
         name: 'Obsidian Workstation Desk',
-        image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/obsidian-workstation-desk/800/600',
         description: 'The ultimate modern desk. Solid carbon fiber top with adjustable standing height.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -486,7 +486,7 @@ const products = [
     },
     {
         name: 'Voyager Travel Sling',
-        image: 'https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/voyager-travel-sling/800/600',
         description: 'Compact and secure carrying for everyday essentials while on the move.',
         brand: 'Metro Craft',
         category: 'Apparel',
@@ -500,7 +500,7 @@ const products = [
     },
     {
         name: 'Prism Macro Lens Kit',
-        image: 'https://images.unsplash.com/photo-1516961642265-531546e84af2?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/prism-macro-lens-kit/800/600',
         description: 'Professional-grade attachable lenses for capturing microscopic details on your smartphone.',
         brand: 'Visionary',
         category: 'Optics',
@@ -516,7 +516,7 @@ const products = [
     // --- STUDIO & OPTICS ---
     {
         name: 'Studio Pro Interface',
-        image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/studio-pro-interface/800/600',
         description: 'Professional 2-in/4-out USB audio interface for pristine studio recording.',
         brand: 'Nexus Audio',
         category: 'Studio',
@@ -530,7 +530,7 @@ const products = [
     },
     {
         name: 'Acoustic Foam Panels',
-        image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/acoustic-foam-panels/800/600',
         description: 'Premium sound absorption panels for your home studio setup.',
         brand: 'SoundShape',
         category: 'Studio',
@@ -544,7 +544,7 @@ const products = [
     },
     {
         name: 'Stellar Binoculars',
-        image: 'https://images.unsplash.com/photo-1610395219791-21b0353e43d3?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/stellar-binoculars/800/600',
         description: 'High-magnification binoculars for bird watching and celestial observation.',
         brand: 'Visionary',
         category: 'Optics',
@@ -558,7 +558,7 @@ const products = [
     },
     {
         name: 'Telescope Pro',
-        image: 'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/telescope-pro-optics/800/600',
         description: 'Deep-space viewing with our most powerful consumer telescope yet.',
         brand: 'Visionary',
         category: 'Optics',
@@ -572,7 +572,7 @@ const products = [
     },
     {
         name: 'Ergonomic Wear Tech Hoodie',
-        image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/ergonomic-tech-hoodie/800/600',
         description: 'Cutting edge fabric tech meets everyday comfort.',
         brand: 'Apex Outdoor',
         category: 'Wear',
@@ -586,7 +586,7 @@ const products = [
     },
     {
         name: 'Performance Running Shoes',
-        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/performance-running-shoes/800/600',
         description: 'Ultra-lightweight running shoes engineered for speed and endurance.',
         brand: 'Apex Outdoor',
         category: 'Wear',
@@ -600,7 +600,7 @@ const products = [
     },
     {
         name: 'Smart Water Bottle',
-        image: 'https://images.unsplash.com/photo-1523362622744-8ce613a05582?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/smart-water-bottle-life/800/600',
         description: 'Tracks your hydration and glows to remind you to drink.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -614,7 +614,7 @@ const products = [
     },
     {
         name: 'Zen Meditation Cushion',
-        image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/zen-meditation-cushion-home/800/600',
         description: 'Ergonomic buckwheat-filled cushion for proper posture during meditation.',
         brand: 'Heritage Home',
         category: 'Lifestyle',
@@ -628,7 +628,7 @@ const products = [
     },
     {
         name: 'Studio Monitor Speakers',
-        image: 'https://images.unsplash.com/photo-1545014165-6804595232c4?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/studio-monitor-speakers-audio/800/600',
         description: 'Active 2-way studio monitors with precise frequency response.',
         brand: 'Nexus Audio',
         category: 'Studio',
@@ -642,7 +642,7 @@ const products = [
     },
     {
         name: 'Desk Boom Arm',
-        image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/desk-boom-arm-studio/800/600',
         description: 'Professional articulated mic boom arm with hidden cable management.',
         brand: 'SoundShape',
         category: 'Studio',
@@ -656,7 +656,7 @@ const products = [
     },
     {
         name: 'Microscope Elite',
-        image: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/microscope-elite-optics/800/600',
         description: 'Digital binocular microscope with maximum 2000x magnification.',
         brand: 'Visionary',
         category: 'Optics',
@@ -670,7 +670,7 @@ const products = [
     },
     {
         name: 'Rangefinder Pro',
-        image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/rangefinder-pro-optics/800/600',
         description: 'Laser rangefinder for golf, hunting and precise distance measurements.',
         brand: 'Visionary',
         category: 'Optics',
@@ -684,7 +684,7 @@ const products = [
     },
     {
         name: 'All-Weather Tech Jacket',
-        image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/all-weather-tech-jacket-wear/800/600',
         description: 'Waterproof and breathable smart jacket for extreme conditions.',
         brand: 'Apex Outdoor',
         category: 'Wear',
@@ -698,7 +698,7 @@ const products = [
     },
     {
         name: 'Compression Tights',
-        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/compression-tights-wear/800/600',
         description: 'Performance tights for faster recovery and enhanced muscle support.',
         brand: 'Apex Outdoor',
         category: 'Wear',
@@ -712,7 +712,7 @@ const products = [
     },
     {
         name: 'Sunrise Alarm Clock',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/sunrise-alarm-clock-life/800/600',
         description: 'Wake up naturally with a simulated sunrise and relaxing sounds.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -726,7 +726,7 @@ const products = [
     },
     {
         name: 'Ceramic Pour Over Set',
-        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800',
+        image: 'https://picsum.photos/seed/ceramic-pour-over-set-home/800/600',
         description: 'Minimalist pour over coffee maker for the perfect morning brew.',
         brand: 'Heritage Home',
         category: 'Lifestyle',
@@ -742,118 +742,6 @@ const products = [
 
 const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle'];
 const brands = ['Nexus Audio', 'Visionary', 'Apex Outdoor', 'Lumina Design', 'Heritage Home', 'SoundShape', 'Metro Craft', 'Temporal'];
-
-// Category-specific image pools — product-accurate themes per category
-const categoryImages: Record<string, string[]> = {
-    "Studio": [
-        "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1545014165-6804595232c4?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1583394838336-acd99d9ed166?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1516223385754-a06a2d26e1ba?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1525438160292-a4a860951216?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1461784121038-f088ca1e7714?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1484876063934-153cfb3c2713?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1521185496955-15097b20c5fe?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1443884590026-2e4d21a8a0cd?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1558584673-c834fb1cc3ca?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1569130886183-3e7cf6b58e98?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800"
-    ],
-    "Optics": [
-        "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1516961642265-531546e84af2?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1495707902641-75cac588d2e9?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1478827387698-1527781a4887?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1509219319803-b0e271613cdb?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1453974336165-b5c58464f1ed?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1500643752441-4dc90cda350a?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1496715976403-7e36dc43f17b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1516723238634-8b63fc3c0422?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1493869527244-96265103b912?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1494707924465-e1426acb48cb?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1509100104048-73c89471e796?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1452784444945-3f422708fe5e?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1442115994182-072fd213966a?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1508296696981-997a4bb03f9b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1515512140530-12bbf6150a09?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1604785846291-7f88a9aacc4a?auto=format&fit=crop&q=80&w=800"
-    ],
-    "Wear": [
-        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1580657018950-c7f7d99d2e2f?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1511556820780-d912e42b4980?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1585236905160-a7b0a84df36e?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&q=80&w=800"
-    ],
-    "Lifestyle": [
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1608554284627-e4352dc0a373?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1523362622744-8ce613a05582?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1585336261022-680e29497554?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1472396961693-142e6bcdec0a?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1518005020250-675f0403176d?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1493723843671-1d655e66ac1c?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1583847268964-b28dc2f51ec9?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1512314889357-e157c22f938d?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1499933374294-4584851497cc?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1526170315873-3a5616af83a9?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1563220551-0164627b72c3?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=800"
-    ]
-};
 
 const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     const i = index + 1;
