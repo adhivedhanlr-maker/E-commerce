@@ -19,3 +19,4 @@
 {"level":"error","message":"MongoDB connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-03-03T07:48:31.496Z"}
 {"level":"error","message":"MongoDB connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.mmilbvc.mongodb.net","timestamp":"2026-03-03T08:00:36.039Z"}
 {"level":"error","message":"Error importing data: Product validation failed: user: Path `user` is required.","timestamp":"2026-03-23T07:52:12.180Z"}
+{"level":"error","message":"Error destroying data: Operation `orders.deleteMany()` buffering timed out after 10000ms","timestamp":"2026-03-23T09:16:44.272Z"}
