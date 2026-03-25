@@ -88,7 +88,7 @@ const products = [
     },
     {
         name: 'Lunar Orbital Lamp',
-        image: 'https://images.unsplash.com/photo-1507473885765-e6ed657f9971?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1540932239986-1012b189a74a?auto=format&fit=crop&q=80&w=800',
         description: 'Sculptural lighting inspired by celestial bodies. Warm ambient glow through hand-blown frosted glass.',
         brand: 'Lumina Design',
         category: 'Furniture',
@@ -164,7 +164,7 @@ const products = [
     // --- ADDITIONAL MASS DATA ---
     {
         name: 'Titan Watch Pro',
-        image: 'https://images.unsplash.com/photo-1508685096489-7as68962d382?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1544117518-2b10be48de2a?auto=format&fit=crop&q=80&w=800',
         description: 'The ultimate smartwatch for athletes. High-precision GPS and biometric sensors.',
         brand: 'Titan Tech',
         category: 'Electronics',
