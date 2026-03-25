@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, cubicBezier } from 'framer-motion';
 import { Heart, Star, Plus } from 'lucide-react';
@@ -104,14 +103,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, aspectRatio = "aspec
                     </div>
 
                     {/* Image with zoom */}
-                    <div className="h-full w-full bg-gradient-to-br from-secondary-100 to-secondary-200 transition-transform duration-1000 group-hover:scale-105 dark:from-white/5 dark:to-white/10 flex items-center justify-center relative">
+                    <div className="h-full w-full bg-gradient-to-br from-secondary-100 to-secondary-200 transition-transform duration-1000 group-hover:scale-105 dark:from-white/5 dark:to-white/10 flex items-center justify-center relative overflow-hidden">
                         {product.images[0] ? (
-                            <Image
+                            <img
                                 src={product.images[0]}
                                 alt={product.name}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="absolute inset-0 w-full h-full object-cover"
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).style.display = 'none';
+                                }}
                             />
                         ) : (
                             <div className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 dark:text-white/10">No Image</div>
