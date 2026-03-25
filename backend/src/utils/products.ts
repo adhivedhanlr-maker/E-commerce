@@ -543,7 +543,7 @@ const products = [
     },
     {
         name: 'Stellar Binoculars',
-        image: 'https://images.unsplash.com/photo-1582239462215-ca80486c9d7d?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1542728929-14a3c61306f7?auto=format&fit=crop&q=80&w=800',
         description: 'High-magnification binoculars for bird watching and celestial observation.',
         brand: 'Visionary',
         category: 'Optics',
@@ -557,7 +557,7 @@ const products = [
     },
     {
         name: 'Telescope Pro',
-        image: 'https://images.unsplash.com/photo-1518292850785-5a71df5d46b0?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&q=80&w=800',
         description: 'Deep-space viewing with our most powerful consumer telescope yet.',
         brand: 'Visionary',
         category: 'Optics',
@@ -599,7 +599,7 @@ const products = [
     },
     {
         name: 'Smart Water Bottle',
-        image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1523362622744-8ce613a05582?auto=format&fit=crop&q=80&w=800',
         description: 'Tracks your hydration and glows to remind you to drink.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -613,7 +613,7 @@ const products = [
     },
     {
         name: 'Zen Meditation Cushion',
-        image: 'https://images.unsplash.com/photo-1532598380295-d2fc763cebc1?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&q=80&w=800',
         description: 'Ergonomic buckwheat-filled cushion for proper posture during meditation.',
         brand: 'Heritage Home',
         category: 'Lifestyle',
@@ -628,7 +628,7 @@ const products = [
     // --- MORE ATTEMPT 2 ---
     {
         name: 'Studio Monitor Speakers',
-        image: 'https://images.unsplash.com/photo-1545465223-2895ea3f421a?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1545014165-6804595232c4?auto=format&fit=crop&q=80&w=800',
         description: 'Active 2-way studio monitors with precise frequency response.',
         brand: 'Nexus Audio',
         category: 'Studio',
@@ -642,7 +642,7 @@ const products = [
     },
     {
         name: 'Desk Boom Arm',
-        image: 'https://images.unsplash.com/photo-1620023647466-9ab30165db8b?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800',
         description: 'Professional articulated mic boom arm with hidden cable management.',
         brand: 'SoundShape',
         category: 'Studio',
@@ -656,7 +656,7 @@ const products = [
     },
     {
         name: 'Microscope Elite',
-        image: 'https://images.unsplash.com/photo-1582239462215-ca80486c9d7d?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?auto=format&fit=crop&q=80&w=800',
         description: 'Digital binocular microscope with maximum 2000x magnification.',
         brand: 'Visionary',
         category: 'Optics',
@@ -670,7 +670,7 @@ const products = [
     },
     {
         name: 'Rangefinder Pro',
-        image: 'https://images.unsplash.com/photo-1516961642265-531546e84af2?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=800',
         description: 'Laser rangefinder for golf, hunting and precise distance measurements.',
         brand: 'Visionary',
         category: 'Optics',
@@ -712,7 +712,7 @@ const products = [
     },
     {
         name: 'Sunrise Alarm Clock',
-        image: 'https://images.unsplash.com/photo-1542456041-8664b4cbbba6?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1509100104048-73c89471e796?auto=format&fit=crop&q=80&w=800',
         description: 'Wake up naturally with a simulated sunrise and relaxing sounds.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -726,7 +726,7 @@ const products = [
     },
     {
         name: 'Ceramic Pour Over Set',
-        image: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800',
         description: 'Minimalist pour over coffee maker for the perfect morning brew.',
         brand: 'Heritage Home',
         category: 'Lifestyle',
