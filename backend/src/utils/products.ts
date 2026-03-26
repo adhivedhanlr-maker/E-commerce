@@ -118,7 +118,7 @@ const products = [
     },
     {
         name: 'Merino Precision Knit',
-        image: '/images/jacket.png',
+        image: '/images/merino_knit.png',
         description: 'Engineered comfort. Sourced from the finest New Zealand Merino wool for unparalleled breathability and softness.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -164,7 +164,7 @@ const products = [
     // --- ADDITIONAL MASS DATA ---
     {
         name: 'Titan Watch Pro',
-        image: '/images/watch.png',
+        image: '/images/titan_watch_pro.png',
         description: 'The ultimate smartwatch for athletes. High-precision GPS and biometric sensors.',
         brand: 'Titan Tech',
         category: 'Electronics',
@@ -220,7 +220,7 @@ const products = [
     },
     {
         name: 'Onyx Coffee Table',
-        image: '/images/desk.png',
+        image: '/images/sofa.png',
         description: 'A statement piece for your living room. Hand-polished onyx stone.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -234,7 +234,7 @@ const products = [
     },
     {
         name: 'Silk Drapery Set',
-        image: '/images/lamp.png',
+        image: '/images/sofa.png',
         description: 'Elegant window treatments. 100% pure silk with black-out lining.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -360,7 +360,7 @@ const products = [
     },
     {
         name: 'Minimalist Aluminum Pen',
-        image: '/images/backpack.png',
+        image: '/images/keyboard.png',
         description: 'Precision-machined from aerospace-grade aluminum. A writer\'s essential.',
         brand: 'Metro Craft',
         category: 'Lifestyle',
@@ -726,7 +726,7 @@ const products = [
     },
     {
         name: 'Ceramic Pour Over Set',
-        image: '/images/backpack.png',
+        image: '/images/lamp.png',
         description: 'Minimalist pour over coffee maker for the perfect morning brew.',
         brand: 'Heritage Home',
         category: 'Lifestyle',
