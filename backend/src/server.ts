@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db';
 import logger from './utils/logger';
+import path from 'path';
 
 import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes';
@@ -41,6 +42,9 @@ app.use(helmet());
 app.use(cookieParser()); // Parse HTTP-only cookies
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '20mb', extended: true }));
+
+// Static Folder for Images
+app.use('/images', express.static(path.join(__dirname, '../public/images')));
 
 // Routes
 app.use('/api/auth', authRoutes);
