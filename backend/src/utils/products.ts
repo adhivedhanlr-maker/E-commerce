@@ -44,7 +44,7 @@ const products = [
     },
     {
         name: 'Zenith Game Console',
-        image: '/images/laptop.png',
+        image: '/images/electronics_3.png',
         description: 'Next-generation performance. Liquid-cooled architecture capable of 120fps gaming at 4K resolution.',
         brand: 'Zenith Interactive',
         category: 'Electronics',
@@ -164,7 +164,7 @@ const products = [
     // --- ADDITIONAL MASS DATA ---
     {
         name: 'Titan Watch Pro',
-        image: '/images/titan_watch_pro.png',
+        image: '/images/electronics_1.png',
         description: 'The ultimate smartwatch for athletes. High-precision GPS and biometric sensors.',
         brand: 'Titan Tech',
         category: 'Electronics',
@@ -192,7 +192,7 @@ const products = [
     },
     {
         name: 'SlimBook Ultra 14',
-        image: '/images/laptop.png',
+        image: '/images/electronics_2.png',
         description: 'Ultra-thin, ultra-powerful. The perfect laptop for creative professionals.',
         brand: 'SlimBook',
         category: 'Electronics',
@@ -206,7 +206,7 @@ const products = [
     },
     {
         name: 'Velvet Cloud Sofa',
-        image: '/images/sofa.png',
+        image: '/images/furniture_2.png',
         description: 'Sink into pure luxury. High-density foam wrapped in premium velvet.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -220,7 +220,7 @@ const products = [
     },
     {
         name: 'Onyx Coffee Table',
-        image: '/images/sofa.png',
+        image: '/images/furniture_3.png',
         description: 'A statement piece for your living room. Hand-polished onyx stone.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -234,7 +234,7 @@ const products = [
     },
     {
         name: 'Silk Drapery Set',
-        image: '/images/sofa.png',
+        image: '/images/furniture_4.png',
         description: 'Elegant window treatments. 100% pure silk with black-out lining.',
         brand: 'Heritage Home',
         category: 'Furniture',
@@ -248,7 +248,7 @@ const products = [
     },
     {
         name: 'Cashmere Overcoat',
-        image: '/images/jacket.png',
+        image: '/images/apparel_1.png',
         description: 'Timeless sophistication. Italian cashmere with a modern slim fit.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -262,7 +262,7 @@ const products = [
     },
     {
         name: 'Urban Cargo Joggers',
-        image: '/images/jacket.png',
+        image: '/images/merino_knit.png',
         description: 'Functional streetwear. Water-resistant stretch fabric with utility pockets.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -304,7 +304,7 @@ const products = [
     },
     {
         name: 'Aerospace Aviators',
-        image: '/images/binoculars.png',
+        image: '/images/lifestyle_1.png',
         description: 'Classic frame, modern lens technology. Polarized protection for the urban sky.',
         brand: 'Visionary',
         category: 'Optics',
@@ -318,7 +318,7 @@ const products = [
     },
     {
         name: 'Eclipse Smart Lenses',
-        image: '/images/watch.png',
+        image: '/images/electronics_1.png',
         description: 'Augmented reality meets everyday eyewear. Seamless HUD integration.',
         brand: 'Visionary',
         category: 'Optics',
@@ -346,7 +346,7 @@ const products = [
     },
     {
         name: 'Aero Dynamic T-Shirt',
-        image: '/images/shoes.png',
+        image: '/images/apparel_1.png',
         description: 'Ultra-lightweight moisture-wicking fabric for peak performance.',
         brand: 'Apex Outdoor',
         category: 'Apparel',
@@ -360,7 +360,7 @@ const products = [
     },
     {
         name: 'Minimalist Aluminum Pen',
-        image: '/images/keyboard.png',
+        image: '/images/lifestyle_2.png',
         description: 'Precision-machined from aerospace-grade aluminum. A writer\'s essential.',
         brand: 'Metro Craft',
         category: 'Lifestyle',
@@ -388,7 +388,7 @@ const products = [
     },
     {
         name: 'Quantum Noise-Cancelling Headphones',
-        image: '/images/headphones.png',
+        image: '/images/electronics_5.png',
         description: 'Immersive audio experience with active noise cancellation and ergonomic fit.',
         brand: 'Nexus Audio',
         category: 'Electronics',
@@ -402,7 +402,7 @@ const products = [
     },
     {
         name: 'Horizon Drone Camera',
-        image: '/images/binoculars.png',
+        image: '/images/electronics_4.png',
         description: 'Capture sweeping landscapes from the sky in stunning 4K resolution.',
         brand: 'Visionary',
         category: 'Optics',
@@ -444,7 +444,7 @@ const products = [
     },
     {
         name: 'Lumina Smart LED Strip',
-        image: '/images/lamp.png',
+        image: '/images/electronics_1.png',
         description: 'Transform your space with customizable 16 million colors and app control.',
         brand: 'Lumina Design',
         category: 'Electronics',
@@ -458,7 +458,7 @@ const products = [
     },
     {
         name: 'AURA Home Scent Diffuser',
-        image: '/images/lamp.png',
+        image: '/images/lifestyle_1.png',
         description: 'Elevate your environment. Ultrasonic diffusion of essential oils for a calming atmosphere.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -486,7 +486,7 @@ const products = [
     },
     {
         name: 'Voyager Travel Sling',
-        image: '/images/backpack.png',
+        image: '/images/lifestyle_2.png',
         description: 'Compact and secure carrying for everyday essentials while on the move.',
         brand: 'Metro Craft',
         category: 'Apparel',
@@ -500,7 +500,7 @@ const products = [
     },
     {
         name: 'Prism Macro Lens Kit',
-        image: '/images/binoculars.png',
+        image: '/images/optics_3.png',
         description: 'Professional-grade attachable lenses for capturing microscopic details on your smartphone.',
         brand: 'Visionary',
         category: 'Optics',
@@ -516,7 +516,7 @@ const products = [
     // --- STUDIO & OPTICS ---
     {
         name: 'Studio Pro Interface',
-        image: '/images/microphone.png',
+        image: '/images/studio_2.png',
         description: 'Professional 2-in/4-out USB audio interface for pristine studio recording.',
         brand: 'Nexus Audio',
         category: 'Studio',
@@ -530,7 +530,7 @@ const products = [
     },
     {
         name: 'Acoustic Foam Panels',
-        image: '/images/keyboard.png',
+        image: '/images/studio_1.png',
         description: 'Premium sound absorption panels for your home studio setup.',
         brand: 'SoundShape',
         category: 'Studio',
@@ -572,7 +572,7 @@ const products = [
     },
     {
         name: 'Ergonomic Wear Tech Hoodie',
-        image: '/images/jacket.png',
+        image: '/images/apparel_1.png',
         description: 'Cutting edge fabric tech meets everyday comfort.',
         brand: 'Apex Outdoor',
         category: 'Wear',
@@ -600,7 +600,7 @@ const products = [
     },
     {
         name: 'Smart Water Bottle',
-        image: '/images/backpack.png',
+        image: '/images/lifestyle_2.png',
         description: 'Tracks your hydration and glows to remind you to drink.',
         brand: 'Lumina Design',
         category: 'Lifestyle',
@@ -614,7 +614,7 @@ const products = [
     },
     {
         name: 'Zen Meditation Cushion',
-        image: '/images/sofa.png',
+        image: '/images/furniture_2.png',
         description: 'Ergonomic buckwheat-filled cushion for proper posture during meditation.',
         brand: 'Heritage Home',
         category: 'Lifestyle',
@@ -628,7 +628,7 @@ const products = [
     },
     {
         name: 'Studio Monitor Speakers',
-        image: '/images/keyboard.png',
+        image: '/images/studio_1.png',
         description: 'Active 2-way studio monitors with precise frequency response.',
         brand: 'Nexus Audio',
         category: 'Studio',
@@ -642,7 +642,7 @@ const products = [
     },
     {
         name: 'Desk Boom Arm',
-        image: '/images/microphone.png',
+        image: '/images/studio_2.png',
         description: 'Professional articulated mic boom arm with hidden cable management.',
         brand: 'SoundShape',
         category: 'Studio',
@@ -656,7 +656,7 @@ const products = [
     },
     {
         name: 'Microscope Elite',
-        image: '/images/telescope.png',
+        image: '/images/optics_1.png',
         description: 'Digital binocular microscope with maximum 2000x magnification.',
         brand: 'Visionary',
         category: 'Optics',
@@ -670,7 +670,7 @@ const products = [
     },
     {
         name: 'Rangefinder Pro',
-        image: '/images/binoculars.png',
+        image: '/images/optics_3.png',
         description: 'Laser rangefinder for golf, hunting and precise distance measurements.',
         brand: 'Visionary',
         category: 'Optics',
@@ -726,7 +726,7 @@ const products = [
     },
     {
         name: 'Ceramic Pour Over Set',
-        image: '/images/lamp.png',
+        image: '/images/furniture_3.png',
         description: 'Minimalist pour over coffee maker for the perfect morning brew.',
         brand: 'Heritage Home',
         category: 'Lifestyle',
@@ -814,8 +814,9 @@ const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     const backendCategory = category === 'Wear' ? 'Apparel' : category;
     const pool = categoryImagePools[backendCategory] || categoryImagePools['Lifestyle'];
     
-    // Rotate images significantly or use index+offset
-    const image = pool[(i + Math.floor(i / pool.length)) % pool.length];
+    // Use a more complex rotation to ensure different brands/adjectives get different images even in same category
+    const imageIndex = (i + brands.indexOf(brand) + adjectives.indexOf(adj)) % pool.length;
+    const image = pool[imageIndex];
 
     return {
         name: `${brand} ${category} ${adj} ${i}`,
