@@ -590,3 +590,19 @@
 {"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-26T07:12:46.002Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-26T07:12:49.412Z"}
 {"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-26T07:12:52.800Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-26T08:59:19.227Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-26T08:59:19.250Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-03-26T08:59:22.737Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-26T08:59:25.293Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-26T09:31:54.478Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-26T09:32:01.137Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2026-03-26T09:32:01.260Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-26T09:32:02.157Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-27T06:01:09.763Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-27T06:01:09.789Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-27T06:01:10.827Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-27T06:01:15.655Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-27T06:16:24.310Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-27T06:16:24.375Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-27T06:16:25.877Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-27T06:16:32.391Z"}

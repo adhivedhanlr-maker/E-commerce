@@ -740,7 +740,7 @@ const products = [
     }
 ];
 
-const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle', 'Electronics', 'Furniture', 'Apparel'];
+const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle', 'Electronics', 'Furniture'];
 const brands = ['Nexus Audio', 'Visionary', 'Apex Outdoor', 'Lumina Design', 'Heritage Home', 'SoundShape', 'Metro Craft', 'Temporal'];
 
 const categoryImagePools: Record<string, string[]> = {
@@ -748,56 +748,88 @@ const categoryImagePools: Record<string, string[]> = {
         '/images/headphones.png',
         '/images/phone.png',
         '/images/keyboard.png',
-        '/images/laptop.png'
+        '/images/laptop.png',
+        '/images/electronics_1.png',
+        '/images/electronics_2.png',
+        '/images/electronics_3.png',
+        '/images/electronics_4.png',
+        '/images/electronics_5.png',
+        '/images/titan_watch_pro.png'
     ],
     'Furniture': [
         '/images/desk.png',
         '/images/chair.png',
         '/images/lamp.png',
-        '/images/sofa.png'
+        '/images/sofa.png',
+        '/images/furniture_1.png',
+        '/images/furniture_2.png',
+        '/images/furniture_3.png',
+        '/images/furniture_4.png'
     ],
     'Apparel': [
-        '/images/jacket.png'
+        '/images/jacket.png',
+        '/images/apparel_1.png',
+        '/images/merino_knit.png',
+        '/images/shoes.png'
     ],
     'Wear': [
         '/images/shoes.png',
-        '/images/jacket.png'
+        '/images/jacket.png',
+        '/images/apparel_1.png',
+        '/images/merino_knit.png'
     ],
     'Lifestyle': [
         '/images/backpack.png',
         '/images/watch.png',
-        '/images/lamp.png'
+        '/images/lamp.png',
+        '/images/lifestyle_1.png',
+        '/images/lifestyle_2.png'
     ],
     'Studio': [
         '/images/microphone.png',
-        '/images/headphones.png'
+        '/images/headphones.png',
+        '/images/studio_1.png',
+        '/images/studio_2.png'
     ],
     'Optics': [
         '/images/binoculars.png',
-        '/images/telescope.png'
+        '/images/telescope.png',
+        '/images/optics_1.png',
+        '/images/optics_2.png',
+        '/images/optics_3.png'
     ]
 };
+
+const adjectives = ['Pro', 'Elite', 'Ultra', 'Premium', 'Essential', 'Classic', 'Modern', 'Minimalist', 'Luxe', 'Alpha', 'Zenith', 'Apex'];
+const featureTags = ['Wireless', 'Durable', 'Ergonomic', 'Sustainable', 'High-Performance', 'Precision', 'Handcrafted', 'Next-Gen'];
 
 const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     const i = index + 1;
     const category = targetCategories[i % targetCategories.length];
     const brand = brands[i % brands.length];
-    const pool = categoryImagePools[category] || categoryImagePools['Lifestyle'];
-    const image = pool[i % pool.length];
+    const adj = adjectives[i % adjectives.length];
+    const tag = featureTags[i % featureTags.length];
+    
+    // Fallback to Apparel if Wear is chosen for consistency
+    const backendCategory = category === 'Wear' ? 'Apparel' : category;
+    const pool = categoryImagePools[backendCategory] || categoryImagePools['Lifestyle'];
+    
+    // Rotate images significantly or use index+offset
+    const image = pool[(i + Math.floor(i / pool.length)) % pool.length];
 
     return {
-        name: `${category} Premium Model ${i}`,
+        name: `${brand} ${category} ${adj} ${i}`,
         image,
-        description: `A high-quality, premium ${category.toLowerCase()} product designed for performance and reliability.`,
+        description: `The ${brand} ${category} ${adj} edition. This ${tag.toLowerCase()} product is designed for those who value both style and ${tag.toLowerCase()} functionality. Ideal for professional use.`,
         brand,
-        category,
-        price: 50 + (i % 300) + 0.99,
-        originalPrice: 70 + (i % 300) + 0.99,
-        discountPercentage: 10 + (i % 15),
-        countInStock: 20 + (i % 80),
-        rating: 4.0 + ((i % 10) / 10),
-        numReviews: 15 + (i % 200),
-        specifications: { 'Quality': 'Premium Grade', 'Edition': `Batch ${i}` }
+        category: backendCategory,
+        price: 50 + (i % 300) + 19.99,
+        originalPrice: 70 + (i % 300) + 29.99,
+        discountPercentage: 10 + (i % 25),
+        countInStock: 5 + (i % 90),
+        rating: 4.2 + ((i % 8) / 10),
+        numReviews: 10 + (i % 150),
+        specifications: { 'Quality': 'Premium Grade', 'Edition': `${adj} ${tag}`, 'Batch': `X-${i}` }
     };
 });
 
