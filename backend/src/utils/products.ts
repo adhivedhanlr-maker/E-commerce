@@ -740,60 +740,38 @@ const products = [
     }
 ];
 
-const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle', 'Electronics', 'Furniture'];
+const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle', 'Furniture'];
 const brands = ['Nexus Audio', 'Visionary', 'Apex Outdoor', 'Lumina Design', 'Heritage Home', 'SoundShape', 'Metro Craft', 'Temporal'];
 
 const categoryImagePools: Record<string, string[]> = {
-    'Electronics': [
-        '/images/headphones.png',
-        '/images/phone.png',
-        '/images/keyboard.png',
-        '/images/laptop.png',
+    'Studio': [
         '/images/electronics_1.png',
         '/images/electronics_2.png',
         '/images/electronics_3.png',
         '/images/electronics_4.png',
         '/images/electronics_5.png',
-        '/images/titan_watch_pro.png'
+        '/images/studio_1.png',
+        '/images/studio_2.png'
     ],
     'Furniture': [
-        '/images/desk.png',
-        '/images/chair.png',
-        '/images/lamp.png',
-        '/images/sofa.png',
         '/images/furniture_1.png',
         '/images/furniture_2.png',
         '/images/furniture_3.png',
         '/images/furniture_4.png'
     ],
-    'Apparel': [
-        '/images/jacket.png',
+    'Wear': [
         '/images/apparel_1.png',
         '/images/merino_knit.png',
-        '/images/shoes.png'
-    ],
-    'Wear': [
         '/images/shoes.png',
-        '/images/jacket.png',
-        '/images/apparel_1.png',
-        '/images/merino_knit.png'
+        '/images/jacket.png'
     ],
     'Lifestyle': [
-        '/images/backpack.png',
-        '/images/watch.png',
-        '/images/lamp.png',
         '/images/lifestyle_1.png',
-        '/images/lifestyle_2.png'
-    ],
-    'Studio': [
-        '/images/microphone.png',
-        '/images/headphones.png',
-        '/images/studio_1.png',
-        '/images/studio_2.png'
+        '/images/lifestyle_2.png',
+        '/images/backpack.png',
+        '/images/watch.png'
     ],
     'Optics': [
-        '/images/binoculars.png',
-        '/images/telescope.png',
         '/images/optics_1.png',
         '/images/optics_2.png',
         '/images/optics_3.png'
@@ -810,11 +788,9 @@ const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     const adj = adjectives[i % adjectives.length];
     const tag = featureTags[i % featureTags.length];
     
-    // Fallback to Apparel if Wear is chosen for consistency
-    const backendCategory = category === 'Wear' ? 'Apparel' : category;
-    const pool = categoryImagePools[backendCategory] || categoryImagePools['Lifestyle'];
+    const pool = categoryImagePools[category] || categoryImagePools['Lifestyle'];
     
-    // Use a more complex rotation to ensure different brands/adjectives get different images even in same category
+    // Staggered selection to ensure different brands/adjectives get different images
     const imageIndex = (i + brands.indexOf(brand) + adjectives.indexOf(adj)) % pool.length;
     const image = pool[imageIndex];
 
@@ -823,7 +799,7 @@ const generatedProducts = Array.from({ length: 200 }, (_, index) => {
         image,
         description: `The ${brand} ${category} ${adj} edition. This ${tag.toLowerCase()} product is designed for those who value both style and ${tag.toLowerCase()} functionality. Ideal for professional use.`,
         brand,
-        category: backendCategory,
+        category,
         price: 50 + (i % 300) + 19.99,
         originalPrice: 70 + (i % 300) + 29.99,
         discountPercentage: 10 + (i % 25),
@@ -834,6 +810,10 @@ const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     };
 });
 
-const finalProducts = [...products, ...generatedProducts];
+const finalProducts = [...products, ...generatedProducts].map(p => ({
+    ...p,
+    // Unify backend categories to match frontend labels
+    category: p.category === 'Electronics' ? 'Studio' : (p.category === 'Apparel' ? 'Wear' : p.category)
+}));
 
 export default finalProducts;

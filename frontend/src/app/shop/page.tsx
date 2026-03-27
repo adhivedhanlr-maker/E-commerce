@@ -103,9 +103,9 @@ function ShopContent() {
         return fetchedProducts.filter(product => {
             // Map UI category labels back to backend categories
             const uiToBackend: Record<string, string[]> = {
-                'Studio': ['Electronics'],
+                'Studio': ['Studio'],
                 'Optics': ['Optics'],
-                'Wear': ['Apparel'],
+                'Wear': ['Wear'],
                 'Lifestyle': ['Lifestyle'],
                 'Furniture': ['Furniture']
             };

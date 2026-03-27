@@ -22,3 +22,9 @@
 {"level":"error","message":"Error destroying data: Operation `orders.deleteMany()` buffering timed out after 10000ms","timestamp":"2026-03-23T09:16:44.272Z"}
 {"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-25T10:43:17.430Z"}
 {"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-25T10:43:17.496Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T07:27:29.316Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T07:27:29.393Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T08:28:25.368Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T08:28:26.924Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T08:33:43.040Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T08:33:43.191Z"}
