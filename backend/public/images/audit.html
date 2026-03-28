@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Audit</title>
+    <style>
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
+        .item { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div class="grid" id="container"></div>
+    <script>
+        const images = [
+            "apparel_1.png", "backpack.png", "binoculars.png", "chair.png", "desk.png",
+            "electronics_1.png", "electronics_2.png", "electronics_3.png", "electronics_4.png", "electronics_5.png",
+            "furniture_1.png", "furniture_2.png", "furniture_3.png", "furniture_4.png",
+            "headphones.png", "jacket.png", "keyboard.png", "lamp.png", "laptop.png",
+            "lifestyle_1.png", "lifestyle_2.png", "lifestyle_3.png", "merino_knit.png",
+            "microphone.png", "optics_1.png", "optics_2.png", "optics_3.png", "phone.png",
+            "shoes.png", "sofa.png", "studio_1.png", "studio_2.png", "telescope.png",
+            "titan_watch_pro.png", "watch.png"
+        ];
+        const container = document.getElementById('container');
+        images.forEach(img => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.innerHTML = `<h3>${img}</h3><img src="${img}">`;
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>

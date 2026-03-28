@@ -642,3 +642,44 @@
 {"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-27T09:17:03.150Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-03-27T09:17:04.500Z"}
 {"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-27T09:17:07.297Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-27T09:44:17.687Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-27T09:44:17.727Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-01.mmilbvc.mongodb.net","timestamp":"2026-03-27T09:44:18.714Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-27T09:44:23.085Z"}
+{"level":"info","message":"HEAD /api/products?pageSize=100","timestamp":"2026-03-27T09:53:50.810Z"}
+{"level":"info","message":"GET /api/products?pageSize=100","timestamp":"2026-03-27T09:53:51.834Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-27T10:10:10.430Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-27T10:10:10.485Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-27T10:10:11.556Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-27T10:10:16.048Z"}
+{"level":"info","message":"HEAD /api/products?pageSize=50","timestamp":"2026-03-27T10:10:30.113Z"}
+{"level":"info","message":"GET /api/products?pageSize=50","timestamp":"2026-03-27T10:10:31.834Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-27T10:14:30.131Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-27T10:14:30.225Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-27T10:14:31.932Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-27T10:14:35.758Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-27T10:23:49.829Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-27T10:23:49.871Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-27T10:23:50.893Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-27T10:23:54.015Z"}
+{"level":"info","message":"HEAD /api/products?pageSize=50&cb=999999","timestamp":"2026-03-27T10:24:18.740Z"}
+{"level":"info","message":"GET /api/products?pageSize=50&cb=999999","timestamp":"2026-03-27T10:24:19.451Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-27T10:25:10.634Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-27T10:25:10.875Z"}
+{"level":"info","message":"GET /api/products?pageSize=1000","timestamp":"2026-03-27T10:25:12.672Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T10:25:13.018Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T10:25:13.208Z"}
+{"level":"info","message":"GET /api/products?pageSize=1000","timestamp":"2026-03-27T10:31:25.214Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-27T10:31:26.914Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-27T10:31:26.951Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T10:31:27.415Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T10:31:27.550Z"}
+{"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-27T11:14:26.301Z"}
+{"level":"info","message":"Verifying auth token...","timestamp":"2026-03-27T11:14:26.638Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T11:14:31.102Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T11:14:31.181Z"}
+{"level":"info","message":"GET /api/products?pageSize=1000","timestamp":"2026-03-27T11:14:31.298Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-28T05:44:50.034Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-28T05:44:50.099Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-28T05:44:51.360Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-28T05:45:01.259Z"}

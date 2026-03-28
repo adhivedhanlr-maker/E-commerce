@@ -28,3 +28,9 @@
 {"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T08:28:26.924Z"}
 {"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T08:33:43.040Z"}
 {"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T08:33:43.191Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T10:25:13.018Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T10:25:13.208Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T10:31:27.415Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T10:31:27.550Z"}
+{"level":"error","message":"User not found in database - GET /api/auth/profile","timestamp":"2026-03-27T11:14:31.102Z"}
+{"level":"error","message":"Error: User not found in database\n    at C:\\Users\\user\\Desktop\\ecommerce\\backend\\src\\middleware\\auth.middleware.ts:52:25\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-03-27T11:14:31.181Z"}
