@@ -1,43 +1,41 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Zap, RefreshCw, Star, ShieldCheck, ShoppingBag } from 'lucide-react';
+import { Zap, RefreshCw, Star, ShieldCheck, ShoppingBag, Loader2 } from 'lucide-react';
 import Image from 'next/image';
-
-const deals = [
-    {
-        id: 1,
-        title: "Titan Watch Pro",
-        description: "The peak of precision engineering.",
-        discount: "25% OFF",
-        price: 299.99,
-        originalPrice: 399.99,
-        image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800",
-        tag: "Bestseller"
-    },
-    {
-        id: 2,
-        title: "Aura Pods Elite",
-        description: "Sonic clarity like never before.",
-        discount: "15% OFF",
-        price: 349.00,
-        originalPrice: 409.00,
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800",
-        tag: "Limited Stock"
-    },
-    {
-        id: 3,
-        title: "Zenith Keyboard",
-        description: "Tactile perfection for creators.",
-        discount: "Bundle Deal",
-        price: 159.99,
-        originalPrice: 199.99,
-        image: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=800"
-    }
-];
+import { getProducts } from '@/services/productService';
+import ProductCard from '@/components/product/ProductCard';
 
 export default function DealsPage() {
+    const [deals, setDeals] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchDeals = async () => {
+            setIsLoading(true);
+            try {
+                // Fetch products and filter for those with significant discounts
+                const response = await getProducts({ pageSize: 50 });
+                const allProducts = response?.data?.products || response?.products || [];
+                
+                // Get products with discount > 0, sorted by discount percentage
+                const discounted = allProducts
+                    .filter((p: any) => p.discountPercentage > 0)
+                    .sort((a: any, b: any) => b.discountPercentage - a.discountPercentage);
+                
+                setDeals(discounted.slice(0, 12));
+            } catch (error) {
+                console.error('Error fetching deals:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchDeals();
+    }, []);
+
     return (
         <div className="bg-white dark:bg-slate-950 pt-12 md:pt-16 pb-24 overflow-hidden">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
@@ -85,14 +83,14 @@ export default function DealsPage() {
                             <p className="text-slate-400 mb-10 text-lg leading-relaxed">
                                 Curated selections from previous seasons, handpicked for their timeless design and enduring utility.
                             </p>
-                            <Button className="h-16 px-12 rounded-full bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xl shadow-primary-900/20">
-                                Explore The Archive
+                            <Button asChild className="h-16 px-12 rounded-full bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-xl shadow-primary-900/20">
+                                <Link href="/shop?cat=studio">Explore The Archive</Link>
                             </Button>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-4">
-                                <div className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group transition-all hover:bg-white/10 cursor-pointer overflow-hidden">
+                                <Link href="/shop?cat=studio" className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group transition-all hover:bg-white/10 cursor-pointer overflow-hidden block">
                                     <Image
                                         src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800"
                                         alt="Audio Archive"
@@ -101,11 +99,11 @@ export default function DealsPage() {
                                     />
                                     <div className="relative z-10">
                                         <div className="h-2 w-12 bg-primary-600 rounded-full mb-4 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
-                                        <p className="text-white font-bold text-lg mb-1">Audio</p>
+                                        <p className="text-white font-bold text-lg mb-1">Studio</p>
                                         <p className="text-slate-500 text-xs uppercase tracking-widest font-black">24 Items</p>
                                     </div>
-                                </div>
-                                <div className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
+                                </Link>
+                                <Link href="/shop?cat=optics" className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden block">
                                     <Image
                                         src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"
                                         alt="Optics Archive"
@@ -116,10 +114,10 @@ export default function DealsPage() {
                                         <p className="text-white font-bold text-lg mb-1">Optics</p>
                                         <p className="text-slate-500 text-xs uppercase tracking-widest font-black">12 Items</p>
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                             <div className="space-y-4 pt-12">
-                                <div className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
+                                <Link href="/shop?cat=wear" className="relative aspect-[4/3] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden block">
                                     <Image
                                         src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800"
                                         alt="Wear Archive"
@@ -130,66 +128,37 @@ export default function DealsPage() {
                                         <p className="text-white font-bold text-lg mb-1">Wear</p>
                                         <p className="text-slate-500 text-xs uppercase tracking-widest font-black">08 Items</p>
                                     </div>
-                                </div>
-                                <div className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden">
+                                </Link>
+                                <Link href="/shop?cat=lifestyle" className="relative aspect-[4/5] bg-white/5 rounded-3xl border border-white/10 p-6 flex flex-col justify-end group hover:bg-white/10 transition-all cursor-pointer overflow-hidden block">
                                     <Image
                                         src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&q=80&w=800"
-                                        alt="Tools Archive"
+                                        alt="Lifestyle Archive"
                                         fill
                                         className="object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-500"
                                     />
                                     <div className="relative z-10">
-                                        <p className="text-white font-bold text-lg mb-1">Tools</p>
+                                        <p className="text-white font-bold text-lg mb-1">Lifestyle</p>
                                         <p className="text-slate-500 text-xs uppercase tracking-widest font-black">15 Items</p>
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     </div>
                 </motion.div>
 
                 {/* Grid of Highlighted Deals */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
-                    {deals.map((deal, idx) => (
-                        <motion.div
-                            key={deal.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: idx * 0.1 }}
-                            className="group"
-                        >
-                            <div className="relative aspect-[4/5] rounded-[32px] overflow-hidden mb-8 bg-slate-100 dark:bg-slate-900 transition-all group-hover:shadow-premium group-hover:-translate-y-2">
-                                <Image
-                                    src={deal.image}
-                                    alt={deal.title}
-                                    fill
-                                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                <div className="absolute top-6 left-6 flex flex-col gap-2">
-                                    <span className="bg-primary-600 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
-                                        {deal.discount}
-                                    </span>
-                                    {deal.tag && (
-                                        <span className="bg-white/90 dark:bg-black/80 text-slate-950 dark:text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg backdrop-blur-md">
-                                            {deal.tag}
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-slate-950 dark:text-white mb-2">{deal.title}</h3>
-                                <p className="text-slate-500 text-sm mb-4">{deal.description}</p>
-                                <div className="flex items-center gap-3">
-                                    <span className="text-xl font-black text-primary-600">₹{deal.price}</span>
-                                    <span className="text-sm text-slate-400 line-through font-bold">₹{deal.originalPrice}</span>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                {isLoading ? (
+                    <div className="py-20 flex flex-col items-center justify-center space-y-4">
+                        <Loader2 className="h-12 w-12 animate-spin text-primary-600" />
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Loading Latest Values</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-32">
+                        {deals.map((deal, idx) => (
+                            <ProductCard key={deal._id} product={deal} />
+                        ))}
+                    </div>
+                )}
 
                 {/* Value Propositions */}
                 <div className="border-t border-slate-200 dark:border-white/5 pt-16 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">

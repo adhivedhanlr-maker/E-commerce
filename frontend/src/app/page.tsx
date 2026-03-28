@@ -1,209 +1,14 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { motion, cubicBezier } from 'framer-motion';
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-
-const featuredProducts = [
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1e1",
-    name: "Aura Pods Elite",
-    price: 349.00,
-    originalPrice: 429.00,
-    discountPercentage: 20,
-    rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800"],
-    brand: "Nexus Audio",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1e2",
-    name: "Titan Phone 15",
-    price: 1199.00,
-    originalPrice: 1299.00,
-    discountPercentage: 8,
-    rating: 4.8,
-    images: ["https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800"],
-    brand: "Titan Tech",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1e3",
-    name: "Lumina Vision Pro",
-    price: 2499.00,
-    originalPrice: 2799.00,
-    discountPercentage: 10,
-    rating: 5.0,
-    images: ["https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=800"],
-    brand: "Visionary",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1e5",
-    name: "Eames Silhouette Lounge",
-    price: 1250.00,
-    originalPrice: 1500.00,
-    discountPercentage: 16,
-    rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=800"],
-    brand: "Heritage Home",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1e6",
-    name: "Zenith Minimalist Desk",
-    price: 850.00,
-    originalPrice: 950.00,
-    discountPercentage: 10,
-    rating: 4.8,
-    images: ["https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&q=80&w=800"],
-    brand: "Heritage Home",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1e8",
-    name: "Obsidian Tech Jacket",
-    price: 549.00,
-    originalPrice: 650.00,
-    discountPercentage: 15,
-    rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1551488831-00ddcb6c6ec3?auto=format&fit=crop&q=80&w=800"],
-    brand: "Apex Outdoor",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f110",
-    name: "Equinox Chrono X",
-    price: 890.00,
-    originalPrice: 1100.00,
-    discountPercentage: 19,
-    rating: 4.8,
-    images: ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800"],
-    brand: "Temporal",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f118",
-    name: "Cashmere Overcoat",
-    price: 750.00,
-    originalPrice: 850.00,
-    discountPercentage: 11,
-    rating: 5.0,
-    images: ["https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&q=80&w=800"],
-    brand: "Apex Outdoor",
-  },
-];
-
-const categories = [
-  { name: 'Electronics', count: '1,240+', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=electronics' },
-  { name: 'Fashion', count: '3,500+', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=fashion' },
-  { name: 'Home & Living', count: '850+', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=home' },
-  { name: 'Lifestyle', count: '420+', image: 'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?auto=format&fit=crop&q=80&w=800', link: '/shop' },
-];
-
-const newArrivals = [
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f113",
-    name: "Zenith Keyboard",
-    price: 159.99,
-    originalPrice: 159.99,
-    discountPercentage: 0,
-    rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=800"],
-    brand: "KeyClick",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f115",
-    name: "Velvet Cloud Sofa",
-    price: 1800.00,
-    originalPrice: 2200.00,
-    discountPercentage: 18,
-    rating: 4.9,
-    images: ["https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=800"],
-    brand: "Heritage Home",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f122",
-    name: "Aerospace Aviators",
-    price: 155.00,
-    originalPrice: 195.00,
-    discountPercentage: 20,
-    rating: 4.7,
-    images: ["https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"],
-    brand: "Visionary",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f120",
-    name: "Nomad Canvas Backpack",
-    price: 185.00,
-    originalPrice: 210.00,
-    discountPercentage: 12,
-    rating: 4.5,
-    images: ["https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=800"],
-    brand: "Metro Craft",
-  },
-];
-
-const trendingProducts = [
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1a7",
-    name: "Lunar Orbital Lamp",
-    price: 220.00,
-    originalPrice: 280.00,
-    discountPercentage: 21,
-    rating: 4.6,
-    images: ["https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=800"],
-    brand: "Lumina Design",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f1a9",
-    name: "Merino Precision Knit",
-    price: 180.00,
-    originalPrice: 180.00,
-    discountPercentage: 0,
-    rating: 4.7,
-    images: ["https://images.unsplash.com/photo-1614676471928-2ed0ad1061a4?auto=format&fit=crop&q=80&w=800"],
-    brand: "Apex Outdoor",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f114",
-    name: "SlimBook Ultra 14",
-    price: 899.99,
-    originalPrice: 999.99,
-    discountPercentage: 10,
-    rating: 4.6,
-    images: ["https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=800"],
-    brand: "SlimBook",
-  },
-  {
-    _id: "65d1f1e1f1e1f1e1f1e1f116",
-    name: "Onyx Coffee Table",
-    price: 650.00,
-    originalPrice: 750.00,
-    discountPercentage: 13,
-    rating: 4.7,
-    images: ["https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=800"],
-    brand: "Heritage Home",
-  },
-];
-
-const journalPosts = [
-  {
-    date: 'Oct 24, 2023',
-    title: 'The Art of Minimalist Living',
-    excerpt: 'How to curate your space for maximum productivity and peace of mind.',
-    image: 'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=800',
-  },
-  {
-    date: 'Nov 02, 2023',
-    title: 'Future Tech: Nexus Audio',
-    excerpt: 'A deep dive into the engineering behind our latest acoustic breakthroughs.',
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
-  },
-  {
-    date: 'Nov 15, 2023',
-    title: 'Sourcing Heritage Materials',
-    excerpt: 'Our journey across the globe to find the worlds finest sustainable textiles.',
-    image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800',
-  },
-];
+import { getProducts } from '@/services/productService';
 
 const container = {
   hidden: { opacity: 0 },
@@ -222,12 +27,65 @@ const item = {
 };
 
 export default function Home() {
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [newArrivals, setNewArrivals] = useState<any[]>([]);
+  const [trendingProducts, setTrendingProducts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getProducts({ pageSize: 50 });
+        const allProducts = response?.data?.products || response?.products || [];
+
+        // Distribute products into sections logically based on the new 1:1 mapping
+        setFeaturedProducts(allProducts.slice(0, 8));
+        setNewArrivals(allProducts.slice(8, 12));
+        setTrendingProducts(allProducts.slice(12, 16));
+      } catch (error) {
+        console.error('Error fetching home product data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHomeData();
+  }, []);
+
+  const categories = [
+    { name: 'Electronics', count: '1,240+', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=electronics' },
+    { name: 'Fashion', count: '3,500+', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=fashion' },
+    { name: 'Home & Living', count: '850+', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800', link: '/shop?cat=home' },
+    { name: 'Lifestyle', count: '420+', image: 'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?auto=format&fit=crop&q=80&w=800', link: '/shop' },
+  ];
+
+  const journalPosts = [
+    {
+      date: 'Oct 24, 2023',
+      title: 'The Art of Minimalist Living',
+      excerpt: 'How to curate your space for maximum productivity and peace of mind.',
+      image: 'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      date: 'Nov 02, 2023',
+      title: 'Future Tech: Nexus Audio',
+      excerpt: 'A deep dive into the engineering behind our latest acoustic breakthroughs.',
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
+    },
+    {
+      date: 'Nov 15, 2023',
+      title: 'Sourcing Heritage Materials',
+      excerpt: 'Our journey across the globe to find the worlds finest sustainable textiles.',
+      image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800',
+    },
+  ];
+
   return (
     <div className="flex flex-col bg-background gap-8">
       {/* Top Bento Grid - Hero & Featured */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full group">
         <div className="flex flex-col gap-8 w-full">
-
           {/* Main Card: Equinox Flash Event (Small Banner) */}
           <div className="w-full relative overflow-hidden rounded-[32px] bg-slate-950 p-6 lg:px-12 lg:py-10 shadow-2xl border border-white/5 flex flex-col justify-center min-h-[240px] md:h-[280px]">
             <div className="absolute top-0 right-0 w-full h-full bg-primary-600/10 blur-[100px]" />
@@ -282,8 +140,12 @@ export default function Home() {
           </div>
 
           {/* Balance side products */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-            {featuredProducts.slice(0, 4).map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full min-h-[400px]">
+            {isLoading ? (
+              <div className="col-span-full flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+              </div>
+            ) : featuredProducts.slice(0, 4).map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
@@ -367,34 +229,40 @@ export default function Home() {
             </Link>
           </motion.div>
 
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-y-6"
-          >
-            {featuredProducts.map((product, idx) => (
-              <motion.div
-                key={product._id}
-                variants={item}
-                className={cn(
-                  idx === 0 ? "md:col-span-2 md:row-span-2" :
-                    idx === 1 ? "md:col-span-2" :
-                      "md:col-span-1"
-                )}
-              >
-                <ProductCard
-                  product={product}
-                  aspectRatio={
-                    idx === 0 ? "aspect-square md:aspect-auto md:h-[calc(100%-80px)]" :
-                      idx === 1 ? "aspect-video md:aspect-auto md:h-[240px]" :
-                        "aspect-[4/5]"
-                  }
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+          {isLoading ? (
+            <div className="py-20 flex items-center justify-center">
+              <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
+            </div>
+          ) : (
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-y-6"
+            >
+              {featuredProducts.map((product, idx) => (
+                <motion.div
+                  key={product._id}
+                  variants={item}
+                  className={cn(
+                    idx === 0 ? "md:col-span-2 md:row-span-2" :
+                      idx === 1 ? "md:col-span-2" :
+                        "md:col-span-1"
+                  )}
+                >
+                  <ProductCard
+                    product={product}
+                    aspectRatio={
+                      idx === 0 ? "aspect-square md:aspect-auto md:h-[calc(100%-80px)]" :
+                        idx === 1 ? "aspect-video md:aspect-auto md:h-[240px]" :
+                          "aspect-[4/5]"
+                    }
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
 
@@ -410,8 +278,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6">
-            {newArrivals.map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6 min-h-[300px]">
+            {isLoading ? (
+              <div className="col-span-full flex items-center justify-center">
+                <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
+              </div>
+            ) : newArrivals.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
@@ -430,14 +302,17 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6">
-            {trendingProducts.map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6 min-h-[300px]">
+            {isLoading ? (
+              <div className="col-span-full flex items-center justify-center">
+                <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
+              </div>
+            ) : trendingProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
         </div>
       </section>
-
 
       {/* Journal / Blog Section */}
       <section className="py-16 lg:py-20 bg-white dark:bg-slate-950">
@@ -500,6 +375,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-    </div >
+    </div>
   );
 }
