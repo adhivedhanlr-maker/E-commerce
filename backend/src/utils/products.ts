@@ -117,13 +117,20 @@ const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     const catIndex = Math.floor(i / catLen); // Unique index within this category
 
     const subItems = categorySubItems[category] || categorySubItems['Lifestyle'];
-    const subItem = subItems[catIndex % subItems.length];
+    const subItemIndex = catIndex % subItems.length;
+    const subItem = subItems[subItemIndex];
     
     const brand = brands[i % brands.length];
     const adj = adjectives[i % adjectives.length];
     const tag = featureTags[i % featureTags.length];
     
-    const image = `${subItem.image}?v=8`;
+    // Variation Math: Use primes (137, 17) for visual dispersion within the sub-item group
+    const variationIndex = Math.floor(catIndex / subItems.length);
+    const hue = (variationIndex * 137) % 360; 
+    const br = 95 + (variationIndex * 17) % 25; // Brightness between 95% and 120%
+
+    // Image URL with v=9 cache-busting and visual filters
+    const image = `${subItem.image}?v=9&hue=${hue}&br=${br}`;
 
     return {
         name: `${brand} ${subItem.name} ${adj} G${i}`,

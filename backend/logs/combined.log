@@ -702,3 +702,15 @@
 {"level":"info","message":"Server running on port 5000","timestamp":"2026-03-28T08:53:23.545Z"}
 {"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-00.mmilbvc.mongodb.net","timestamp":"2026-03-28T08:53:25.261Z"}
 {"level":"info","message":"GET /api/auth/profile","timestamp":"2026-03-28T08:56:31.111Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-30T05:55:02.963Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-30T05:55:02.995Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-30T05:55:04.013Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-30T05:55:06.829Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-30T07:09:56.616Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-30T07:09:56.636Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-30T07:09:57.579Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-30T07:10:00.171Z"}
+{"level":"info","message":"DNS servers set to Google DNS for SRV resolution","timestamp":"2026-03-30T09:53:15.090Z"}
+{"level":"info","message":"Attempting to connect to MongoDB Atlas...","timestamp":"2026-03-30T09:53:15.143Z"}
+{"level":"info","message":"MongoDB Connected: ac-tgtccj1-shard-00-02.mmilbvc.mongodb.net","timestamp":"2026-03-30T09:53:16.119Z"}
+{"level":"info","message":"Mass Data Imported Successfully!","timestamp":"2026-03-30T09:53:19.628Z"}

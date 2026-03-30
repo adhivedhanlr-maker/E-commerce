@@ -18,6 +18,22 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800'
     ];
 
+    const getFilterStyle = (url: string) => {
+        try {
+            if (url.includes('hue=') || url.includes('br=')) {
+                const params = new URLSearchParams(url.split('?')[1]);
+                const hue = params.get('hue');
+                const br = params.get('br');
+                if (hue || br) {
+                    return { 
+                        filter: `${hue ? `hue-rotate(${hue}deg)` : ''} ${br ? `brightness(${br}%)` : ''}`.trim() 
+                    };
+                }
+            }
+        } catch (e) {}
+        return {};
+    };
+
     return (
         <div className="flex flex-col gap-6">
             {/* Main Image Container */}
@@ -37,6 +53,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                             alt={`Product Shot ${activeIndex + 1}`}
                             fill
                             className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                            style={getFilterStyle(displayImages[activeIndex])}
                             priority
                         />
                     </motion.div>
@@ -78,7 +95,13 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                                 : 'border-transparent opacity-50 hover:opacity-100'
                             }`}
                     >
-                        <Image src={img} alt="Thumbnail" fill className="object-cover" />
+                        <Image 
+                            src={img} 
+                            alt="Thumbnail" 
+                            fill 
+                            className="object-cover" 
+                            style={getFilterStyle(img)}
+                        />
                     </button>
                 ))}
             </div>
