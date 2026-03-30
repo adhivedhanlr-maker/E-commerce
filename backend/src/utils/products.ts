@@ -38,74 +38,97 @@ const products = [
 
 const targetCategories = ['Studio', 'Optics', 'Wear', 'Lifestyle', 'Furniture'];
 const brands = ['Nexus Audio', 'Visionary', 'Apex Outdoor', 'Lumina Design', 'Heritage Home', 'SoundShape', 'Metro Craft', 'Temporal'];
-
-const categoryImagePools: Record<string, string[]> = {
-    'Studio': [
-        '/images/headphones.png',
-        '/images/phone.png',
-        '/images/electronics_1.png',
-        '/images/electronics_2.png',
-        '/images/keyboard.png',
-        '/images/laptop.png',
-        '/images/titan_watch_pro.png',
-        '/images/microphone.png',
-        '/images/studio_1.png',
-        '/images/studio_2.png',
-        '/images/electronics_5.png'
-    ],
-    'Furniture': [
-        '/images/sofa.png',
-        '/images/desk.png',
-        '/images/chair.png',
-        '/images/lamp.png',
-        '/images/furniture_1.png',
-        '/images/furniture_2.png',
-        '/images/furniture_3.png',
-        '/images/furniture_4.png'
-    ],
-    'Wear': [
-        '/images/jacket.png',
-        '/images/merino_knit.png',
-        '/images/shoes.png',
-        '/images/apparel_1.png',
-        '/images/lifestyle_1.png'
-    ],
-    'Lifestyle': [
-        '/images/backpack.png',
-        '/images/watch.png',
-        '/images/lifestyle_2.png',
-        '/images/lifestyle_3.png'
-    ],
-    'Optics': [
-        '/images/telescope.png',
-        '/images/electronics_3.png',
-        '/images/electronics_4.png',
-        '/images/optics_1.png',
-        '/images/optics_2.png',
-        '/images/optics_3.png',
-        '/images/binoculars.png'
-    ]
-};
-
 const adjectives = ['Pro', 'Elite', 'Ultra', 'Premium', 'Essential', 'Classic', 'Modern', 'Minimalist', 'Luxe', 'Alpha', 'Zenith', 'Apex'];
 const featureTags = ['Wireless', 'Durable', 'Ergonomic', 'Sustainable', 'High-Performance', 'Precision', 'Handcrafted', 'Next-Gen'];
 
+interface SubItem {
+    name: string;
+    image: string;
+}
+
+const categorySubItems: Record<string, SubItem[]> = {
+    'Studio': [
+        { name: 'Headphones', image: '/images/headphones.png' },
+        { name: 'Smartphone', image: '/images/phone.png' },
+        { name: 'Smartwatch', image: '/images/electronics_1.png' },
+        { name: 'Pen Tablet', image: '/images/electronics_2.png' },
+        { name: 'Mechanical Keyboard', image: '/images/keyboard.png' },
+        { name: 'Pro Laptop', image: '/images/laptop.png' },
+        { name: 'Titan Watch', image: '/images/titan_watch_pro.png' },
+        { name: 'Condenser Microphone', image: '/images/studio_4.png' },
+        { name: 'Studio Monitor', image: '/images/studio_1.png' },
+        { name: 'Vocal Mic', image: '/images/studio_2.png' },
+        { name: 'Gaming Mouse', image: '/images/electronics_5.png' },
+        { name: 'Audio Interface', image: '/images/studio_3.png' },
+        { name: 'Reference Speakers', image: '/images/studio_5.png' },
+        { name: 'Analog Synth', image: '/images/studio_6.png' },
+        { name: 'MIDI Controller', image: '/images/studio_7.png' },
+        { name: 'Studio Subwoofer', image: '/images/studio_8.png' },
+        { name: 'Hardware Rack', image: '/images/studio_9.png' },
+        { name: 'Boom Arm Stand', image: '/images/studio_10.png' },
+        { name: 'Acoustic Diffuser', image: '/images/studio_11.png' },
+        { name: 'Recording Booth', image: '/images/studio_12.png' }
+    ],
+    'Furniture': [
+        { name: 'Modern Sofa', image: '/images/sofa.png' },
+        { name: 'Nordic Desk', image: '/images/desk.png' },
+        { name: 'Ergo Chair', image: '/images/chair.png' },
+        { name: 'Orbital Lamp', image: '/images/lamp.png' },
+        { name: 'Platform Bed', image: '/images/furniture_1.png' },
+        { name: 'Emerald Armchair', image: '/images/furniture_2.png' },
+        { name: 'Timber Table', image: '/images/furniture_3.png' },
+        { name: 'Oak Shelf', image: '/images/furniture_4.png' }
+    ],
+    'Wear': [
+        { name: 'Tech Jacket', image: '/images/jacket.png' },
+        { name: 'Precision Knit', image: '/images/merino_knit.png' },
+        { name: 'Pro Runners', image: '/images/shoes.png' },
+        { name: 'Urban Hoodie', image: '/images/apparel_1.png' },
+        { name: 'Aviator Shades', image: '/images/lifestyle_1.png' }
+    ],
+    'Lifestyle': [
+        { name: 'Metro Backpack', image: '/images/backpack.png' },
+        { name: 'Equinox Watch', image: '/images/watch.png' },
+        { name: 'Leather Wallet', image: '/images/lifestyle_2.png' },
+        { name: 'Smart Bottle', image: '/images/lifestyle_3.png' }
+    ],
+    'Optics': [
+        { name: 'Refractor Telescope', image: '/images/telescope.png' },
+        { name: 'Full-Frame Camera', image: '/images/electronics_3.png' },
+        { name: 'Arial Drone', image: '/images/electronics_4.png' },
+        { name: 'Digital Microscope', image: '/images/optics_1.png' },
+        { name: 'Observatory System', image: '/images/optics_2.png' },
+        { name: 'Night Vision', image: '/images/optics_3.png' },
+        { name: 'Stellar Binoculars', image: '/images/binoculars.png' },
+        { name: 'Advanced Telescope', image: '/images/optics_4.png' },
+        { name: 'Range Binoculars', image: '/images/optics_5.png' },
+        { name: 'Lab Microscope', image: '/images/optics_6.png' },
+        { name: 'Camouflage Scope', image: '/images/optics_7.png' },
+        { name: 'Optical Prism', image: '/images/optics_8.png' },
+        { name: 'Thermal Goggles', image: '/images/optics_9.png' },
+        { name: 'Macro Lens', image: '/images/optics_10.png' }
+    ]
+};
+
 const generatedProducts = Array.from({ length: 200 }, (_, index) => {
     const i = index + 1;
-    const category = targetCategories[i % targetCategories.length];
+    const catLen = targetCategories.length;
+    const category = targetCategories[i % catLen];
+    const catIndex = Math.floor(i / catLen); // Unique index within this category
+
+    const subItems = categorySubItems[category] || categorySubItems['Lifestyle'];
+    const subItem = subItems[catIndex % subItems.length];
+    
     const brand = brands[i % brands.length];
     const adj = adjectives[i % adjectives.length];
     const tag = featureTags[i % featureTags.length];
     
-    // Use the pools to pick a consistent image for the category
-    const pool = categoryImagePools[category] || categoryImagePools['Lifestyle'];
-    const imageIndex = (i + 15) % pool.length;
-    const image = `${pool[imageIndex]}?v=6`;
+    const image = `${subItem.image}?v=8`;
 
     return {
-        name: `${brand} ${category} ${adj} G${i}`,
+        name: `${brand} ${subItem.name} ${adj} G${i}`,
         image,
-        description: `The ${brand} ${category} ${adj} edition. This ${tag.toLowerCase()} product is designed for those who value both style and ${tag.toLowerCase()} functionality. Ideal for professional use.`,
+        description: `The ${brand} ${subItem.name} from the ${adj} line. This ${tag.toLowerCase()} product for ${category.toLowerCase()} enthusiasts is designed for those who value both style and high-end performance.`,
         brand,
         category,
         price: 50 + (i % 300) + 19.99,
