@@ -5,11 +5,14 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Zap, RefreshCw, Star, ShieldCheck, ShoppingBag, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getProducts } from '@/services/productService';
 import ProductCard from '@/components/product/ProductCard';
 
+import { Product } from '@/types/product';
+
 export default function DealsPage() {
-    const [deals, setDeals] = useState<any[]>([]);
+    const [deals, setDeals] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -22,8 +25,8 @@ export default function DealsPage() {
                 
                 // Get products with discount > 0, sorted by discount percentage
                 const discounted = allProducts
-                    .filter((p: any) => p.discountPercentage > 0)
-                    .sort((a: any, b: any) => b.discountPercentage - a.discountPercentage);
+                    .filter((p: Product) => p.discountPercentage > 0)
+                    .sort((a: Product, b: Product) => b.discountPercentage - a.discountPercentage);
                 
                 setDeals(discounted.slice(0, 12));
             } catch (error) {

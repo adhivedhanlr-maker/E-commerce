@@ -26,10 +26,12 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: cubicBezier(0.16, 1, 0.3, 1) } }
 };
 
+import { Product } from '@/types/product';
+
 export default function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
-  const [newArrivals, setNewArrivals] = useState<any[]>([]);
-  const [trendingProducts, setTrendingProducts] = useState<any[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
+  const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
