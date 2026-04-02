@@ -24,7 +24,7 @@ const articles: Article[] = [
         date: "Feb 21, 2026",
         readTime: "08 Min",
         excerpt: "Exploring the intersection of industrial design and human emotion through our latest archival explorations.",
-        image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=800"
+        image: "/images/lamp.png"
     },
     {
         id: 2,
@@ -33,7 +33,7 @@ const articles: Article[] = [
         date: "Feb 15, 2026",
         readTime: "12 Min",
         excerpt: "A deep dive into the acoustic engineering that defines our flagship audio collection.",
-        image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800"
+        image: "/images/headphones.png"
     },
     {
         id: 3,
@@ -42,7 +42,7 @@ const articles: Article[] = [
         date: "Feb 08, 2026",
         readTime: "06 Min",
         excerpt: "Essential carry items for the discerning traveler navigating the urban landscape.",
-        image: "https://images.unsplash.com/photo-1454165833267-02d99d784c04?auto=format&fit=crop&q=80&w=800"
+        image: "/images/backpack.png"
     }
 ];
 
@@ -103,7 +103,7 @@ export default function JournalPage() {
                 >
                     <div className="relative aspect-[16/10] overflow-hidden rounded-[40px] shadow-premium">
                         <Image
-                            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
+                            src="/images/studio_12.png"
                             alt="The Art of Focus"
                             fill
                             className="object-cover transition-transform duration-1000 group-hover:scale-110"
